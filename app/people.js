@@ -10,13 +10,17 @@ window.tr.models.Person = function(options) {
 
 window.tr.models.Person.prototype = {
   money: 1000,
+
   productDesign: 0,
-  architecture: 0,
   visualDesign: 0,
+
+  architecture: 0,
   backend: 0,
   frontend: 0,
   operations: 0,
+
   business: 0,
+  marketing: 0,
 
   negociation: 0,
   sociability: 0,
@@ -101,6 +105,30 @@ window.tr.models.Person.prototype = {
     this.negociation = tr.randInt(100);
     this.sociability = tr.randInt(100);
     this.learning = tr.randInt(100);
+    if(tr.randInt() < 10) {
+      this.perks.push('nerdy');
+      this.increaseStat('learning', 20);
+      this.increaseStat('sociability', -20);
+    }
+    if(tr.randInt() < 10) {
+      this.perks.push('elocuent');
+      this.increaseStat('negociation', 10);
+      this.increaseStat('sociability', 5);
+    }
+    if(tr.randInt() < 10) {
+      this.perks.push('shy');
+      this.increaseStat('negociation', -5);
+      this.increaseStat('sociability', -10);
+    }
+    if(tr.randInt() < 10) {
+      this.perks.push('elocuent');
+      this.increaseStat('negociation', 10);
+      this.increaseStat('sociability', 10);
+      this.increaseStat('learning', -5);
+    }
+
+
+
   },
   randomizeExperience: function() {
     this.experience = tr.randInt(10);
