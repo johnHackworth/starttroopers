@@ -21,6 +21,10 @@ window.tr.models.Person.prototype = {
   negociation: 0,
   sociability: 0,
   learning: 0,
+  workEthics: 0
+
+  hapiness: 50,
+  stress: 50,
 
   experience: 0,
   desiredWage: 25000,
@@ -31,6 +35,7 @@ window.tr.models.Person.prototype = {
       this.name = tr.utils.nameGenerator();
     }
     this.perks = [];
+    this.currentProjects = [];
   },
 
   increaseStat: function(statName, value) {
@@ -101,7 +106,9 @@ window.tr.models.Person.prototype = {
     this.negociation = tr.randInt(100);
     this.sociability = tr.randInt(100);
     this.learning = tr.randInt(100);
+    this.workEthics = tr.randInt(100);
   },
+
   randomizeExperience: function() {
     this.experience = tr.randInt(10);
     var posiblePastJobs = ['enterpreur', 'business', 'front', 'back', 'designer']
@@ -172,5 +179,31 @@ window.tr.models.Person.prototype = {
   },
 
   turn: function() {
+    this.dailySchedule();
   },
+  dailySchedule: function() {
+    var workHours = 0;
+    var workForce = (this.hapiness + this.workEthics + this.stress) / 300;
+    workHours = 7 + (5 * workForce);
+    var hours = [];
+    for(var i = 0; i < workHours; i++) {
+      var slackingProbability = this.sociability - this.stress + 100 - this.workEthics;
+      if(tr.randInt() < slackingProbability) {
+        hours.push('social')
+      } else {
+        if(!this.currentProjects.length) {
+          hours.push(this.emptyHour());
+        } else {
+          hours.push(this.projectHour());
+        }
+      }
+    }
+  },
+  emptyHour: function() {
+    return 'none';
+  },
+  projectHour: function() {
+    var nProjects = this.currentProjects.length;
+    return this.currentProjects[tr.randInt(nProjects)].name;
+  }
 }
