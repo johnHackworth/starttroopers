@@ -25,7 +25,7 @@ window.tr.models.Person.prototype = {
   negociation: 0,
   sociability: 0,
   learning: 0,
-  workEthics: 0
+  workEthics: 0,
 
   hapiness: 50,
   stress: 50,
@@ -224,6 +224,8 @@ window.tr.models.Person.prototype = {
         }
       }
     }
+    this.hours = hours;
+    return hours;
   },
   emptyHour: function() {
     return 'none';
@@ -231,5 +233,11 @@ window.tr.models.Person.prototype = {
   projectHour: function() {
     var nProjects = this.currentProjects.length;
     return this.currentProjects[tr.randInt(nProjects)].name;
+  },
+  getHourlyWork: function(project) {
+    return {
+      design: 1,
+      front: 1
+    }
   }
 }

@@ -12,6 +12,7 @@ window.tr.models.Project.prototype = {
   initialize: function() {
     this.name = this.options.name;
     this.phases = []
+    this.people = [];
     this.initPhases();
   },
   createPhase: function(name) {
@@ -31,8 +32,33 @@ window.tr.models.Project.prototype = {
     return phase;
   },
   initPhases: function() {
-    var phase = this.createPhase('First Prototype')
+    this.phase = this.createPhase('First Prototype')
   },
   turn: function() {
+    this.getWork();
   },
+  addPerson: function(person) {
+    if(!this.people.indexOf(person) >= 0) {
+      this.people.push(person);
+      person.currentProjects.push(this);
+    }
+  },
+  getWork: function() {
+    for(var i = 0; i < 12; i++) {
+      for(var n in this.people) {
+        if(this.people[n].hours[i] &&
+            this.people[n].hours[i] === this.name
+          ) {
+          this.addWork(this.people[n]);
+          console.log((i + 8) +':00 hours, ' + this.people[n].name + ' working on ' + this.name)
+        }
+      }
+    }
+  },
+  addWork: function(person) {
+    var hourWork = person.getHourlyWork(this);
+    for(var n in hourWork) {
+      this.phase[n] += hourWork[n]
+    }
+  }
 }
