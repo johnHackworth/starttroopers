@@ -33,6 +33,8 @@ window.tr.models.Person.prototype = {
   experience: 0,
   desiredWage: 25000,
 
+  projectKnowledge: 0,
+
   initialize: function() {
     this.name = this.options.name;
     if(!this.name) {
@@ -40,6 +42,7 @@ window.tr.models.Person.prototype = {
     }
     this.perks = [];
     this.currentProjects = [];
+    this.positions = [];
   },
 
   increaseStat: function(statName, value) {
@@ -60,36 +63,6 @@ window.tr.models.Person.prototype = {
   },
 
   randomizeStudies: function() {
-    if(this.mainInterest === 'business') {
-      if(Math.random() * 100 < 50) {
-        this.perks.push('MBA');
-        this.increaseStat('business', 30);
-        this.desiredWage += 20000;
-      } else {
-        this.selfTaught()
-      }
-    } else if(this.mainInterest === 'engineering') {
-      if(Math.random() * 100 < 50) {
-        this.perks.push('engineering graduate');
-        this.increaseStat('architecture', 20);
-        this.increaseStat('backend', 15);
-        this.increaseStat('frontend', 10);
-        this.increaseStat('operations', 5);
-        this.desiredWage += 10000;
-      } else {
-        this.selfTaught()
-      }
-    } else if(this.mainInterest === 'design') {
-      if(Math.random() * 100 < 50) {
-        this.perks.push('design school graduate');
-        this.increaseStat('visualDesign', 25);
-        this.increaseStat('frontend', 5);
-        this.increaseStat('productDesign', 15);
-        this.desiredWage += 5000;
-      } else {
-        this.selfTaught()
-      }
-    }
   },
   selfTaught: function() {
     this.perks.push('selfTaught');
@@ -104,6 +77,8 @@ window.tr.models.Person.prototype = {
   randomizeInterest:function() {
     var interests = ['business', 'engineering', 'design']
     this.mainInterest = interests[Math.floor(Math.random() * interests.length)]
+    tr.utils.extend.call(this, tr.decorators[this.mainInterest]);
+
   },
 
   randomizePersonalStats: function() {
@@ -136,72 +111,9 @@ window.tr.models.Person.prototype = {
   },
 
   randomizeExperience: function() {
-    this.experience = tr.randInt(10);
-    var posiblePastJobs = ['enterpreur', 'business', 'front', 'back', 'designer']
-    var increase = 0;
-    for(var i = 0; i < this.experience; i++) {
-      if(this.mainInterest === 'business') {
-        if(tr.randInt() > 50) {
-          increase = tr.randInt(10 * this.learning / 100);
-          this.increaseStat('business', increase)
-          this.desiredWage += increase * 1000 * (this.negociation / 100);
-        } else {
-          increase = tr.randInt(8 * this.learning / 100)
-          this.increaseStat('business', increase)
-          this.increaseStat('productDesign', tr.randInt(5 * this.learning / 100))
-          this.desiredWage += increase * 1000 * (this.negociation / 100);
-        }
-      }
-      if(this.mainInterest === 'design') {
-        increase = tr.randInt(10 * this.learning / 100)
-        this.increaseStat('productDesign',increase)
-        this.increaseStat('visualDesign', tr.randInt(10 * this.learning / 100))
-        this.desiredWage += increase * 600 * (this.negociation / 100);
-      }
-      if(this.mainInterest === 'engineering') {
-        var frontAlpha = tr.randInt(10 * this.learning / 100)
-        this.increaseStat('frontend', frontAlpha);
-        var backAlpha = tr.randInt(10 * this.learning / 100)
-        this.increaseStat('backend', backAlpha);
-        var archAlpha = tr.randInt(10 * this.learning / 100)
-        this.increaseStat('architecture', archAlpha);
-        var opAlpha = tr.randInt(10 * this.learning / 100)
-        this.increaseStat('operations', opAlpha);
-        increase = frontAlpha + backAlpha + archAlpha + opAlpha
-        this.desiredWage += increase * 200 * (this.negociation / 100);
-      }
-      this.randomizePerks();
-    }
+
   },
   randomizePerks: function() {
-    if(tr.randInt() < 5) {
-      if(this.mainInterest === 'design') {
-        var chooseInt = tr.randInt(2);
-        if(chooseInt == 0) {
-          this.perks.push('UX');
-          this.increaseStat('productDesign', 30);
-        }
-        if(chooseInt == 1) {
-          this.perks.push('color theory');
-          this.increaseStat('visualDesign', 10);
-        }
-      }
-      if(this.mainInterest === 'engineering') {
-        var chooseInt = tr.randInt(3);
-        if(chooseInt == 0) {
-          this.perks.push('frontender');
-          this.increaseStat('frontend', 30);
-        }
-        if(chooseInt == 1) {
-          this.perks.push('back-man');
-          this.increaseStat('backend', 30);
-        }
-        if(chooseInt == 2) {
-          this.perks.push('devops');
-          this.increaseStat('operations', 30);
-        }
-      }
-    }
   },
 
   turn: function() {
@@ -213,7 +125,7 @@ window.tr.models.Person.prototype = {
     workHours = 7 + (5 * workForce);
     var hours = [];
     for(var i = 0; i < workHours; i++) {
-      var slackingProbability = this.sociability - this.stress + 100 - this.workEthics;
+      var slackingProbability = this.sociability/2 - this.stress + 100 - this.workEthics;
       if(tr.randInt() < slackingProbability) {
         hours.push('social')
       } else {
@@ -234,10 +146,96 @@ window.tr.models.Person.prototype = {
     var nProjects = this.currentProjects.length;
     return this.currentProjects[tr.randInt(nProjects)].name;
   },
-  getHourlyWork: function(project) {
-    return {
-      design: 1,
-      front: 1
+
+  toJSON: function() {
+    var json = {};
+    for(var n in this) {
+      if(typeof this[n] != "function" && typeof this[n] != "Object") {
+        if(this[n].join) {
+          json[n] = this[n].join(', ')
+        } else {
+          json[n] = this[n];
+        }
+      }
     }
-  }
+    return json;
+  },
+
+  assignPosition: function(position) {
+    var positions = ['front', 'back', 'architecture', 'operations', 'visualDesign', 'productDesign'];
+    if(positions.indexOf(position) < 0) {
+      return;
+    } else {
+      this.removePosition(position);
+      this.positions.push(position);
+    }
+  },
+
+  removePosition: function(position) {
+    var p = this.positions.indexOf(position);
+    if(p >= 0)
+      this.positions.splice(p,1);
+  },
+
+  getHourlyWork: function(project) {
+    var position = '';
+    this.increaseStat("projectKnowledge", 10 * Math.random() * this.learning / 100);
+    if(this.positions.length > 0) {
+      var p = tr.randInt(this.positions.length);
+      position = this.positions[p];
+    }
+    console.log(this.name + ' working as ' + position)
+    if(position === 'front') {
+      return {
+        front: 2 * (this.frontend/200  + this.stress/200) * this.projectKnowledge / 100,
+        design: 0.5 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge / 100,
+        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge / 100
+      }
+    }
+    if(position === 'back') {
+      return {
+        back: 2 * (this.backend/200  + this.stress/200) * this.projectKnowledge / 100,
+        architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge / 100,
+        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge / 100
+      }
+    }
+    if(position === 'architecture') {
+      return {
+        architecture: 2 * (this.architecture/200  + this.stress/200) * this.projectKnowledge / 100,
+        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge / 100,
+        operations: 0.5 * (this.operations/200  + this.stress/200) * this.projectKnowledge / 100
+      }
+    }
+    if(position === 'operations') {
+      return {
+        operations: 2 * (this.operations/200  + this.stress/200) * this.projectKnowledge / 100,
+        back: 0.5 * (this.back/200  + this.stress/200) * this.projectKnowledge / 100,
+        architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge / 100
+      }
+    }
+    if(position === 'visualDesign') {
+      return {
+        front: 0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge / 100,
+        design: 2 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge / 100,
+        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge / 100
+      }
+    }
+    if(position === 'productDesign') {
+      return {
+        design: 1 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge / 100,
+        definition: 2 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge / 100
+      }
+    }
+    return {
+
+      design: 0.5 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge / 100,
+      definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge / 100,
+      operations: 0.5 * (this.operations/200  + this.stress/200) * this.projectKnowledge / 100,
+      back: 0.5 * (this.backend/200  + this.stress/200) * this.projectKnowledge / 100,
+      architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge / 100,
+      front: 0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge / 100
+
+    }
+  },
+
 }

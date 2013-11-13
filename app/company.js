@@ -10,6 +10,7 @@ window.tr.models.Company = function(options) {
 
 window.tr.models.Company.prototype = {
   cash: 1000,
+  currentTurn: 0,
   initialize: function() {
     this.name = this.options.name;
     this.project = null;
@@ -17,11 +18,12 @@ window.tr.models.Company.prototype = {
   },
 
   turn: function() {
+    this.currentTurn++;
     for(var n in this.people ) {
-      this.people[n].turn();
+      this.people[n].turn(this.currentTurn);
     }
     this.socialize();
-    this.project.turn();
+    this.project.turn(this.currentTurn);
   },
 
   socialize: function() {

@@ -9,6 +9,8 @@ window.onload = function() {
   window.comp.initProject({name: "mvp"})
   window.a =  new window.tr.models.Person({});
   window.b =  new window.tr.models.Person({})
+  window.a.randomize();
+  window.b.randomize();
   window.comp.addPerson(a);
   window.comp.project.addPerson(a);
   window.comp.addPerson(b);

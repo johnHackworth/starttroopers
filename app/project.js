@@ -27,14 +27,17 @@ window.tr.models.Project.prototype = {
       front: 0,
       frontGoal: 100,
       architecture: 0,
-      architectureGoal: 100
+      architectureGoal: 100,
+      operations: 0,
+      operationsGoal: 10
     }
     return phase;
   },
   initPhases: function() {
     this.phase = this.createPhase('First Prototype')
   },
-  turn: function() {
+  turn: function(turn) {
+    this.currentTurn = turn;
     this.getWork();
   },
   addPerson: function(person) {
@@ -58,7 +61,30 @@ window.tr.models.Project.prototype = {
   addWork: function(person) {
     var hourWork = person.getHourlyWork(this);
     for(var n in hourWork) {
-      this.phase[n] += hourWork[n]
+      this.increasePhaseStat(n, hourWork[n]/10);
     }
+  },
+  increasePhaseStat: function(stat, increase) {
+    this.phase[stat] += increase;
+    if(this.phase[stat] > this.phase[stat + 'Goal']) {
+      this.phase[stat] = this.phase[stat + 'Goal'];
+      this.phaseStatCompleted(stat);
+    }
+  },
+  phaseStatCompleted: function(stat) {
+    this.trigger('completedStat', stat);
+    this.log(stat + ' of ' + this.name + ' completed');
+    var completed = true;
+    if(definition < definitionGoal) completed = false;
+    if(design < designGoal) completed = false;
+    if(back < backGoal) completed = false;
+    if(front < frontGoal) completed = false;
+    if(architecture < architectureGoal) completed = false;
+    if(operations < operationsGoal) completed = false;
+    if(completed) this.phaseCompleted();
+  },
+  phaseCompleted: function() {
+    this.trigger('completedPhase');
+    this.log(this.name + ' completed');
   }
 }
