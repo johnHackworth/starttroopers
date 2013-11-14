@@ -10,6 +10,10 @@ window.tr.config = {
   height: 800,
   fps: 50
 }
+
+window.tr.hobbies = [
+  "sports", "fashion", "videogames", "cinema", "music", "hiking", "travel", "cars", "DIY", "cooking"
+]
 window.tr.directors.MainDirector.prototype = {
   backgroundColor: '#CCCCCC',
   start: function() {

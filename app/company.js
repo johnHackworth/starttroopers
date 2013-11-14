@@ -34,10 +34,12 @@ window.tr.models.Company.prototype = {
         if(this.people[n].hours[i] &&
             this.people[n].hours[i] === 'social'
           ) {
-          hourly.push(this.people[n].name);
+          hourly.push(this.people[n]);
         }
       }
-      console.log(hourly.join(', '))
+      for(var m in hourly) {
+        hourly[m].socialize(hourly)
+      }
     }
   },
 

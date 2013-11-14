@@ -28,6 +28,7 @@ window.tr.decorators.design.prototype = {
     this.increaseStat('operations',  tr.randInt(10));
     this.increaseStat('visualDesign',  tr.randInt(40));
     this.increaseStat('productDesign',  tr.randInt(40));
+    this.increaseStat('qa',  tr.randInt(20));
   },
 
   randomizeExperience: function() {
@@ -47,7 +48,7 @@ window.tr.decorators.design.prototype = {
   randomizePerks: function() {
     if(tr.randInt() < 5) {
       if(this.mainInterest === 'design') {
-        var chooseInt = tr.randInt(2);
+        var chooseInt = tr.randInt(3);
         if(chooseInt == 0) {
           this.perks.push('UX');
           this.increaseStat('productDesign', 30);
@@ -56,8 +57,19 @@ window.tr.decorators.design.prototype = {
           this.perks.push('color theory');
           this.increaseStat('visualDesign', 10);
         }
+        if(chooseInt == 1) {
+          this.perks.push('seniority');
+          this.increaseStat('visualDesign', 10);
+          this.increaseStat('productDesign', 10);
+        }
       }
     }
   },
-
+  getHapinessFromWork: function() {
+    if(this.positions.indexOf('visualDesign') ||
+      this.positions.indexOf('productDesign')
+    ) {
+      this.happiness -= 0.03 * (100 - this.workEthics) / 100
+    }
+  }
 }

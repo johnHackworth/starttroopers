@@ -26,6 +26,7 @@ window.tr.decorators.business.prototype = {
     this.increaseStat('operations',  tr.randInt(10));
     this.increaseStat('visualDesign',  tr.randInt(20));
     this.increaseStat('productDesign',  tr.randInt(30));
+    this.increaseStat('qa',  tr.randInt(30));
   },
 
   randomizeExperience: function() {
@@ -62,5 +63,6 @@ window.tr.decorators.business.prototype = {
         }
       }
     }
-  },
+  }
+
 }

@@ -10,7 +10,7 @@ window.tr.utils.Loggable.prototype = {
     if(!level) {
       level = 0;
     }
-    var currentTurn = tr.app.director.game.currentTurn; // I feel dirty for this global ref >_<
+    var currentTurn = this.currentTurn; // I feel dirty for this global ref >_<
     this.logFile.unshift({turn: currentTurn, text: text, level: level});
     window.tr.log.unshift({turn: currentTurn, text: text, level: level});
     console.log(text);

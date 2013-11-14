@@ -29,6 +29,7 @@ window.tr.decorators.engineering.prototype = {
     this.increaseStat('operations',  tr.randInt(40));
     this.increaseStat('visualDesign',  tr.randInt(5));
     this.increaseStat('productDesign',  tr.randInt(15));
+    this.increaseStat('qa',  tr.randInt(15));
   },
 
   randomizeExperience: function() {
@@ -45,7 +46,9 @@ window.tr.decorators.engineering.prototype = {
         this.increaseStat('architecture', archAlpha);
         var opAlpha = tr.randInt(10 * this.learning / 100)
         this.increaseStat('operations', opAlpha);
-        increase = frontAlpha + backAlpha + archAlpha + opAlpha
+        var qaAlpha = tr.randInt(10 * this.learning / 100)
+        this.increaseStat('qa', qaAlpha);
+        increase = frontAlpha + qaAlpha + backAlpha + archAlpha + opAlpha
         this.desiredWage += increase * 200 * (this.negociation / 100);
       }
       this.randomizePerks();
@@ -54,7 +57,7 @@ window.tr.decorators.engineering.prototype = {
   randomizePerks: function() {
     if(tr.randInt() < 5) {
       if(this.mainInterest === 'engineering') {
-        var chooseInt = tr.randInt(3);
+        var chooseInt = tr.randInt(4);
         if(chooseInt == 0) {
           this.perks.push('frontender');
           this.increaseStat('frontend', 30);
@@ -67,7 +70,35 @@ window.tr.decorators.engineering.prototype = {
           this.perks.push('devops');
           this.increaseStat('operations', 30);
         }
+        if(chooseInt == 3) {
+          this.perks.push('qa');
+          this.increaseStat('qa', 30);
+        }
       }
     }
   },
+  getHapinessFromWork: function() {
+    if(this.positions.indexOf('front') ||
+      this.positions.indexOf('back') ||
+      this.positions.indexOf('architecture') ||
+      this.positions.indexOf('operations')
+    ) {
+      this.happiness -= 0.03 * (100 - this.workEthics) / 100
+    }
+    if(this.perks.indexOf('frontender') >= 0 &&
+      this.positions.indexOf('front') >= 0
+    ) {
+      this.happiness += 0.01;
+    }
+    if(this.perks.indexOf('back-man') >= 0 &&
+      this.positions.indexOf('back') >= 0
+    ) {
+      this.happiness += 0.01;
+    }
+    if(this.perks.indexOf('devops') >= 0 &&
+      this.positions.indexOf('operations') >= 0
+    ) {
+      this.happiness += 0.01;
+    }
+  }
 }

@@ -9,32 +9,44 @@ window.tr.models.Project = function(options) {
 }
 
 window.tr.models.Project.prototype = {
+  bugs: 0,
+  knowBugs: 0,
+  projectPhases: ['mvp', 'polish', 'test'],
   initialize: function() {
     this.name = this.options.name;
     this.phases = []
     this.people = [];
     this.initPhases();
   },
-  createPhase: function(name) {
+  createPhase: function(name, goals) {
+    if(!goals) {
+      goals= [100,100,100,100,100,100]
+    }
     var phase = {
       name: name,
       definition: 0,
-      definitionGoal: 100,
+      definitionGoal: goals[0],
       design: 0,
-      designGoal: 100,
+      designGoal: goals[1],
       back: 0,
-      backGoal: 100,
+      backGoal: goals[2],
       front: 0,
-      frontGoal: 100,
+      frontGoal: goals[3],
       architecture: 0,
-      architectureGoal: 100,
+      architectureGoal: goals[4],
       operations: 0,
-      operationsGoal: 10
+      operationsGoal: goals[5],
+      bugs: 0
     }
     return phase;
   },
   initPhases: function() {
-    this.phase = this.createPhase('First Prototype')
+    this.phases = {
+      mvp: this.createPhase('mvp'),
+      polish: this.createPhase('polish'),
+      test: this.createPhase('test')
+    }
+    this.phase = this.phases.mvp;
   },
   turn: function(turn) {
     this.currentTurn = turn;
@@ -75,16 +87,33 @@ window.tr.models.Project.prototype = {
     this.trigger('completedStat', stat);
     this.log(stat + ' of ' + this.name + ' completed');
     var completed = true;
-    if(definition < definitionGoal) completed = false;
-    if(design < designGoal) completed = false;
-    if(back < backGoal) completed = false;
-    if(front < frontGoal) completed = false;
-    if(architecture < architectureGoal) completed = false;
-    if(operations < operationsGoal) completed = false;
+    if(this.phase.definition < this.phase.definitionGoal) completed = false;
+    if(this.phase.design < this.phase.designGoal) completed = false;
+    if(this.phase.back < this.phase.backGoal) completed = false;
+    if(this.phase.front < this.phase.frontGoal) completed = false;
+    if(this.phase.architecture < this.phase.architectureGoal) completed = false;
+    if(this.phase.operations < this.phase.  operationsGoal) completed = false;
     if(completed) this.phaseCompleted();
   },
   phaseCompleted: function() {
+    this.phase.completed = true;
     this.trigger('completedPhase');
     this.log(this.name + ' completed');
+  },
+  nextPhase: function() {
+    if(!this.phase.completed) {
+      return this.phase;
+    }
+    if(this.phase.name === 'mvp') {
+      this.bugs += this.phase.bugs;
+      this.phase = this.phases.polish;
+    } else if(this.phase.name === 'polish') {
+      this.bugs += this.phase.bugs;
+      this.phase = this.phases.test;
+    }
+    return this.phase;
+  },
+  completeProduct: function() {
+
   }
 }
