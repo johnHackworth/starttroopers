@@ -21,7 +21,7 @@ window.tr.directors.MainDirector.prototype = {
     // Crafty.init(window.tr.config.width, window.tr.config.height);
     // Crafty.background(this.backgroundColor);
     // this.game = new tr.models.GameController({});
-
-    // Crafty.scene('Planet')
+    Crafty.init();
+    Crafty.scene('Office')
   },
 }
