@@ -9,7 +9,7 @@ window.tr.decorators.design.prototype = {
   randomizeStudies: function() {
     if(this.mainInterest === 'design') {
       if(Math.random() * 100 < 50) {
-        this.perks.push('design school graduate');
+        this.perks.push('design school');
         this.increaseStat('visualDesign', 25);
         this.increaseStat('frontend', 5);
         this.increaseStat('productDesign', 15);

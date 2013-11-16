@@ -4,34 +4,53 @@ window.tr.utils = window.tr.utils || {};
 (function() {
   var cultures = {
     "spanish": {
-      names:["Jose", "Juan", "Carlos", "Amadeo", "Javier", "Alejandro", "Sheila", "Marta", "Maria", "Luisa", "Hector"],
-      surnames:["Garcia", "Perez", "Lopez", "Jimenez", "Alvarez", "Aristegui", "Valdes", "Hita", "Herrera", "Martin", "Arias"]
+      mnames:["Jose", "Juan", "Carlos", "Amadeo", "Javier", "Alejandro", "Hector", "Ignacio", "Sergio", "Valerio", "Gerardo", "Rafa", "Marcos", "Julio"],
+      fnames: ["Sheila", "María", "Ana", "Marta", "Isabel", "Virginia", "Sofia", "Elena", "Ruth", "Alicia", "Sara", "Irene", "Carmen", "Sandra"],
+      surnames:["Garcia", "Perez", "Lopez", "Jimenez", "Alvarez", "Aristegui", "Valdes", "Hita", "Herrera", "Martin", "Arias", "Martin", "Hortaleza", "Esteban"]
     },
     "anglosaxon": {
-      names:["John", "Jim", "Peter", "Oliver", "Sheila", "Sara", "Mary", "Ann", "Liz", "Tom", "Robert", "Bob", "James", "Gordon"],
-      surnames:["Smith", "Wilson", "Johnson", "ODoherty", "Watt", "Weatherley", "Dohan", "Lought", "Tepley", "Poulsen", "Stone", "Benley"]
+      mnames:["John", "Jim", "Peter", "Oliver", "Tom", "Robert", "Bob", "James", "Gordon", "Ryan", "River", "Jeremy", "Alex", "Charlie"],
+      fnames: ["Sheila", "Ann", "Susan", "Caroline", "Olive", "Diana", "Mary", "Lesley", "Nathaly", "Emily", "Sarah", "Cynthia", "Liz", "Hannah" ],
+      surnames:["Smith", "Wilson", "Johnson", "ODoherty", "Watt", "Weatherley", "Dohan", "Lought", "Templey", "Poulsen", "Stone", "Watson", "Benley"]
     },
     "arabic": {
-      names:["Mohammad", "Abdul", "Abdala", "Osama"],
-      surnames:["Bin Ragul", "Araffat", "Hussein", "Hommeini"]
+      mnames:["Mohammad", "Ali", "Akil","Salman", "Basil", "Omar", "Hassan", "Abdul", "Abdala", "Osama", "Zinedine"],
+      fnames: ["Hadiya","Zahara", "Zulema", "Fatima", "Chaiza", "Sara", "Asha", "Aisha" ],
+      surnames:["Bin Ragul", "Naser", "Khoury", "Nazari", "Touma", "Salib", "Assaf", "Boutros", "Awad", "Araffat", "Hussein", "Hommeini"]
     },
     "eastAsian": {
-      names:["Yu", "Kim", "Mao"],
-      surnames:["Chang", "Young", "Soo", "Hanzo"]
+      mnames:["Yu", "Kim", "Mao", "Wei", "Weo", "Akira", "Daichi", "Haru", "Hiro", "Hisao", "Kazuo", "Kenji", "Makoto", "Nobu", "Shin", "Taeko"],
+      fnames: ["Fang", "Xiu Yiu", "Li", "Aiko", "Akemi", "Chie", "Fumiko", "Hana", "Hiroko", "Kaori", "Kazumi", "Maiko", "Megumi", "Ren"],
+      surnames:["Ga", "Gyeon", "Bok", "Sang", "Song", "Momoi", "Chang", "Young", "Soo", "Hanzo", "Wong", "Lee", "Wong", "Sato", "Suzuki", "Takahasi", "Tanaka", "Watanabe", "Ito", "Yamamoto", "Nakamura", "Kato"]
     },
     "generic": {
-      names:["Xabier", "Moses", "Kit", "Ariel"],
-      surnames:["Vidal", "Unchnagger", "Cambridge", "Crownwell"]
+      mnames:["Xabier", "Moses", "Kit", "Ariel", "Gianlucca", "Mario", "Ivan", "Boris", "Marcus", "Tony", "Marc", "Michael", "Luiggi", "Pierre", "Tom", "Boris", "Ivan", "Abraham", "Alexei", "Albert", "Vlad", "David", "Igor", "Leo", "Leon", "Nestor", "Paul", "Erik"],
+      fnames: ["Sarah", "Mary", "Olivia", "Isabella", "Sheila", "Catia", "Alina", "Veronica", "Diana", "Irina", "Clara", "Cristina", "Marina", "Olga" ],
+      surnames:["Northman", "Gruber", "Mayer", "Jensen", "Nielsen", "Ivanov", "Bernard", "Martin", "Leroy", "Murphy", "Rossi", "Peeters", "Vidal", "Muller", "Cambridge", "Crownwell", ""]
     }
 
   }
-  window.tr.utils.nameGenerator = function(culture) {
-    var culturesArray = ["spanish", "anglosaxon", "arabic", "eastAsian", "generic"]
+  var culturesArray = ["spanish", "anglosaxon", "arabic", "eastAsian", "generic"]
+
+  window.tr.utils.nameGenerator = function(culture, sex) {
     if(!culture || !culture in cultures) {
-      var pos = Math.floor(Math.random() * culturesArray.length);
-      culture = culturesArray[pos]
+      culture = window.tr.utils.getRandomCulture();
     }
-    return cultures[culture].names[Math.floor(Math.random() * cultures[culture].names.length)] + ' ' +
+    if(sex !== 0 && sex !== 1) {
+      sex = Math.floor(Math.random() * 2)
+    }
+    var name = "";
+    if(sex === 0) {
+      name = cultures[culture].mnames[Math.floor(Math.random() * cultures[culture].mnames.length)];
+    } else {
+      name = cultures[culture].fnames[Math.floor(Math.random() * cultures[culture].fnames.length)]
+    }
+
+    return name + ' ' +
        cultures[culture].surnames[Math.floor(Math.random() * cultures[culture].surnames.length)]
   };
+  window.tr.utils.getRandomCulture = function() {
+    var pos = Math.floor(Math.random() * culturesArray.length);
+     return culturesArray[pos]
+  }
 })();

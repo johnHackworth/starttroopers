@@ -17,11 +17,16 @@ window.tr.hobbies = [
 window.tr.directors.MainDirector.prototype = {
   backgroundColor: '#CCCCCC',
   start: function() {
-    // Start crafty and set a background color so that we can see it's working
-    // Crafty.init(window.tr.config.width, window.tr.config.height);
-    // Crafty.background(this.backgroundColor);
-    // this.game = new tr.models.GameController({});
     Crafty.init();
     Crafty.scene('Office')
+    Crafty.bind("PersonSelected", this.personProfile.bind(this));
+    Crafty.bind("OfficeSelected", this.office.bind(this));
   },
+  personProfile: function() {
+    Crafty.scene('PersonProfile')
+  },
+  office: function() {
+    Crafty.scene('Office')
+  }
+
 }
