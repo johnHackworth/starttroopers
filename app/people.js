@@ -77,7 +77,8 @@ window.tr.models.Person.prototype = {
 
   randomizeHobbies: function() {
     this.hobbies = [];
-    for(var i = 0; i < 3; i++) {
+    var amount = 3 + tr.randInt(3);
+    for(var i = 0; i < amount; i++) {
       var hobbie = tr.hobbies[tr.randInt(tr.hobbies.length)];
       if(this.hobbies.indexOf(hobbie) < 0) {
         this.hobbies.push(hobbie)
@@ -107,7 +108,7 @@ window.tr.models.Person.prototype = {
   randomizePersonalStats: function() {
     this.negociation = tr.randInt(100);
     this.sociability = tr.randInt(100);
-    this.learning = tr.randInt(100);
+    this.learning = tr.randInt(90) + 10;
     this.attention = tr.randInt(100);
     this.workEthics = tr.randInt(100);
     if(tr.randInt() < 10) {

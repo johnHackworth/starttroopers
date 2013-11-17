@@ -24,6 +24,7 @@ window.tr.models.Company.prototype = {
     }
     this.socialize();
     this.project.turn(this.currentTurn);
+    this.trigger('newTurn')
   },
 
   socialize: function() {
@@ -45,7 +46,7 @@ window.tr.models.Company.prototype = {
 
   initProject: function(options) {
     this.project = new tr.models.Project(options);
-    this.project.company = this;
+    this.project.setCompany(this);
   },
 
   addPerson: function(person) {

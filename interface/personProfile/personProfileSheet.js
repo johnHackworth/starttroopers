@@ -25,7 +25,7 @@ Crafty.c('PersonProfileSheet', {
   },
   {
     name: 'qa',
-    text: 'qa'
+    text: 'Q.A.'
   }
   ],
   happinessArray: ['Very Unhappy', 'Unhappy', 'Content', 'Happy', 'Joyfull'],

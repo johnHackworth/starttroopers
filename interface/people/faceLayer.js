@@ -28,6 +28,7 @@ Crafty.c('FaceLayer', {
       if(!type) {
         type = 0;
       }
+      this.type = type;
       this.css({
         "width": this.size + "px",
         "height": this.size + "px",
@@ -36,6 +37,15 @@ Crafty.c('FaceLayer', {
         "background-repeat": "no-repeat"
       })
     }
+  },
+  refresh: function() {
+      this.css({
+        "width": this.size + "px",
+        "height": this.size + "px",
+        "background-image": 'url(assets/people/'+this.layerClass+'/'+this.type+'.png) ',
+        "background-size": this.size+'px',
+        "background-repeat": "no-repeat"
+      })
   },
   render: function() {
     this.ready = true;

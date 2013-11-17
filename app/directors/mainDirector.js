@@ -12,7 +12,7 @@ window.tr.config = {
 }
 
 window.tr.hobbies = [
-  "sports", "fashion", "videogames", "cinema", "music", "hiking", "travel", "cars", "DIY", "cooking"
+  "sports", "gadgets", "fashion", "videogames", "cinema", "music", "hiking", "travel", "cars", "DIY", "cooking", "art", "literature", "sci-fi", "board games"
 ]
 window.tr.directors.MainDirector.prototype = {
   backgroundColor: '#CCCCCC',

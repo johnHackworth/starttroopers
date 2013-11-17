@@ -6,11 +6,11 @@ Crafty.c('OfficeFloor', {
     this.company = tr.app.director.company;
     this.render();
     this.createPersons();
+    this.createStatusBar();
+    this.createCompanyLog();
   },
   render: function() {
     this.ready = true;
-    this.text('hello ' + this.company.name)
-        .textColor('#FFF0FF');
     Crafty.trigger("Change");
   },
   createPersons: function() {
@@ -22,11 +22,27 @@ Crafty.c('OfficeFloor', {
       var personView = Crafty.e('Person');
       personView.assignPerson({
         person: this.company.people[n],
-        x: i * 110,
-        y: 30
+        x: 30 + i * 110,
+        y: 70
       })
       i++
       this.personViews.push(personView);
     }
+  },
+  createStatusBar: function() {
+    this.statusBar = Crafty.e('StatusBar');
+  },
+  createCompanyLog: function() {
+    this.companyLog = Crafty.e('LogView');
+    this.companyLog.setOptions({
+      x: 650,
+      y: 70,
+      logged: this.company,
+      title: "What's happening?",
+      h: 100,
+      w: 500
+    });
+    this.companyLog.render()
+    this.company.on("newTurn", this.companyLog.render.bind(this.companyLog))
   }
 })

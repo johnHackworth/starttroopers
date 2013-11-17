@@ -9,7 +9,7 @@ window.tr.models.DNA = function(options) {
 
 window.tr.models.DNA.prototype = {
   maxs: [
-    2,2,4,8,7,9,7,9,7,12,2,7,1
+    2,6,4,8,15,9,7,9,7,12,2,7,1
   ],
   hairColors: 4,
   map: {
@@ -37,13 +37,17 @@ window.tr.models.DNA.prototype = {
     "eastAsian": {
       "3": [3, 4, 5],
       "2": [2,3],
-      "4": [0,5],
-      "9": [8,9,10,11]
+      "4": [0,1,2,5,12,13],
+      "9": [8,9,10,11],
+      "7": [2]
     },
     "spanish": {
       "3": [4, 5, 7],
       "2": [2],
-      "4": [0,5]
+      "4": [0,5,7,8,9,10,11,12,13]
+    },
+    "anglosaxon": {
+      "4": [7,8,9,10,11,12,14]
     }
   },
   initialize: function() {

@@ -40,6 +40,21 @@ window.tr.models.Project.prototype = {
     }
     return phase;
   },
+  setCompany: function(company) {
+    this.company = company;
+    this.attachLog(this.company);
+  },
+  phaseCompletedness: function() {
+    var toGo = 0;
+    var done = 0;
+    var areas = ['design', 'definition', 'front', 'back', 'architecture', 'operations']
+    for(var n in areas) {
+      // console.log(areas[n])
+      toGo += this.phase[areas[n]+'Goal'];
+      done += this.phase[areas[n]];
+    }
+    return 100 * done / toGo;
+  },
   initPhases: function() {
     this.phases = {
       mvp: this.createPhase('mvp'),
@@ -59,15 +74,23 @@ window.tr.models.Project.prototype = {
     }
   },
   getWork: function() {
+    var peopleHours = [];
     for(var i = 0; i < 12; i++) {
       for(var n in this.people) {
         if(this.people[n].hours[i] &&
             this.people[n].hours[i] === this.name
           ) {
           this.addWork(this.people[n]);
-          console.log((i + 8) +':00 hours, ' + this.people[n].name + ' working on ' + this.name)
+          this.people[n].log((i + 8) +':00 hours, ' + this.people[n].name + ' working on ' + this.name)
+          if(!peopleHours[n]) {
+            peopleHours[n] = 0;
+          }
+          peopleHours[n]++;
         }
       }
+    }
+    for(var m in this.people) {
+      this.log(this.people[m].name + ' worked ' + peopleHours[m] + ' hours on ' + this.name)
     }
   },
   addWork: function(person) {
@@ -85,7 +108,7 @@ window.tr.models.Project.prototype = {
   },
   phaseStatCompleted: function(stat) {
     this.trigger('completedStat', stat);
-    this.log(stat + ' of ' + this.name + ' completed');
+    this.log(stat + ' of ' + this.name + ' completed',2);
     var completed = true;
     if(this.phase.definition < this.phase.definitionGoal) completed = false;
     if(this.phase.design < this.phase.designGoal) completed = false;
@@ -98,7 +121,7 @@ window.tr.models.Project.prototype = {
   phaseCompleted: function() {
     this.phase.completed = true;
     this.trigger('completedPhase');
-    this.log(this.name + ' completed');
+    this.log(this.name + ' completed', 2);
   },
   nextPhase: function() {
     if(!this.phase.completed) {
