@@ -35,6 +35,12 @@ body {
   font-size: 30px;
   display: inline-block;
 }
+.experience {
+  display: inline-block;
+  font-size: 14px;
+  margin-left: 15px;
+  color: #333333;
+}
 .happiness[data-happiness="Very unhappy"] {
   color: #F66;
 }
@@ -110,6 +116,7 @@ body {
 
 .stat span {
   font-size: 20px;
+  padding-left: 10px;
   text-shadow: 0 0 2px #333;
   color: #FFFFFF;
 }
@@ -120,4 +127,8 @@ body {
   padding-right: 10px;
   text-align: right;
   width: 140px;
+}
+
+.PositionButton {
+  border: 1px solid #efefef;
 }

@@ -1,24 +1,54 @@
 Crafty.c('PersonProfileSheet', {
+  positions: [{
+    name:'visualDesign',
+    text: 'Visual design'
+  },
+  {
+    name: 'productDesign',
+    text: 'Product design',
+  },
+  {
+    name: 'front',
+    text: 'Frontend dev.'
+  },
+  {
+    name: 'back',
+    text: 'Backend dev.'
+  },
+  {
+    name: 'operations',
+    text: 'Devops'
+  },
+  {
+    name: 'architecture',
+    text: 'Data architect'
+  },
+  {
+    name: 'qa',
+    text: 'qa'
+  }
+  ],
   happinessArray: ['Very Unhappy', 'Unhappy', 'Content', 'Happy', 'Joyfull'],
   personalDataHTML: "<div class='personalData'>"+
   "<div class='name'>%NAME%</div>"+
   "<div class='mainInterest' data-interest=%INTEREST%>%INTEREST%</div>" +
   "<div class='happiness' data-happiness=%HAPPINESS%>%HAPPINESS%</div>" +
+  "<div class='experience'>%EXPERIENCE% years of experience</div>" +
   "</div>",
   perkHTML: "<div class='perk'>%PERK%</div>",
   hobbieHTML: "<div class='hobbie'>%HOBBIE%</div>",
   statsHTML: "<div class='stats'>"+
   "<div class='statCol'>" +
-  "<div class='stat business'>Business Knowledge... <span>%BUSINESS%</span></div>" +
-  "<div class='stat marketing'>Marketing... <span>%MARKETING%</span></div>" +
-  "<div class='stat productDesign'>Product Design ... <span>%PRODUCTDESIGN%</span></div>" +
-  "<div class='stat visualDesign'>Visual Design ... <span>%VISUALDESIGN%</span></div>" +
-  "<div class='stat qa'>Quality Assurance ... <span>%QA%</span></div>" +
+  "<div class='stat business'>Business Knowledge <span>%BUSINESS%</span></div>" +
+  "<div class='stat marketing'>Marketing <span>%MARKETING%</span></div>" +
+  "<div class='stat productDesign'>Product Design <span>%PRODUCTDESIGN%</span></div>" +
+  "<div class='stat visualDesign'>Visual Design <span>%VISUALDESIGN%</span></div>" +
+  "<div class='stat qa'>Quality Assurance <span>%QA%</span></div>" +
   "</div><div class='statCol'>" +
-  "<div class='stat backend'>Backend development ... <span>%BACKEND%</span></div>" +
-  "<div class='stat frontend'>Frontend development ... <span>%FRONTEND%</span></div>" +
-  "<div class='stat architecture'>Data architecture ... <span>%ARCHITECTURE%</span></div>" +
-  "<div class='stat operations'>Operations ... <span>%OPERATIONS%</span></div>" +
+  "<div class='stat backend'>Backend development <span>%BACKEND%</span></div>" +
+  "<div class='stat frontend'>Frontend development <span>%FRONTEND%</span></div>" +
+  "<div class='stat architecture'>Data architecture <span>%ARCHITECTURE%</span></div>" +
+  "<div class='stat operations'>Operations <span>%OPERATIONS%</span></div>" +
   "</div>" +
   "</div>",
   personalStatsHTML: "<div class='personalStats'>"+
@@ -35,6 +65,7 @@ Crafty.c('PersonProfileSheet', {
     this.color('rgb(104,104,104)');
     this.person = tr.app.director.selectedPerson;
     this.render();
+    this.buttons = [];
     this.createPersonFace();
     this.createButtoner();
     this.renderPersonalData();
@@ -62,7 +93,27 @@ Crafty.c('PersonProfileSheet', {
       onClick: function() {
         Crafty.trigger('OfficeSelected')
       }
-    })
+    }),
+    this.createPositionButtons()
+  },
+  createPositionButtons: function() {
+    var self = this;
+    var positions = this.positions;
+    var i= 0;
+    for(var n in positions) {
+      var pos = positions[n].name;
+      this[pos+'Button'] = Crafty.e('PositionButton');
+      this.buttons.push(this[pos+'Button']);
+      this[pos+'Button'].setOptions({
+        person: this.person,
+        text: this.positions[n].text,
+        position: pos,
+        x: 150+(90*i),
+        y: 450
+      })
+      this[pos+'Button'].render();
+      i++;
+    }
   },
   renderPersonalData: function() {
     this.personalData = Crafty.e('2D, DOM, HTML');
@@ -77,6 +128,7 @@ Crafty.c('PersonProfileSheet', {
       .replace(/%NAME%/g, this.person.name)
       .replace(/%HAPPINESS%/g, happiness)
       .replace(/%INTEREST%/g, this.person.mainInterest)
+      .replace(/%EXPERIENCE%/g, this.person.experience)
     )
     this.renderPerkViews();
     this.renderHobbieViews();
@@ -156,5 +208,12 @@ Crafty.c('PersonProfileSheet', {
       text = text.replace(new RegExp('%'+n.toUpperCase()+'%','g'), this.person[n])
     }
     return text;
+  },
+
+  render: function() {
+    for(var n in this.buttons) {
+      this.buttons[n].render();
+    }
   }
+
 })

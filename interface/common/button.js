@@ -4,6 +4,7 @@ Crafty.c('Button', {
     this.text = Crafty.e('2D, DOM, Text')
   },
   set: function(options) {
+    this.options = options;
     this.attr({
       x: options.x || 10,
       y: options.y || 10,

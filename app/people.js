@@ -77,8 +77,12 @@ window.tr.models.Person.prototype = {
 
   randomizeHobbies: function() {
     this.hobbies = [];
-    this.hobbies.push(tr.hobbies[tr.randInt(tr.hobbies.length)])
-    this.hobbies.push(tr.hobbies[tr.randInt(tr.hobbies.length)])
+    for(var i = 0; i < 3; i++) {
+      var hobbie = tr.hobbies[tr.randInt(tr.hobbies.length)];
+      if(this.hobbies.indexOf(hobbie) < 0) {
+        this.hobbies.push(hobbie)
+      }
+    }
   },
 
   randomizeStudies: function() {
@@ -195,7 +199,7 @@ window.tr.models.Person.prototype = {
   },
 
   assignPosition: function(position) {
-    var positions = ['front', 'back', 'architecture', 'operations', 'visualDesign', 'productDesign'];
+    var positions = ['front', 'back', 'architecture', 'operations', 'visualDesign', 'productDesign', 'qa'];
     if(positions.indexOf(position) < 0) {
       return;
     } else {
