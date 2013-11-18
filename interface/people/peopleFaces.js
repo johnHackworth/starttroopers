@@ -1,5 +1,6 @@
 Crafty.c('PersonFace', {
   size: 100,
+  showNameFlag: true,
   _NOTIFICATION_DURATION: 60,
   init: function() {
     this.currentTurn = 0;
@@ -16,16 +17,20 @@ Crafty.c('PersonFace', {
     "Background", "Face","Facialfeatures", "Beard", "Eyes", "Nose",  "Mouth", "Hair", "Glasses", "Clothes"
   ],
   showName: function() {
-    this.name.tween({alpha: 0.9}, 30);
+    if(this.showNameFlag) {
+      this.name.tween({alpha: 0.9}, 30);
+    }
   },
   hideName: function() {
-    this.name.tween({alpha: 0.0}, 30);
+    if(this.showNameFlag) {
+      this.name.tween({alpha: 0.0}, 30);
+    }
   },
   setSize: function(size) {
     this.attr({
       x:size,
       y:size
-    })
+    });
     for(var n in this.components) {
       this.size = size;
       this[this.components[n].toLowerCase()].setSize(this.size);
@@ -71,7 +76,7 @@ Crafty.c('PersonFace', {
   },
   selectPerson: function() {
     tr.app.director.selectedPerson = this.person;
-    Crafty.trigger("PersonSelected")
+    Crafty.trigger("PersonSelected");
   },
   addNotification: function(notification) {
     this.notifications.push({text:notification, turn: this.currentTurn});
@@ -96,11 +101,11 @@ Crafty.c('PersonFace', {
             }).css({textAlign: "center"})
             .text(this.notifications[i].text)
             .textColor('#333333')
-            .tween({y: this.attr('y')}, this._NOTIFICATION_DURATION)
+            .tween({y: this.attr('y')}, this._NOTIFICATION_DURATION);
           }
         }
       }
-    };
+    }
     toBeRemoved.reverse();
     for(var n in toBeRemoved) {
       if(this.notifications[toBeRemoved[n]]) {
