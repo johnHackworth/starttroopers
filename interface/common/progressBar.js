@@ -26,7 +26,6 @@ Crafty.c('ProgressBar', {
   },
   setValue: function(value) {
     var newValue = this.attr("w") * value / 100;
-    console.log(newValue)
     this.progress.tween({
       "w": newValue
     },10)

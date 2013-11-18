@@ -9,10 +9,21 @@ window.tr.models.Product = function(options) {
 }
 
 window.tr.models.Product.prototype = {
+  bugsOnTheWild: 0,
+  globalQuality: 0,
+  globalDesign: 0,
   initialize: function() {
     this.name = this.options.name;
-    this.phases = []
-    this.people = [];
-    this.initPhases();
+    this.modules = [];
   },
-}
+  createModule: function(project) {
+    var module = new tr.modules.ProjectModule({
+      name: project.name,
+      product: this,
+      project: project
+    });
+  },
+  setCompany: function(company) {
+    this.company = company;
+  }
+};

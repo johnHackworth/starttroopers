@@ -93,6 +93,15 @@ Crafty.c('PersonProfileSheet', {
       onClick: function() {
         Crafty.trigger('OfficeSelected')
       }
+    });
+    this.socialButton = Crafty.e('Button');
+    this.socialButton.set({
+      color: '#6666CC',
+      text: "Social",
+      y: 500,
+      onClick: function() {
+        Crafty.trigger('SocialSelected')
+      }
     }),
     this.createPositionButtons()
   },

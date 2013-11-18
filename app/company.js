@@ -39,9 +39,14 @@ window.tr.models.Company.prototype = {
         }
       }
       for(var m in hourly) {
-        hourly[m].socialize(hourly)
+        hourly[m].socialize(hourly);
       }
     }
+  },
+
+  initProduct: function(options) {
+    this.product = new tr.models.Product(options);
+    this.product.setCompany(this);
   },
 
   initProject: function(options) {
@@ -53,4 +58,4 @@ window.tr.models.Company.prototype = {
     this.people.push(person);
   }
 
-}
+};

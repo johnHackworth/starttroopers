@@ -10,6 +10,7 @@ window.tr.models.Project = function(options) {
 
 window.tr.models.Project.prototype = {
   bugs: 0,
+  launched: false,
   knowBugs: 0,
   projectPhases: ['mvp', 'polish', 'test'],
   initialize: function() {
@@ -136,7 +137,8 @@ window.tr.models.Project.prototype = {
     }
     return this.phase;
   },
-  completeProduct: function() {
-
+  launchProduct: function() {
+    this.company.product.createModule(this);
+    this.launched = true;
   }
-}
+};
