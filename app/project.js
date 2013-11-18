@@ -81,7 +81,7 @@ window.tr.models.Project.prototype = {
             this.people[n].hours[i] === this.name
           ) {
           this.addWork(this.people[n]);
-          this.people[n].log((i + 8) +':00 hours, ' + this.people[n].name + ' working on ' + this.name)
+          this.people[n].log((i + 8) +':00 hours, ' + this.people[n].name + ' working on ' + this.name, 1, true)
           if(!peopleHours[n]) {
             peopleHours[n] = 0;
           }
@@ -90,7 +90,7 @@ window.tr.models.Project.prototype = {
       }
     }
     for(var m in this.people) {
-      this.log(this.people[m].name + ' worked ' + peopleHours[m] + ' hours on ' + this.name)
+      this.log(this.people[m].name + ' worked ' + peopleHours[m] + ' hours on ' + this.name, 1, true)
     }
   },
   addWork: function(person) {

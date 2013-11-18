@@ -295,13 +295,15 @@ window.tr.models.Person.prototype = {
       this.happiness += 0.1 * this.sociability / 100;
     }
     this.socialCircle[person.id] += conversationQuality;
-    this.log(this.name + ' enjoyed a good conversation with ' + person.name);
+    this.log(this.name + ' enjoyed a good conversation with ' + person.name, 1, true);
+    this.trigger('conversation', 'socialized with ' + person.name);
     if(this.socialCircle[person.id] > 50 && tr.randInt() < this.socialCircle[person.id]) {
       if(this.friends.indexOf(person) < 0) {
         this.friends.push(person);
         this.happiness += 5 * this.sociability / 100;
         this.increaseStat('sociability', 3);
         this.log(this.name + ' is now friend of ' + person.name);
+        this.company.log(this.name + ' is now friend of ' + person.name);
       }
     }
   },

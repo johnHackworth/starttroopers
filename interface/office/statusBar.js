@@ -34,15 +34,18 @@ Crafty.c('StatusBar', {
   createDateContainer: function() {
     this.dateContainer = Crafty.e('2D, DOM, HTML');
     this.dateContainer.attr({
-      x:1090,
+      x:1000,
       y:10,
-      w:100,
+      w:190,
       h:30
     })
   },
   renderTurn: function() {
-    if(this.dateContainer)
-      this.dateContainer.replace('<div class="statusBarTurn">Today: '+tr.turnToDate(this.company.currentTurn).toLocaleDateString()+'</div>')
+    if(this.dateContainer) {
+      var date = tr.turnToDate(this.company.currentTurn).toString().substr(0,15);
+
+      this.dateContainer.replace('<div class="statusBarTurn">Today is '+ date+'</div>')
+    }
   },
   nextTurn: function() {
     this.company.turn();
