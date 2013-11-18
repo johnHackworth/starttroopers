@@ -2,9 +2,12 @@ window.tr = window.tr || {};
 window.tr.app = window.tr.app || {};
 
 window.onload = function() {
+  window.tr.app.director = new window.tr.directors.MainDirector();
+  window.tr.app.director.company = new window.tr.models.Company({})
+  window.tr.app.director.company.initProduct({name: "The social network"});
+  window.tr.app.director.company.initProject({name: "Basic site"});
 
-  window.comp = new window.tr.models.Company({})
-  window.comp.initProject({name: "The social network"})
+  window.comp = window.tr.app.director.company;
   window.a =  new window.tr.models.Person({});
   window.a.randomize();
   window.comp.addPerson(a);
@@ -22,9 +25,9 @@ window.onload = function() {
   window.comp.addPerson(d);
   window.comp.project.addPerson(d);
 
-  window.tr.app.director = new window.tr.directors.MainDirector();
 
-  window.tr.app.director.company = window.comp;
+
+
   window.tr.app.director.start();
 
 }
