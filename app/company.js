@@ -49,8 +49,9 @@ window.tr.models.Company.prototype = {
     this.product.setCompany(this);
   },
 
-  initProject: function(options) {
-    this.project = new tr.models.Project(options);
+  initProject: function(name) {
+    var module = this.product.availableModules[name]
+    this.project = new tr.models.Project(module);
     this.project.setCompany(this);
   },
 

@@ -22,6 +22,8 @@ window.tr.directors.MainDirector.prototype = {
     Crafty.bind("PersonSelected", this.personProfile.bind(this));
     Crafty.bind("OfficeSelected", this.office.bind(this));
     Crafty.bind("SocialSelected", this.socialProfile.bind(this));
+    Crafty.bind("ProductSelected", this.productProfile.bind(this));
+
   },
   personProfile: function() {
     Crafty.scene('PersonProfile')
@@ -31,6 +33,9 @@ window.tr.directors.MainDirector.prototype = {
   },
   office: function() {
     Crafty.scene('Office')
+  },
+  productProfile: function() {
+    Crafty.scene('Product')
   }
 
 }

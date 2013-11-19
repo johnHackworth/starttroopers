@@ -6,6 +6,7 @@ Crafty.c('StatusBar', {
     this.color('#333333')
     this.render();
     this.createNextButton();
+    this.createProductButton();
     this.createProjectCompletion();
     this.createDateContainer();
   },
@@ -21,10 +22,23 @@ Crafty.c('StatusBar', {
     this.nextTurnButton = Crafty.e('Button');
     this.nextTurnButton.set({
       color: '#CCAA00',
-      text: "NextTurn",
+      text: "Next Turn",
       y: 5,
       onClick: this.nextTurn.bind(this)
     })
+  },
+  createProductButton: function() {
+    this.productButton = Crafty.e('Button');
+    this.productButton.set({
+      color: '#CC00AA',
+      text: "Product View",
+      y: 5,
+      x:420,
+      onClick: this.productView.bind(this)
+    })
+  },
+  productView: function() {
+    Crafty.trigger('ProductSelected');
   },
   createProjectCompletion: function() {
     this.projectCompletionBar = Crafty.e('ProjectCompletion');

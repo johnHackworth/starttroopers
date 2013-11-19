@@ -1,0 +1,58 @@
+.productInfo .title {
+  color: #FFFFFF;
+  font-size: 50px;
+  text-shadow: 0 0 4px #333333;
+}
+
+.productModules .title {
+  margin-top: 1em;
+  font-size: 20px;
+  color: #FFFF66;
+  text-shadow: 0 0 2px #555555;
+}
+
+.module {
+  width: 900px;
+  border: 2px solid #666666;
+  height: 30px;
+  padding-top: 10px;
+  background-color: #999999;
+  font-size: 15px;
+  color: #9F9;
+  display: inline-block;
+}
+
+.module.released_true {
+  background-color: #66FF66;
+  color: #333333;
+}
+
+.module.available {
+  opacity: 0.7;
+  background-color: #6666FF;
+  color: #FFFFFF;
+}
+
+.module .title {
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  font-weight: bold;
+  height: 40px;
+  vertical-align: top;
+}
+
+.module .currentPhase {
+  display: inline-block;
+  width: 100px;
+  height: 40px;
+  vertical-align: top;
+}
+
+.module .description {
+  display: inline-block;
+  width: 650px;
+  height: 40px;
+  overflow: hidden;
+  vertical-align: top;
+}

@@ -5,7 +5,8 @@ window.onload = function() {
   window.tr.app.director = new window.tr.directors.MainDirector();
   window.tr.app.director.company = new window.tr.models.Company({})
   window.tr.app.director.company.initProduct({name: "The social network"});
-  window.tr.app.director.company.initProject({name: "Basic site"});
+  window.tr.app.director.company.product.defineSocialNetwork();
+  window.tr.app.director.company.initProject("basicSite");
 
   window.comp = window.tr.app.director.company;
   window.a =  new window.tr.models.Person({});

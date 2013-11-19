@@ -16,12 +16,16 @@ window.tr.models.Product.prototype = {
     this.name = this.options.name;
     this.modules = [];
   },
+  defineSocialNetwork: function() {
+    tr.utils.extend.call(this, tr.products.SocialNetwork)
+  },
   createModule: function(project) {
-    var module = new tr.modules.ProjectModule({
+    var module = new tr.models.ProductModule({
       name: project.name,
       product: this,
       project: project
     });
+    this.modules.push(module);
   },
   setCompany: function(company) {
     this.company = company;
