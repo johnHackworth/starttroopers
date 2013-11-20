@@ -82,6 +82,18 @@ window.tr.models.Project.prototype = {
     if(!this.people.indexOf(person) >= 0) {
       this.people.push(person);
       person.currentProjects.push(this);
+      this.trigger('change');
+    }
+  },
+  removePerson: function(person) {
+    console.log(100);
+    if(this.people.indexOf(person) >= 0) {
+      console.log(200)
+      this.people.splice(this.people.indexOf(person), 1);
+      console.log(300)
+      person.currentProjects.splice(person.currentProjects.indexOf(this), 1);
+      console.log(400);
+      console.log(500);
     }
   },
   getWork: function() {

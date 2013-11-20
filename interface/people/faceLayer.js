@@ -2,7 +2,7 @@ Crafty.c('FaceLayer', {
   size: 250,
   layerClass: '',
   init: function() {
-    this.requires('2D, DOM');
+    this.requires('2D, DOM, Mouse');
     this.attr({w:this.size, h:this.size, x: 5, y: 5})
   },
   assignPerson: function(person) {

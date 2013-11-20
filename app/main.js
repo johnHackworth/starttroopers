@@ -25,7 +25,9 @@ window.onload = function() {
   window.d.randomize();
   window.comp.addPerson(d);
   window.comp.projects[0].addPerson(d);
-
+  window.e =  new window.tr.models.Person({});
+  window.e.randomize();
+  window.comp.addPerson(e);
 
 
 

@@ -1,7 +1,7 @@
 Crafty.c('Button', {
   init: function() {
     this.requires('2D, DOM, Mouse, Color');
-    this.text = Crafty.e('2D, DOM, Text')
+    this.text = Crafty.e('2D, DOM, Text, Mouse')
   },
   set: function(options) {
     this.options = options;
