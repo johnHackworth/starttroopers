@@ -27,12 +27,12 @@ Crafty.c('ProjectCompletion', {
   setCompany: function(options) {
     this.company = options.company;
     this.progressBar.company = options.company;
-    this.title2.text(this.company.project.name + ' - ' + this.company.project.phase.name);
+    this.title2.text(this.company.projects[0].name + ' - ' + this.company.projects[0].phase.name);
     this.title2.textColor('#FFAAAA')
     this.render();
   },
   render: function() {
-    var completedness = this.company.project.phaseCompletedness()
+    var completedness = this.company.projects[0].phaseCompletedness()
     this.progressBar.setValue(completedness)
   }
 })

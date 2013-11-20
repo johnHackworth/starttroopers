@@ -126,7 +126,7 @@ window.tr.models.Project.prototype = {
     if(this.phase.back < this.phase.backGoal) completed = false;
     if(this.phase.front < this.phase.frontGoal) completed = false;
     if(this.phase.architecture < this.phase.architectureGoal) completed = false;
-    if(this.phase.operations < this.phase.  operationsGoal) completed = false;
+    if(this.phase.operations < this.phase.operationsGoal) completed = false;
     if(completed) this.phaseCompleted();
   },
   phaseCompleted: function() {
@@ -145,9 +145,12 @@ window.tr.models.Project.prototype = {
       this.bugs += this.phase.bugs;
       this.phase = this.phases.test;
     }
+    this.company.product.trigger('change')
     return this.phase;
   },
   launchProduct: function() {
-    this.module.releaseModule();
+    this.productModule.releaseModule();
+    this.trigger('change')
+    this.company.product.trigger('change')
   }
 };

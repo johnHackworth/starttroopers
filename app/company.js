@@ -13,7 +13,7 @@ window.tr.models.Company.prototype = {
   currentTurn: 0,
   initialize: function() {
     this.name = this.options.name;
-    this.project = null;
+    this.projects = [];
     this.people = [];
   },
 
@@ -23,7 +23,9 @@ window.tr.models.Company.prototype = {
       this.people[n].turn(this.currentTurn);
     }
     this.socialize();
-    this.project.turn(this.currentTurn);
+    for(var n in this.projects) {
+      this.projects[n].turn(this.currentTurn);
+    }
     this.trigger('newTurn')
   },
 
@@ -51,8 +53,9 @@ window.tr.models.Company.prototype = {
 
   initProject: function(name) {
     var module = this.product.availableModules[name]
-    this.project = new tr.models.Project(module);
-    this.project.setCompany(this);
+    var project = new tr.models.Project(module);
+    project.setCompany(this);
+    this.projects.push(project);
   },
 
   addPerson: function(person) {

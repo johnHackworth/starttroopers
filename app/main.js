@@ -12,19 +12,19 @@ window.onload = function() {
   window.a =  new window.tr.models.Person({});
   window.a.randomize();
   window.comp.addPerson(a);
-  window.comp.project.addPerson(a);
+  window.comp.projects[0].addPerson(a);
   window.b =  new window.tr.models.Person({})
   window.b.randomize();
   window.comp.addPerson(b);
-  window.comp.project.addPerson(b);
+  window.comp.projects[0].addPerson(b);
   window.c =  new window.tr.models.Person({});
   window.c.randomize();
   window.comp.addPerson(c);
-  window.comp.project.addPerson(c);
+  window.comp.projects[0].addPerson(c);
   window.d =  new window.tr.models.Person({});
   window.d.randomize();
   window.comp.addPerson(d);
-  window.comp.project.addPerson(d);
+  window.comp.projects[0].addPerson(d);
 
 
 

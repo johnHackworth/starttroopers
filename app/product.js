@@ -25,7 +25,9 @@ window.tr.models.Product.prototype = {
       product: this,
       project: project
     });
+    project.productModule = module;
     this.modules.push(module);
+    this.trigger('change')
   },
   setCompany: function(company) {
     this.company = company;

@@ -20,7 +20,7 @@ window.tr.products.SocialNetwork.prototype = {
     },
     "basicPrivacy": {
       name: "Basic privacy settings",
-      requierd: "basicSite",
+      required: "basicSite",
       goals: {
         definitionGoal: 60,
         designGoal: 30,

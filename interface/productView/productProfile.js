@@ -14,6 +14,7 @@ Crafty.c('ProductProfile', {
     this.render();
     this.buttons = [];
     this.createButtoner();
+    this.product.on('change', function() {Crafty.scene('Product')})
   },
   createButtoner: function() {
     this.backToOfficeButton = Crafty.e('Button');
@@ -64,8 +65,65 @@ Crafty.c('ProductProfile', {
         x: 300
       });
       progressBar.setValue(this.product.modules[n].project.phaseCompletedness());
+      this.createModuleButtons(this.product.modules[n], i)
       i++;
-      i++;
+    }
+  },
+  createModuleButtons: function(module, i) {
+    var launchButton = '';
+    if(module.released) {
+      launchButton = Crafty.e('2D, DOM, HTML');
+      launchButton.append('<div class="launched">Shipped</div>')
+      launchButton.attr({
+        x:930,
+        y: 155 + i*60
+      })
+    } else {
+      this.createOnGoingProjectButtons(module, i)
+    }
+
+  },
+  createOnGoingProjectButtons: function(module, i) {
+    var project = module.project;
+    var launchButton = null;
+    var nextPhaseButton = null;
+    var x = 930;
+    if(project.phase.name == 'Testing') {
+      launchButton = Crafty.e('Button');
+      launchButton.set({
+        color: '#CCAA00',
+        text: "Ship it",
+        x: x,
+        y: 155 + i*60,
+        onClick: function() {
+          module.project.launchProduct();
+          module.trigger('change')
+        }
+      });
+      x += 100;
+    }
+    if(project.phase.name != 'Testing') {
+      var color = '#999999';
+      var textColor = '#666666'
+      var click = function() {}
+      if(project.phaseCompletedness() >=99) {
+        color = '#DDDD66';
+        textColor = '#FFFFFF';
+        click = function() {
+          console.log('a')
+          module.project.nextPhase();
+
+        }
+      }
+      nextPhaseButton = Crafty.e('Button');
+      nextPhaseButton.set({
+        color: color,
+        textColor:  textColor,
+        text: "Next phase",
+        x: x,
+        y: 155 + i*60,
+        onClick: click
+      });
     }
   },
   renderAvailableModules: function() {
@@ -84,9 +142,28 @@ Crafty.c('ProductProfile', {
           .replace(/%NAME%/g, this.product.availableModules[n].name)
           .replace(/%DESCRIPTION%/g, this.product.availableModules[n].description)
         )
+        this.createAvailableModuleButtons(n, i);
+
         i++;
       }
     }
+  },
+  createAvailableModuleButtons: function(moduleName, i) {
+    var initButton = '';
+    var self = this;
+    initButton = Crafty.e('Button');
+    initButton.set({
+      color: '#00CC66',
+      text: "Init Project",
+      x:930,
+      h:20,
+      y: 170 + i*54,
+      onClick: function() {
+        self.company.initProject(moduleName);
+
+      }
+    });
+
   },
   render: function() {
     for(var n in this.buttons) {
