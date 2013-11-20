@@ -7,7 +7,7 @@ Crafty.c('PersonSocialSheet', {
   "%NAME%" +
   "</div>",
   init: function() {
-    this.requires('2D, DOM, Color');
+    this.requires('2D, DOM, Color, Faces');
     this.attr({w:1190, h:790, x: 5, y: 5});
     this.color('rgb(104,154,104)');
     this.person = tr.app.director.selectedPerson;
@@ -31,16 +31,7 @@ Crafty.c('PersonSocialSheet', {
     this.personFaceView.setSize(200);
     this.personFaceView.setPosition(20,20);
   },
-  createOtherFace: function(other, x, y) {
-    var otherFace = Crafty.e('PersonFace');
-    otherFace.assignPerson({
-      person: other
-    });
-    otherFace.showNameFlag = false;
-    otherFace.setSize(50);
-    otherFace.setPosition(x,y);
-    this.otherFaces.push(otherFace);
-  },
+
   createButtoner: function() {
     this.backToOfficeButton = Crafty.e('Button');
     this.backToOfficeButton.set({
