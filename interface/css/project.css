@@ -3,3 +3,22 @@
   font-size: 50px;
   text-shadow: 0 0 4px #333333;
 }
+.projectOtherData {
+  font-size: 10px;
+  width: 100px;
+  height: 12px;
+  display: inline-block;
+  text-align: center;
+  color: #FAFAFA;
+  text-shadow: 0 0 2px #333333  ;
+}
+
+.projectTitle, .projectAvailableTitle {
+  font-size: 20px;
+  color: #FFFF66;
+  text-shadow: 0 0 4px #666666;
+}
+
+.projectAvailableTitle {
+  color: #CCFF99;
+}

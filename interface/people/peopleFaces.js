@@ -7,7 +7,7 @@ Crafty.c('PersonFace', {
     this.lastNotificationInserted = 0;
     this.notifications = [];
     this.requires('2D, DOM, Text, Sprite, Tween, Mouse');
-    this.attr({w:100, h:100, x: 5, y: 5});
+    this.attr({w:100, h:100, x: 5, y: 5, z:999999999});
     this.bind('MouseOver', this.showName.bind(this));
     this.bind('MouseOut', this.hideName.bind(this));
     this.bind('Click', this.selectPerson.bind(this));
@@ -29,7 +29,9 @@ Crafty.c('PersonFace', {
   setSize: function(size) {
     this.attr({
       x:size,
-      y:size
+      y:size,
+      w: size,
+      h: size
     });
     for(var n in this.components) {
       this.size = size;

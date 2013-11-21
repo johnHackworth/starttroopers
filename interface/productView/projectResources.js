@@ -3,7 +3,7 @@ Crafty.c('ProjectResources', {
   '<div class="title">%NAME%</div>'+
   '<div class="description">%DESCRIPTION%</div>'+
   '</div>',
-  'otherDataHTML': '<div class="otherData">%NAME%</div>',
+  'otherDataHTML': '<div class="projectOtherData">%NAME%</div>',
   init: function() {
     this.requires('2D, DOM, Color, Faces, OfficeButton');
     this.attr({w:1190, h:790, x: 5, y: 5});
@@ -40,42 +40,42 @@ Crafty.c('ProjectResources', {
   renderProjectPeople: function() {
     var self = this;
     var i = 0;
-    var x = 50;
-    var y = 125;
+    var x = 30;
+    var y = 155;
+    var title = Crafty.e('HTMLText');
+    title.set({x:20, y:110, w: 300, h:50, text: 'People on project:', class: 'projectTitle'})
     for(var n in this.project.people) {
       var other = this.project.people[n];
       this.createOtherFace(other, x, y);
       var otherName = Crafty.e('2D, HTML, DOM');
       otherName.attr({
-        x: x,
-        y: y+25,
+        x: x-25,
+        y: y - 10,
         w: 100,
         h: 30
       })
       var name = other.name;
-      if(other.currentProjects.indexOf(this.project) >= 0) {
-        name += ' -- in'
-      }
       otherName.append(this.otherDataHTML.replace(/%NAME%/g, name));
 
-      var otherButton = Crafty.e('Button');
+      var otherButton = Crafty.e('Button, smallButton');
       otherButton.set({
-        x: x,
-        y: y+60,
-        w: 60,
+        x: x + 10,
+        y: y+52,
+        w: 30,
+        color: '#660000',
         h: 10,
-        text: 'remove',
+        text: '-',
         onClick: self.clickRemoveGenerator(other).bind(this)
       })
 
-      x += 100;
+      x += 80;
       if(x > 900) {
         x = 50;
         y += 60;
       }
       i++;
     }
-    this.companyPeopleY = y+100;
+    this.companyPeopleY = y+130;
   },
   clickRemoveGenerator: function(personParam) {
     var person = personParam;
@@ -87,35 +87,37 @@ Crafty.c('ProjectResources', {
   renderCompanyPeople: function() {
     var i = 0;
     var self = this;
-    var x = 50;
+    var x = 30;
     var y = this.companyPeopleY;
+    var title = Crafty.e('HTMLText');
+    title.set({x:20, y:y - 40, w: 300, h:50, text: 'Available People:', class: 'projectAvailableTitle'})
+
+
     for(var n in this.company.people) {
       var other = this.company.people[n];
       if(this.project.people.indexOf(other) === -1) {
         this.createOtherFace(other, x, y);
         var otherName = Crafty.e('2D, HTML, DOM');
         otherName.attr({
-          x: x,
-          y: y+25,
+          x: x - 25,
+          y: y - 10,
           w: 100,
           h: 30
         })
         var name = other.name;
-        if(other.currentProjects.indexOf(this.project) >= 0) {
-          name += ' -- in'
-        }
         otherName.append(this.otherDataHTML.replace(/%NAME%/g, name));
 
-        var otherButton = Crafty.e('Button');
+        var otherButton = Crafty.e('Button, smallButton');
         otherButton.set({
-          x: x,
-          y: y+60,
-          w: 60,
+          x: x + 10,
+          y: y+52,
+          color: '#006600',
+          w: 30,
           h: 10,
-          text: 'add to project',
+          text: '+',
           onClick: self.clickAddGenerator(other)
         })
-        x += 100;
+        x += 80;
         if(x > 900) {
           x = 50;
           y += 60;
