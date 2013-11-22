@@ -11,6 +11,9 @@ Crafty.c('PersonSocialSheet', {
     this.attr({w:1190, h:790, x: 5, y: 5});
     this.color('rgb(104,154,104)');
     this.person = tr.app.director.selectedPerson;
+
+    this.statusBar = Crafty.e('StatusBar');
+    this.statusBar.createOfficeButton();
     this.render();
     this.buttons = [];
     this.otherFaces = [];
@@ -29,19 +32,10 @@ Crafty.c('PersonSocialSheet', {
       person: this.person
     });
     this.personFaceView.setSize(200);
-    this.personFaceView.setPosition(20,20);
+    this.personFaceView.setPosition(20,70);
   },
 
   createButtoner: function() {
-    this.backToOfficeButton = Crafty.e('Button');
-    this.backToOfficeButton.set({
-      color: '#CCAA00',
-      text: "Back",
-      y: 450,
-      onClick: function() {
-        Crafty.trigger('OfficeSelected');
-      }
-    });
     this.profileButton = Crafty.e('Button');
     this.profileButton.set({
       color: '#AAAA00',
@@ -56,7 +50,7 @@ Crafty.c('PersonSocialSheet', {
     this.personalData = Crafty.e('2D, DOM, HTML');
     this.personalData.attr({
       x: 250,
-      y: 20,
+      y: 70,
       w: 600,
       h: 300
     }).append(
@@ -69,11 +63,11 @@ Crafty.c('PersonSocialSheet', {
     var i = 0;
     for(var n in this.person.socialCircle) {
       var other = tr.app.persons[n];
-      this.createOtherFace(other, 300, 100 + 55*i);
+      this.createOtherFace(other, 300, 160 + 55*i);
       var otherName = Crafty.e('2D, HTML, DOM');
       otherName.attr({
         x: 370,
-        y: 125 + 55*i,
+        y: 175 + 55*i,
         w: 200,
         h: 30
       })
@@ -82,7 +76,7 @@ Crafty.c('PersonSocialSheet', {
       progressBar.setOptions({
         w: 50,
         h: 15,
-        y: 125 + 55*i,
+        y: 175 + 55*i,
         x: 600
       });
       progressBar.setValue(this.person.socialCircle[n]);

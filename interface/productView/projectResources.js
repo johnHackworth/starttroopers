@@ -10,6 +10,8 @@ Crafty.c('ProjectResources', {
     this.color('rgb(104,154,104)');
     this.company = tr.app.director.company;
     this.product = this.company.product;
+    this.statusBar = Crafty.e('StatusBar');
+    this.statusBar.createOfficeButton();
     this.project = tr.app.director.selectedProject;
     this.renderProject();
     this.renderProjectPeople();
@@ -22,7 +24,7 @@ Crafty.c('ProjectResources', {
     this.productInfo = Crafty.e('2D, DOM, HTML');
     this.productInfo.attr({
       x:20,
-      y:20,
+      y:70,
       w:1000,
       h:200
     })
@@ -41,9 +43,9 @@ Crafty.c('ProjectResources', {
     var self = this;
     var i = 0;
     var x = 30;
-    var y = 155;
+    var y = 205;
     var title = Crafty.e('HTMLText');
-    title.set({x:20, y:110, w: 300, h:50, text: 'People on project:', class: 'projectTitle'})
+    title.set({x:20, y:160, w: 300, h:50, text: 'People on project:', class: 'projectTitle'})
     for(var n in this.project.people) {
       var other = this.project.people[n];
       this.createOtherFace(other, x, y);

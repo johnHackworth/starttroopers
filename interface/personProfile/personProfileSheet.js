@@ -66,6 +66,9 @@ Crafty.c('PersonProfileSheet', {
     this.person = tr.app.director.selectedPerson;
     this.render();
     this.buttons = [];
+
+    this.statusBar = Crafty.e('StatusBar');
+    this.statusBar.createOfficeButton();
     this.createPersonFace();
     this.createButtoner();
     this.renderPersonalData();
@@ -82,18 +85,9 @@ Crafty.c('PersonProfileSheet', {
       person: this.person
     })
     this.personFaceView.setSize(200);
-    this.personFaceView.setPosition(20,20)
+    this.personFaceView.setPosition(20,70)
   },
   createButtoner: function() {
-    this.backToOfficeButton = Crafty.e('Button');
-    this.backToOfficeButton.set({
-      color: '#CCAA00',
-      text: "Back",
-      y: 450,
-      onClick: function() {
-        Crafty.trigger('OfficeSelected')
-      }
-    });
     this.socialButton = Crafty.e('Button');
     this.socialButton.set({
       color: '#6666CC',
@@ -118,7 +112,7 @@ Crafty.c('PersonProfileSheet', {
         text: this.positions[n].text,
         position: pos,
         x: 150+(90*i),
-        y: 450
+        y: 500
       })
       this[pos+'Button'].render();
       i++;
@@ -129,7 +123,7 @@ Crafty.c('PersonProfileSheet', {
     var happiness = this.happinessArray[Math.floor(this.person.happiness / 20)];
     this.personalData.attr({
       x: 250,
-      y: 20,
+      y: 70,
       w: 600,
       h: 300
     }).append(
@@ -146,7 +140,7 @@ Crafty.c('PersonProfileSheet', {
     this.perksTitle = Crafty.e('2D, DOM, HTML');
     this.perksTitle.attr({
       x: 250,
-      y: 110
+      y: 160
     }).append("<div class='perksTitle'>Perks</div>");
     this.perkViews = [];
     var i = 0;
@@ -154,7 +148,7 @@ Crafty.c('PersonProfileSheet', {
       var perkView = Crafty.e('2D, DOM, HTML');
       perkView.attr({
         x: 250 + (i * 110),
-        y: 130,
+        y: 180,
         w: 90,
         h: 40
       }).append(
@@ -169,7 +163,7 @@ Crafty.c('PersonProfileSheet', {
     this.hobbiesTitle = Crafty.e('2D, DOM, HTML');
     this.hobbiesTitle.attr({
       x: 250,
-      y: 180
+      y: 230
     }).append("<div class='hobbiesTitle'>Hobbies</div>");
     this.hobbieViews = [];
     var i = 0;
@@ -177,7 +171,7 @@ Crafty.c('PersonProfileSheet', {
       var hobbieView = Crafty.e('2D, DOM, HTML');
       hobbieView.attr({
         x: 250 + (i * 110),
-        y: 205,
+        y: 255,
         w: 90,
         h: 25
       }).append(
@@ -192,7 +186,7 @@ Crafty.c('PersonProfileSheet', {
     this.statsView = Crafty.e('2D, DOM, HTML');
     this.statsView.attr({
       x: 50,
-      y: 260,
+      y: 310,
       h: 400,
       w: 500
     }).append(
@@ -203,7 +197,7 @@ Crafty.c('PersonProfileSheet', {
     this.personalStatsView = Crafty.e('2D, DOM, HTML');
     this.personalStatsView.attr({
       x: 600,
-      y: 260,
+      y: 310,
       h: 400,
       w: 500
     }).append(

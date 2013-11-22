@@ -10,6 +10,8 @@ Crafty.c('ProductProfile', {
     this.color('rgb(104,154,104)');
     this.company = tr.app.director.company;
     this.product = this.company.product;
+    this.statusBar = Crafty.e('StatusBar');
+    this.statusBar.createOfficeButton();
     this.renderProduct();
     this.render();
     this.buttons = [];
@@ -23,7 +25,7 @@ Crafty.c('ProductProfile', {
     this.productInfo = Crafty.e('2D, DOM, HTML');
     this.productInfo.attr({
       x:20,
-      y:20,
+      y:70,
       w:1000,
       h:200
     })
@@ -39,7 +41,7 @@ Crafty.c('ProductProfile', {
       var module = Crafty.e('2D, DOM, HTML, Mouse')
         module.attr({
         x:20,
-        y:150 + i * 60,
+        y:200 + i * 60,
         w:1000,
         h:200
       })
@@ -55,7 +57,7 @@ Crafty.c('ProductProfile', {
       progressBar.setOptions({
         w: 50,
         h: 12,
-        y: 162 + 60*i,
+        y: 212 + 60*i,
         x: 300
       });
       progressBar.setValue(this.product.modules[n].project.phaseCompletedness());
@@ -77,7 +79,7 @@ Crafty.c('ProductProfile', {
       launchButton.append('<div class="launched">Shipped</div>')
       launchButton.attr({
         x:930,
-        y: 155 + i*60
+        y: 255 + i*60
       })
     } else {
       this.createOnGoingProjectButtons(module, i)
@@ -95,7 +97,7 @@ Crafty.c('ProductProfile', {
         color: '#CCAA00',
         text: "Ship it",
         x: x,
-        y: 155 + i*60,
+        y: 205 + i*60,
         onClick: function() {
           module.project.launchProduct();
           module.trigger('change')
@@ -120,7 +122,7 @@ Crafty.c('ProductProfile', {
         textColor:  textColor,
         text: "Next phase",
         x: x,
-        y: 155 + i*60,
+        y: 205 + i*60,
         onClick: click
       });
     }
@@ -133,7 +135,7 @@ Crafty.c('ProductProfile', {
         var module = Crafty.e('2D, DOM, HTML, Mouse')
           module.attr({
           x:20,
-          y:170 + i * 50,
+          y:230 + i * 50,
           w:1000,
           h:50
         })
@@ -163,10 +165,9 @@ Crafty.c('ProductProfile', {
       text: "Init Project",
       x:930,
       h:20,
-      y: 170 + i*54,
+      y:230 + i*54,
       onClick: function() {
         self.company.initProject(moduleName);
-
       }
     });
 

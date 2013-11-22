@@ -57,6 +57,33 @@ window.tr.products.SocialNetwork.prototype = {
       },
       description: "Let your users upload and share their pictures!"
     },
-
+    "integrateExternalAdvertising": {
+      name: "Integrate external advertising",
+      required: "basicSite",
+      goals: {
+        definitionGoal: 20,
+        designGoal: 20,
+        backGoal: 50,
+        frontGoal: 60,
+        architectureGoal: 30,
+        operationsGoal: 60,
+      },
+      flag: "externalAds",
+      description: "Ad some advertising on your site and begin to monetize!"
+    },
+    "adServer": {
+      name: "Create own ad adServer",
+      required: "adServer",
+      goals: {
+        definitionGoal: 70,
+        designGoal: 70,
+        backGoal: 150,
+        frontGoal: 120,
+        architectureGoal: 120,
+        operationsGoal: 80,
+      },
+      flag: "internalAds",
+      description: "Why to pay a share of the revenues to a provider? Create your own ad server!"
+    },
   }
 }

@@ -8,6 +8,7 @@ Crafty.c('StatusBar', {
     this.createNextButton();
     this.createProductButton();
     this.createProjectCompletion();
+    this.createBusinessButton();
     this.createDateContainer();
   },
   render: function() {
@@ -19,12 +20,21 @@ Crafty.c('StatusBar', {
     this.renderTurn();
   },
   createNextButton: function() {
-    this.nextTurnButton = Crafty.e('Button');
-    this.nextTurnButton.set({
+    this.firstButton = Crafty.e('Button');
+    this.firstButton.set({
       color: '#CCAA00',
       text: "Next Turn",
       y: 5,
       onClick: this.nextTurn.bind(this)
+    })
+  },
+  createOfficeButton: function() {
+    this.firstButton = Crafty.e('Button');
+    this.firstButton.set({
+      color: '#7777CC',
+      text: "Main Office",
+      y: 5,
+      onClick: this.backToOffice.bind(this)
     })
   },
   createProductButton: function() {
@@ -37,8 +47,24 @@ Crafty.c('StatusBar', {
       onClick: this.productView.bind(this)
     })
   },
+  createBusinessButton: function() {
+    this.businessButton = Crafty.e('Button');
+    this.businessButton.set({
+      color: '#00AA55',
+      text: "Business View",
+      y: 5,
+      x:530,
+      onClick: this.businessView.bind(this)
+    })
+  },
   productView: function() {
     Crafty.trigger('ProductSelected');
+  },
+  businessView: function() {
+    Crafty.trigger('BusinessSelected');
+  },
+  backToOffice: function() {
+    Crafty.trigger('OfficeSelected');
   },
   createProjectCompletion: function() {
     this.projectCompletionBar = Crafty.e('ProjectCompletion');

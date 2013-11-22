@@ -7,6 +7,7 @@ window.tr.models.Person = function(options) {
   this.options = options;
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Loggable);
+  tr.utils.extend.call(this, tr.utils.Stats);
   this.initialize();
 }
 
@@ -57,15 +58,6 @@ window.tr.models.Person.prototype = {
     tr.app.persons[this.id] = this;
   },
 
-  increaseStat: function(statName, value) {
-    this[statName] += value;
-    if(this[statName] > 100) {
-      this[statName] = 100;
-    }
-    if(this[statName] < 0) {
-      this[statName] = 0;
-    }
-  },
 
   randomize: function() {
     this.randomizeInterest();
