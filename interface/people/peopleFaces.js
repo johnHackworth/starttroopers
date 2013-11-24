@@ -16,6 +16,10 @@ Crafty.c('PersonFace', {
   components: [
     "Background", "Face","Facialfeatures", "Beard", "Eyes", "Nose",  "Mouth", "Hair", "Glasses", "Clothes"
   ],
+  overrideClick: function(f) {
+    this.unbind('Click');
+    this.bind('Click', f);
+  },
   showName: function() {
     if(this.showNameFlag) {
       this.name.tween({alpha: 0.9}, 30);

@@ -5,7 +5,7 @@ Crafty.c('ProjectResources', {
   '</div>',
   'otherDataHTML': '<div class="projectOtherData">%NAME%</div>',
   init: function() {
-    this.requires('2D, DOM, Color, Faces, OfficeButton');
+    this.requires('2D, DOM, Color, Faces');
     this.attr({w:1190, h:790, x: 5, y: 5});
     this.color('rgb(104,154,104)');
     this.company = tr.app.director.company;

@@ -30,20 +30,11 @@ Crafty.c('PersonProjectsSheet', {
   },
 
   createButtoner: function() {
-    this.backToOfficeButton = Crafty.e('Button');
-    this.backToOfficeButton.set({
-      color: '#CCAA00',
-      text: "Back",
-      y: 450,
-      onClick: function() {
-        Crafty.trigger('OfficeSelected');
-      }
-    });
     this.profileButton = Crafty.e('Button');
     this.profileButton.set({
       color: '#AAAA00',
       text: "Profile",
-      y: 500,
+      y: 550,
       onClick: function() {
         Crafty.trigger('PersonSelected');
       }

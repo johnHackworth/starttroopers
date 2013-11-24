@@ -40,7 +40,7 @@ window.tr.decorators.design.prototype = {
         increase = tr.randInt(10 * this.learning / 100)
         this.increaseStat('productDesign',increase)
         this.increaseStat('visualDesign', tr.randInt(10 * this.learning / 100))
-        this.desiredWage += increase * 600 * (this.negociation / 100);
+        this.desiredWage += increase * 600 * (this.negotiation / 100);
       }
       this.randomizePerks();
     }

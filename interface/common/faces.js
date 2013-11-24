@@ -11,5 +11,6 @@ Crafty.c('Faces', {
     otherFace.setSize(50);
     otherFace.setPosition(x,y);
     this.otherFaces.push(otherFace);
+    return otherFace;
   }
 })

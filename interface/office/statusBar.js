@@ -10,6 +10,7 @@ Crafty.c('StatusBar', {
     this.createProjectCompletion();
     this.createBusinessButton();
     this.createDateContainer();
+    this.createMoneyContainer();
   },
   render: function() {
     this.ready = true;
@@ -25,22 +26,22 @@ Crafty.c('StatusBar', {
       color: '#CCAA00',
       text: "Next Turn",
       y: 5,
-      onClick: this.nextTurn.bind(this)
-    })
-  },
-  createOfficeButton: function() {
-    this.firstButton = Crafty.e('Button');
-    this.firstButton.set({
-      color: '#7777CC',
-      text: "Main Office",
-      y: 5,
-      onClick: this.backToOffice.bind(this)
-    })
-  },
-  createProductButton: function() {
-    this.productButton = Crafty.e('Button');
-    this.productButton.set({
-      color: '#CC00AA',
+        onClick: this.nextTurn.bind(this)
+      })
+    },
+    createOfficeButton: function() {
+      this.firstButton = Crafty.e('Button');
+      this.firstButton.set({
+        color: '#7777CC',
+        text: "Main Office",
+        y: 5,
+        onClick: this.backToOffice.bind(this)
+      })
+    },
+    createProductButton: function() {
+      this.productButton = Crafty.e('Button');
+      this.productButton.set({
+        color: '#CC00AA',
       text: "Product View",
       y: 5,
       x:420,
@@ -80,11 +81,26 @@ Crafty.c('StatusBar', {
       h:30
     })
   },
+  createMoneyContainer: function() {
+    var self = this;
+    this.moneyContainer = Crafty.e('2D, DOM, HTML');
+    this.moneyContainer.attr({
+      x: 900,
+      y: 10,
+      w: 100,
+      h: 30
+    })
+    this.moneyContainer.render = function() {
+      this.replace('<div class="statusMoney">'+self.company.cash+"$</div>");
+    }
+  },
   renderTurn: function() {
     if(this.dateContainer) {
       var date = tr.turnToDate(this.company.currentTurn).toString().substr(0,15);
-
       this.dateContainer.replace('<div class="statusBarTurn">Today is '+ date+'</div>')
+    }
+    if(this.moneyContainer) {
+      this.moneyContainer.render();
     }
   },
   nextTurn: function() {

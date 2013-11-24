@@ -3,3 +3,20 @@
   font-size: 50px;
   text-shadow: 0 0 4px #333333;
 }
+
+.interestHeaders {
+  display: inline-block;
+}
+
+.interestHeaders div {
+  text-shadow: 0 0 3px #666666;
+  font-size: 16px;
+  color: #FFFF99;
+  display: inline-block;
+  width: 130px;
+}
+
+.OfferView .offer {
+  width: 100%;
+  display: inline-block;
+}

@@ -5,7 +5,7 @@ Crafty.c('ProductProfile', {
   moduleHTML: '<div class="module released_%RELEASED%"><div class="title">%NAME%</div> <div class="currentPhase">%PHASENAME%</div></div>',
   availableModuleHTML: '<div class="module available"><div class="title">%NAME%</div> <div class="description">%DESCRIPTION%</div></div>',
   init: function() {
-    this.requires('2D, DOM, Color, OfficeButton');
+    this.requires('2D, DOM, Color');
     this.attr({w:1190, h:790, x: 5, y: 5});
     this.color('rgb(104,154,104)');
     this.company = tr.app.director.company;

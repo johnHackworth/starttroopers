@@ -16,9 +16,7 @@ Crafty.c('OfficeFloor', {
   createPersons: function() {
     this.personViews = [];
     var i = 0;
-    console.log(this.company)
     for(var n in this.company.people) {
-      console.log('a');
       var personView = Crafty.e('Person');
       personView.assignPerson({
         person: this.company.people[n],

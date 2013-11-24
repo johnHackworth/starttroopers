@@ -125,7 +125,7 @@
   width: 140px;
 }
 
-.PositionButton {
+.PositionButton, .raiseFunds {
   border: 1px solid #efefef;
 }
 

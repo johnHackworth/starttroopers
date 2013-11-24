@@ -12,7 +12,7 @@ Crafty.c('Button', {
       h: options.h + 10 || 30,
       z: 999999
     })
-    this.append('<div class="button">'+options.text+'</div>');
+    this.replace('<div class="button">'+options.text+'</div>');
     // this.text.text(options.text || 'button');
     // this.text.attr({x: this.attr('x'), y: this.attr('y') + 10, w: this.attr('w')})
     // this.text.css('text-align', 'center');
@@ -24,7 +24,9 @@ Crafty.c('Button', {
       "background-color": options.color || '#666666',
       "color": options.textColor || '#FFFFFF'
     })
-    this.bind("Click", options.onClick)
+    if(options.onClick) {
+      this.bind("Click", options.onClick)
+    }
   },
   color: function(color) {
     this.css({"background-color": color})

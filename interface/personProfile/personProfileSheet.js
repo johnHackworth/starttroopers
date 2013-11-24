@@ -53,7 +53,7 @@ Crafty.c('PersonProfileSheet', {
   "</div>",
   personalStatsHTML: "<div class='personalStats'>"+
   "<div class='statCol'>" +
-  "<div class='stat negociation'>Negociation <span>%NEGOCIATION%</span></div>" +
+  "<div class='stat negotiation'>Negociation <span>%NEGOTIATION%</span></div>" +
   "<div class='stat sociability'>Sociability <span>%SOCIABILITY%</span></div>" +
   "<div class='stat learning'>Learning <span>%LEARNING%</span></div>" +
   "<div class='stat attention'>Attention <span>%ATTENTION%</span></div>" +
@@ -74,6 +74,9 @@ Crafty.c('PersonProfileSheet', {
     this.renderPersonalData();
     this.renderStats();
     this.renderPersonalStats();
+
+    // this.person.on('change', function() {Crafty.scene('PersonProfile')})
+
   },
   render: function() {
     this.ready = true;
@@ -92,7 +95,7 @@ Crafty.c('PersonProfileSheet', {
     this.socialButton.set({
       color: '#6666CC',
       text: "Social",
-      y: 500,
+      y: 550,
       onClick: function() {
         Crafty.trigger('SocialSelected')
       }
@@ -102,7 +105,7 @@ Crafty.c('PersonProfileSheet', {
       color: '#6666CC',
       text: "Projects",
       x: 120,
-      y: 500,
+      y: 550,
       onClick: function() {
         Crafty.trigger('PersonProjectsSelected')
       }
@@ -113,6 +116,11 @@ Crafty.c('PersonProfileSheet', {
     var self = this;
     var positions = this.positions;
     var i= 0;
+
+    this.businessButton = Crafty.e('BusinessButton, raiseFunds');
+    this.businessButton.setPerson(this.person);
+    this.buttons.push(this.businessButton)
+    this.businessButton.bind('toggle', this.render.bind(this));
     for(var n in positions) {
       var pos = positions[n].name;
       this[pos+'Button'] = Crafty.e('PositionButton');
@@ -125,6 +133,7 @@ Crafty.c('PersonProfileSheet', {
         y: 500
       })
       this[pos+'Button'].render();
+      this[pos+'Button'].bind('toggle', this.render.bind(this));
       i++;
     }
   },
@@ -223,9 +232,11 @@ Crafty.c('PersonProfileSheet', {
     return text;
   },
 
-  render: function() {
+  renderText: function() {
     for(var n in this.buttons) {
-      this.buttons[n].render();
+      if(this.buttons[n].render) {
+        this.buttons[n].render();
+      }
     }
   }
 
