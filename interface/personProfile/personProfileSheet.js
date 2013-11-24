@@ -129,7 +129,7 @@ Crafty.c('PersonProfileSheet', {
         person: this.person,
         text: this.positions[n].text,
         position: pos,
-        x: 150+(90*i),
+        x: 150+(110*i),
         y: 500
       })
       this[pos+'Button'].render();

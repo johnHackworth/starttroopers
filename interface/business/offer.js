@@ -1,7 +1,7 @@
 Crafty.c('OfferView', {
-  offerHTML: '<div class="offer">They want a %PERCENTAGE%% of our company, and they offer %MONEY%$ for it.</div></div>',
-  acceptButtonHTML: '<div class="acceptButton">Accept offer</div>',
-  rejectButtonHTML: '<div class="rejectButton">Reject offer</div>',
+  offerHTML: '<div class="offer">They want a <span>%PERCENTAGE%%</span> of our company, and they offer <span>%MONEY%$</span> for it.</div></div>',
+  acceptButtonHTML: '<div class="acceptButton Button">Accept offer</div>',
+  rejectButtonHTML: '<div class="rejectButton Button">Reject offer</div>',
   init: function() {
     this.requires('2D, DOM, HTML');
     this.acceptButton = Crafty.e('2D, DOM, HTML, Mouse');
@@ -27,9 +27,9 @@ Crafty.c('OfferView', {
       .replace("%MONEY%", this.offer.price)
     )
     this.acceptButton.replace(this.acceptButtonHTML);
-    this.acceptButton.attr({x: this.attr('x'), y: this.attr('y') + 40, w:160, h:50})
+    this.acceptButton.attr({x: this.attr('x'), y: this.attr('y') + 50, w:160, h:50})
     this.rejectButton.replace(this.rejectButtonHTML);
-    this.rejectButton.attr({x: this.attr('x') + 180, y: this.attr('y') + 40, w:160, h:50})
+    this.rejectButton.attr({x: this.attr('x') + 180, y: this.attr('y') + 50, w:160, h:50})
   },
   createInvestorClickResponse: function(investor) {
     var localInvestor = investor;

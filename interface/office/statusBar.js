@@ -26,22 +26,24 @@ Crafty.c('StatusBar', {
       color: '#CCAA00',
       text: "Next Turn",
       y: 5,
-        onClick: this.nextTurn.bind(this)
-      })
-    },
-    createOfficeButton: function() {
-      this.firstButton = Crafty.e('Button');
-      this.firstButton.set({
-        color: '#7777CC',
-        text: "Main Office",
-        y: 5,
-        onClick: this.backToOffice.bind(this)
-      })
-    },
-    createProductButton: function() {
-      this.productButton = Crafty.e('Button');
-      this.productButton.set({
-        color: '#CC00AA',
+      x: 5,
+      onClick: this.nextTurn.bind(this)
+    })
+  },
+  createOfficeButton: function() {
+    this.firstButton = Crafty.e('Button');
+    this.firstButton.set({
+      color: '#7777CC',
+      text: "Main Office",
+      y: 5,
+      x: 5,
+      onClick: this.backToOffice.bind(this)
+    })
+  },
+  createProductButton: function() {
+    this.productButton = Crafty.e('Button');
+    this.productButton.set({
+      color: '#CC00AA',
       text: "Product View",
       y: 5,
       x:420,
