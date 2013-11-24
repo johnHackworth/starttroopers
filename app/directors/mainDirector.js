@@ -21,12 +21,37 @@ window.tr.directors.MainDirector.prototype = {
     Crafty.scene('Office')
     Crafty.bind("PersonSelected", this.personProfile.bind(this));
     Crafty.bind("OfficeSelected", this.office.bind(this));
+    Crafty.bind("SocialSelected", this.socialProfile.bind(this));
+    Crafty.bind("ProductSelected", this.productProfile.bind(this));
+    Crafty.bind("ProjectSelected", this.projectSelected.bind(this));
+    Crafty.bind("BusinessSelected", this.businessSelected.bind(this));
+    Crafty.bind("PersonProjectsSelected", this.personProjectsSelected.bind(this));
+    Crafty.bind("InvestorSelected", this.investorSelected.bind(this));
+
   },
   personProfile: function() {
     Crafty.scene('PersonProfile')
   },
+  socialProfile: function() {
+    Crafty.scene('PersonSocial')
+  },
   office: function() {
     Crafty.scene('Office')
+  },
+  productProfile: function() {
+    Crafty.scene('Product')
+  },
+  projectSelected: function() {
+    Crafty.scene('Project')
+  },
+  businessSelected: function() {
+    Crafty.scene('Business')
+  },
+  personProjectsSelected: function() {
+    Crafty.scene('PersonProjects')
+  },
+  investorSelected: function() {
+    Crafty.scene('Investor')
   }
 
 }

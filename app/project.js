@@ -2,7 +2,7 @@ window.tr = window.tr || {};
 window.tr.models = window.tr.models || {};
 
 window.tr.models.Project = function(options) {
-  this.options = options;
+  this.module = options;
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Loggable);
   this.initialize();
@@ -10,32 +10,42 @@ window.tr.models.Project = function(options) {
 
 window.tr.models.Project.prototype = {
   bugs: 0,
+  launched: false,
   knowBugs: 0,
   projectPhases: ['mvp', 'polish', 'test'],
   initialize: function() {
-    this.name = this.options.name;
+    this.module.started = true;
+    this.name = this.module.name;
     this.phases = []
     this.people = [];
     this.initPhases();
+
   },
   createPhase: function(name, goals) {
     if(!goals) {
-      goals= [100,100,100,100,100,100]
+      goals= {
+        definitionGoal: 100,
+        designGoal: 100,
+        backGoal: 100,
+        frontGoal: 100,
+        architectureGoal: 100,
+        operationsGoal: 100
+      }
     }
     var phase = {
       name: name,
       definition: 0,
-      definitionGoal: goals[0],
+      definitionGoal: goals.definitionGoal,
       design: 0,
-      designGoal: goals[1],
+      designGoal: goals.designGoal,
       back: 0,
-      backGoal: goals[2],
+      backGoal: goals.backGoal,
       front: 0,
-      frontGoal: goals[3],
+      frontGoal: goals.frontGoal,
       architecture: 0,
-      architectureGoal: goals[4],
+      architectureGoal: goals.architectureGoal,
       operations: 0,
-      operationsGoal: goals[5],
+      operationsGoal: goals.operationsGoal,
       bugs: 0
     }
     return phase;
@@ -43,6 +53,7 @@ window.tr.models.Project.prototype = {
   setCompany: function(company) {
     this.company = company;
     this.attachLog(this.company);
+    this.company.product.createModule(this);
   },
   phaseCompletedness: function() {
     var toGo = 0;
@@ -57,9 +68,9 @@ window.tr.models.Project.prototype = {
   },
   initPhases: function() {
     this.phases = {
-      mvp: this.createPhase('mvp'),
-      polish: this.createPhase('polish'),
-      test: this.createPhase('test')
+      mvp: this.createPhase('mvp', this.module.goals),
+      polish: this.createPhase('polish',this.module.goals),
+      test: this.createPhase('test',this.module.goals)
     }
     this.phase = this.phases.mvp;
   },
@@ -70,7 +81,14 @@ window.tr.models.Project.prototype = {
   addPerson: function(person) {
     if(!this.people.indexOf(person) >= 0) {
       this.people.push(person);
-      person.currentProjects.push(this);
+      person.addProject(this);;
+      this.trigger('change');
+    }
+  },
+  removePerson: function(person) {
+    if(this.people.indexOf(person) >= 0) {
+      this.people.splice(this.people.indexOf(person), 1);
+      person.currentProjects.splice(person.currentProjects.indexOf(this), 1);
     }
   },
   getWork: function() {
@@ -115,7 +133,7 @@ window.tr.models.Project.prototype = {
     if(this.phase.back < this.phase.backGoal) completed = false;
     if(this.phase.front < this.phase.frontGoal) completed = false;
     if(this.phase.architecture < this.phase.architectureGoal) completed = false;
-    if(this.phase.operations < this.phase.  operationsGoal) completed = false;
+    if(this.phase.operations < this.phase.operationsGoal) completed = false;
     if(completed) this.phaseCompleted();
   },
   phaseCompleted: function() {
@@ -134,9 +152,12 @@ window.tr.models.Project.prototype = {
       this.bugs += this.phase.bugs;
       this.phase = this.phases.test;
     }
+    this.company.product.trigger('change')
     return this.phase;
   },
-  completeProduct: function() {
-
+  launchProduct: function() {
+    this.productModule.releaseModule();
+    this.trigger('change')
+    this.company.product.trigger('change')
   }
-}
+};

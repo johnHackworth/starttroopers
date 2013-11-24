@@ -38,12 +38,12 @@ window.tr.decorators.business.prototype = {
         if(tr.randInt() > 50) {
           increase = tr.randInt(10 * this.learning / 100);
           this.increaseStat('business', increase)
-          this.desiredWage += increase * 1000 * (this.negociation / 100);
+          this.desiredWage += increase * 1000 * (this.negotiation / 100);
         } else {
           increase = tr.randInt(8 * this.learning / 100)
           this.increaseStat('business', increase)
           this.increaseStat('productDesign', tr.randInt(5 * this.learning / 100))
-          this.desiredWage += increase * 1000 * (this.negociation / 100);
+          this.desiredWage += increase * 1000 * (this.negotiation / 100);
         }
       }
       this.randomizePerks();
@@ -54,8 +54,8 @@ window.tr.decorators.business.prototype = {
       if(this.mainInterest === 'business') {
         var chooseInt = tr.randInt(2);
         if(chooseInt == 0) {
-          this.perks.push('negociator');
-          this.increaseStat('negociation', 20);
+          this.perks.push('negotiator');
+          this.increaseStat('negotiation', 20);
         }
         if(chooseInt == 1) {
           this.perks.push('leader');

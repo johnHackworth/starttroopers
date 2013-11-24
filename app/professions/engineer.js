@@ -49,7 +49,7 @@ window.tr.decorators.engineering.prototype = {
         var qaAlpha = tr.randInt(10 * this.learning / 100)
         this.increaseStat('qa', qaAlpha);
         increase = frontAlpha + qaAlpha + backAlpha + archAlpha + opAlpha
-        this.desiredWage += increase * 200 * (this.negociation / 100);
+        this.desiredWage += increase * 200 * (this.negotiation / 100);
       }
       this.randomizePerks();
     }

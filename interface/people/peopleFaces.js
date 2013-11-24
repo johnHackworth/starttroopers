@@ -1,12 +1,13 @@
 Crafty.c('PersonFace', {
   size: 100,
+  showNameFlag: true,
   _NOTIFICATION_DURATION: 60,
   init: function() {
     this.currentTurn = 0;
     this.lastNotificationInserted = 0;
     this.notifications = [];
     this.requires('2D, DOM, Text, Sprite, Tween, Mouse');
-    this.attr({w:100, h:100, x: 5, y: 5});
+    this.attr({w:100, h:100, x: 5, y: 5, z:999999999});
     this.bind('MouseOver', this.showName.bind(this));
     this.bind('MouseOut', this.hideName.bind(this));
     this.bind('Click', this.selectPerson.bind(this));
@@ -15,17 +16,27 @@ Crafty.c('PersonFace', {
   components: [
     "Background", "Face","Facialfeatures", "Beard", "Eyes", "Nose",  "Mouth", "Hair", "Glasses", "Clothes"
   ],
+  overrideClick: function(f) {
+    this.unbind('Click');
+    this.bind('Click', f);
+  },
   showName: function() {
-    this.name.tween({alpha: 0.9}, 30);
+    if(this.showNameFlag) {
+      this.name.tween({alpha: 0.9}, 30);
+    }
   },
   hideName: function() {
-    this.name.tween({alpha: 0.0}, 30);
+    if(this.showNameFlag) {
+      this.name.tween({alpha: 0.0}, 30);
+    }
   },
   setSize: function(size) {
     this.attr({
       x:size,
-      y:size
-    })
+      y:size,
+      w: size,
+      h: size
+    });
     for(var n in this.components) {
       this.size = size;
       this[this.components[n].toLowerCase()].setSize(this.size);
@@ -71,7 +82,7 @@ Crafty.c('PersonFace', {
   },
   selectPerson: function() {
     tr.app.director.selectedPerson = this.person;
-    Crafty.trigger("PersonSelected")
+    Crafty.trigger("PersonSelected");
   },
   addNotification: function(notification) {
     this.notifications.push({text:notification, turn: this.currentTurn});
@@ -96,11 +107,11 @@ Crafty.c('PersonFace', {
             }).css({textAlign: "center"})
             .text(this.notifications[i].text)
             .textColor('#333333')
-            .tween({y: this.attr('y')}, this._NOTIFICATION_DURATION)
+            .tween({y: this.attr('y')}, this._NOTIFICATION_DURATION);
           }
         }
       }
-    };
+    }
     toBeRemoved.reverse();
     for(var n in toBeRemoved) {
       if(this.notifications[toBeRemoved[n]]) {

@@ -7,6 +7,7 @@ window.tr.models.Person = function(options) {
   this.options = options;
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Loggable);
+  tr.utils.extend.call(this, tr.utils.Stats);
   this.initialize();
 }
 
@@ -25,7 +26,7 @@ window.tr.models.Person.prototype = {
   business: 0,
   marketing: 0,
 
-  negociation: 0,
+  negotiation: 0,
   sociability: 0,
   learning: 0,
   workEthics: 0,
@@ -36,6 +37,7 @@ window.tr.models.Person.prototype = {
 
   experience: 0,
   desiredWage: 25000,
+  currentWage: 0,
 
   projectKnowledge: 0,
 
@@ -57,15 +59,6 @@ window.tr.models.Person.prototype = {
     tr.app.persons[this.id] = this;
   },
 
-  increaseStat: function(statName, value) {
-    this[statName] += value;
-    if(this[statName] > 100) {
-      this[statName] = 100;
-    }
-    if(this[statName] < 0) {
-      this[statName] = 0;
-    }
-  },
 
   randomize: function() {
     this.randomizeInterest();
@@ -106,7 +99,7 @@ window.tr.models.Person.prototype = {
   },
 
   randomizePersonalStats: function() {
-    this.negociation = tr.randInt(100);
+    this.negotiation = tr.randInt(100);
     this.sociability = tr.randInt(100);
     this.learning = tr.randInt(90) + 10;
     this.attention = tr.randInt(100);
@@ -118,17 +111,17 @@ window.tr.models.Person.prototype = {
     }
     if(tr.randInt() < 10) {
       this.perks.push('elocuent');
-      this.increaseStat('negociation', 10);
+      this.increaseStat('negotiation', 10);
       this.increaseStat('sociability', 5);
     }
     if(tr.randInt() < 10) {
       this.perks.push('shy');
-      this.increaseStat('negociation', -5);
+      this.increaseStat('negotiation', -5);
       this.increaseStat('sociability', -10);
     }
     if(tr.randInt() < 10) {
       this.perks.push('elocuent');
-      this.increaseStat('negociation', 10);
+      this.increaseStat('negotiation', 10);
       this.increaseStat('sociability', 10);
       this.increaseStat('learning', -5);
     }
@@ -144,7 +137,11 @@ window.tr.models.Person.prototype = {
   turn: function(turnNumber) {
     this.currentTurn = turnNumber;
     this.coolRelations();
-    this.dailySchedule();
+    if(this.negotiatingOffer) {
+      this.log(this.name + ' is negotiation with ' + this.negotiatingOffer.investor.name);
+    } else {
+      this.dailySchedule();
+    }
     this.updateHappiness();
   },
   updateHappiness: function() {
@@ -158,6 +155,7 @@ window.tr.models.Person.prototype = {
 
   },
   dailySchedule: function() {
+    this.dayBusinessContact = false;
     var workHours = 0;
     var workForce = (this.happiness + this.workEthics + this.stress) / 300;
     workHours = 7 + (5 * workForce);
@@ -168,7 +166,11 @@ window.tr.models.Person.prototype = {
         hours.push('social')
       } else {
         if(!this.currentProjects.length) {
-          hours.push(this.emptyHour());
+          if(this.raisingFunds) {
+            hours.push(this.getRaisingFundsHour())
+          } else {
+            hours.push(this.emptyHour());
+          }
         } else {
           hours.push(this.projectHour());
         }
@@ -176,6 +178,21 @@ window.tr.models.Person.prototype = {
     }
     this.hours = hours;
     return hours;
+  },
+  getRaisingFundsHour: function() {
+    console.log('raising funds hours', this.dayBusinessContact)
+    // console.log(this.business, this.social)
+    if(tr.randInt() < this.business &&
+      tr.randInt() < this.sociability &&
+      !this.dayBusinessContact) {
+      this.dayBusinessContact = true;
+      var nInvestors = this.company.availableInvestors.length;
+      var objetiveInvestor = this.company.availableInvestors[tr.randInt(nInvestors)];
+      objetiveInvestor.getADemo(this);
+      return 'business'
+    } else {
+      return 'none';
+    }
   },
   emptyHour: function() {
     return 'none';
@@ -200,19 +217,30 @@ window.tr.models.Person.prototype = {
   },
 
   assignPosition: function(position) {
-    var positions = ['front', 'back', 'architecture', 'operations', 'visualDesign', 'productDesign', 'qa'];
-    if(positions.indexOf(position) < 0) {
-      return;
+    if(position === 'funds') {
+      this.assignRaiseFunds ();
     } else {
-      this.removePosition(position);
-      this.positions.push(position);
+      this.raisingFunds = false;
+      var positions = ['funds', 'front', 'back', 'architecture', 'operations', 'visualDesign', 'productDesign', 'qa'];
+      if(positions.indexOf(position) < 0) {
+        return;
+      } else {
+        this.removePosition(position);
+        this.positions.push(position);
+      }
     }
+    this.trigger('change');
   },
 
   removePosition: function(position) {
-    var p = this.positions.indexOf(position);
-    if(p >= 0)
-      this.positions.splice(p,1);
+    if(position === 'funds') {
+      this.raisingFunds = false;
+    } else {
+      var p = this.positions.indexOf(position);
+      if(p >= 0)
+        this.positions.splice(p,1);
+    };
+    this.trigger('change');
   },
 
   getHourlyWork: function(project) {
@@ -340,6 +368,24 @@ window.tr.models.Person.prototype = {
       rels.push(rel);
     }
     return rels;
+  },
+  addProject: function(project) {
+    this.currentProjects.push(project)
+    this.raisingFunds = false;
+  },
+  assignRaiseFunds: function() {
+    this.positions = [];
+    for(var n in this.currentProjects) {
+      console.log(this.currentProjects[n])
+      this.currentProjects[n].removePerson(this);
+    }
+    this.raisingFunds = true;
+  },
+  negotiateOffer: function(offer) {
+    if(offer.negotiator) {
+      offer.negotiator.negotiatingOffer = null;
+    }
+    offer.negotiator = this;
+    this.negotiatingOffer = offer;
   }
-
 }

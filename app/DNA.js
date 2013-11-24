@@ -78,7 +78,11 @@ window.tr.models.DNA.prototype = {
         } else if(i == 10) { // beard
           if(this.chromosomes[0] === 0 &&
             tr.randInt() > 50) {
-            this.chromosomes[i] = tr.randInt(this.maxs[i])
+            if(tr.randInt() > 90) {
+              this.chromosomes[i] = 2
+            } else {
+              this.chromosomes[i] = tr.randInt(this.maxs[i])
+            }
           } else {
             this.chromosomes[i] = 0;
           }
@@ -101,8 +105,13 @@ window.tr.models.DNA.prototype = {
     } else if(attr == 'beard') {
       if(this.chromosomes[0] === 0 &&
         this.chromosomes[this.map['beard']] > 0) {
-        return this.chromosomes[this.map['face']] + '_' +
-          this.chromosomes[this.map['haircolor']]
+        if(this.chromosomes[this.map['beard']] == 2) {
+          return 'epic_' +
+            this.chromosomes[this.map['haircolor']]
+        } else {
+          return this.chromosomes[this.map['face']] + '_' +
+            this.chromosomes[this.map['haircolor']]
+        }
       } else {
         return 0;
       }
