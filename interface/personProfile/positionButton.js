@@ -24,7 +24,7 @@ Crafty.c('PositionButton', {
       textColor: textColor,
       x: this.x,
       y: this.y,
-      w: 80,
+      w: 100,
       h: 20,
       onClick: function(){
         if(self.position === 'funds') {

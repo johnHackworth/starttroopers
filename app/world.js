@@ -10,7 +10,9 @@ var fundsNames = [
   "Angel Investor Fund",
   "Nigerian Royal Fund",
   "Seedify Co.",
-  "Accelerando Co"
+  "Accelerando Co",
+  "S.P.A.C.E. Industries",
+  "Combination Funds"
 ]
 
 window.tr.models.World = function(options) {
@@ -23,6 +25,7 @@ window.tr.models.World = function(options) {
 window.tr.models.World.prototype = {
   initialize: function() {
     this.createInvestors();
+    this.createPOPs();
   },
   createInvestors: function() {
     this.investors = [];
@@ -39,6 +42,18 @@ window.tr.models.World.prototype = {
 
     for(var n in this.investors) {
       this.investors[n].setCompany(company);
+    }
+  },
+  createPOPs: function() {
+    this.POPs = [];
+    var j = 0;
+    for(var n in tr.ageGroups) {
+      for(var i = 0; i < 5; i++) {
+        var POP = new tr.models.POP({ageGroup: tr.ageGroups[n]});
+        POP.randomizeSize((6 - n) * 100000);
+        this.POPs.push(POP);
+      }
+      j++;
     }
   }
 }

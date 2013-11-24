@@ -16,7 +16,39 @@
   width: 130px;
 }
 
-.OfferView .offer {
-  width: 100%;
+.offersHeaders {
+  text-shadow: 0 0 3px #666666;
+  font-size: 18px
+  color: #FFFF99;
   display: inline-block;
+}
+
+.OfferView .offer {
+  width: 325px;
+  display: inline-block;
+  font-size: 16px;
+  color: #FFF;
+  text-shadow: 0 0 2px #333;
+  text-align: center;
+}
+
+.OfferView .offer span {
+  color: #FF9;
+  font-weight: bold;
+}
+
+.acceptButton {
+  background-color: #33CC33;
+  padding: 10px;
+  border: 1px solid #666;
+  text-align: center;
+  cursor: pointer;
+}
+
+.rejectButton {
+  background-color: #CC3333;
+  padding: 10px;
+  border: 1px solid #666;
+  text-align: center;
+  cursor: pointer;
 }
