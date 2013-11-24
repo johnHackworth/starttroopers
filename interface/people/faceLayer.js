@@ -29,6 +29,7 @@ Crafty.c('FaceLayer', {
         type = 0;
       }
       this.type = type;
+      this.basicType = type;
       this.css({
         "width": this.size + "px",
         "height": this.size + "px",

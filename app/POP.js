@@ -19,6 +19,9 @@ window.tr.models.POP.prototype = {
   culture: 'generic',
   ageGroup: '',
   size: 100000,
+  knowTheProduct: 0,
+  useTheProduct: 0,
+  likeTheProduct: 0,
   initialize: function() {
     this.hobbies = [];
     this.ageGroup = this.options.ageGroup;
