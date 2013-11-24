@@ -9,6 +9,7 @@ Crafty.c('StatusBar', {
     this.createProductButton();
     this.createProjectCompletion();
     this.createBusinessButton();
+    this.createMarketingButton();
     this.createDateContainer();
     this.createMoneyContainer();
   },
@@ -60,11 +61,24 @@ Crafty.c('StatusBar', {
       onClick: this.businessView.bind(this)
     })
   },
+  createMarketingButton: function() {
+    this.marketingButton = Crafty.e('Button');
+    this.marketingButton.set({
+      color: '#AAAA55',
+      text: "Marketing View",
+      y: 5,
+      x:640,
+      onClick: this.marketingView.bind(this)
+    })
+  },
   productView: function() {
     Crafty.trigger('ProductSelected');
   },
   businessView: function() {
     Crafty.trigger('BusinessSelected');
+  },
+  marketingView: function() {
+    Crafty.trigger('MarketingSelected');
   },
   backToOffice: function() {
     Crafty.trigger('OfficeSelected');

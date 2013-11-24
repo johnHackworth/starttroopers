@@ -111,6 +111,8 @@ Crafty.c('PersonFace', {
           }
         }
       }
+      this.talk();
+      setTimeout(this.shutUp.bind(this), this._NOTIFICATION_DURATION * this.notifications.length)
     }
     toBeRemoved.reverse();
     for(var n in toBeRemoved) {
@@ -121,5 +123,11 @@ Crafty.c('PersonFace', {
         this.notifications.splice(toBeRemoved[n],1);
       }
     }
+  },
+  talk: function() {
+    this.mouth.talking = true;
+  },
+  shutUp: function() {
+    this.mouth.talking = false;
   }
 });

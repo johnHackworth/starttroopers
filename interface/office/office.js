@@ -16,14 +16,21 @@ Crafty.c('OfficeFloor', {
   createPersons: function() {
     this.personViews = [];
     var i = 0;
+    var y = 70;
+    var x = 30;
     for(var n in this.company.people) {
       var personView = Crafty.e('Person');
       personView.assignPerson({
         person: this.company.people[n],
-        x: 30 + i * 110,
-        y: 70
+        x: x,
+        y: y
       })
+      x += 110;
       i++
+      if(i % 6 === 0) {
+        x = 30;
+        y += 120;
+      }
       this.personViews.push(personView);
     }
   },
