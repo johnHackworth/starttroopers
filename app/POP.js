@@ -16,6 +16,7 @@ window.tr.models.POP = function(options) {
 }
 
 window.tr.models.POP.prototype = {
+  currentTurn: 0,
   culture: 'generic',
   ageGroup: '',
   size: 100000,
@@ -41,4 +42,19 @@ window.tr.models.POP.prototype = {
       }
     }
   },
+  turn: function(currentTurn) {
+    this.currentTurn = currentTurn;
+    this.knowTheProduct -= 10;
+    this.useTheProduct -= 100;
+    this.likeTheProduct -= 500;
+    this.trimStats();
+  },
+  trimStats: function() {
+    if(this.knowTheProduct < 0) this.knowTheProduct = 0;
+    if(this.knowTheProduct > this.size) this.knowTheProduct = this.size;
+    if(this.useTheProduct < 0) this.useTheProduct = 0;
+    if(this.useTheProduct > this.knowTheProduct) this.useTheProduct = this.knowTheProduct;
+    if(this.likeTheProduct < 0) this.likeTheProduct = 0;
+    if(this.likeTheProduct > this.useTheProduct) this.likeTheProduct = this.useTheProduct;
+  }
 }
