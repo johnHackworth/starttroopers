@@ -9,7 +9,7 @@ window.tr.models.DNA = function(options) {
 
 window.tr.models.DNA.prototype = {
   maxs: [
-    2,4,4,8,15,9,7,9,7,12,2,7,1
+    2,4,4,8,15,9,7,10,7,12,2,7,1
   ],
   hairColors: 4,
   map: {
