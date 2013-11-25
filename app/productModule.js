@@ -15,10 +15,17 @@ window.tr.models.ProductModule.prototype = {
   quality: 0,
   design: 0,
   released: false,
+  maxUsers: 0,
+  earlyAdopters: [],
   initialize: function() {
     this.name = this.options.name;
+    this.earlyAdopters = [];
   },
   releaseModule: function() {
     this.released = true;
+    this.maxUsers = this.project.module.maxUsers;
+    for(var n in this.project.module.earlyAdopters) {
+      this.earlyAdopters.push(this.project.module.earlyAdopters[n]);
+    }
   }
 };

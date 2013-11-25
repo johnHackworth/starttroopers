@@ -18,14 +18,14 @@ window.tr.models.Company.prototype = {
     this.projects = [];
     this.offers = [];
     this.people = [];
+    this.world = tr.app.director.world;
     this.availableInvestors = tr.app.director.world.investors;
+    this.POPs = tr.app.director.world.POPs;
   },
 
   turn: function() {
     this.currentTurn++;
-    for(var n in this.availableInvestors ) {
-      this.availableInvestors[n].turn(this.currentTurn);
-    }
+    this.world.turn(this.currentTurn);
     for(var m in this.offers) {
       this.negotiateOffer(this.offers[m]);
     }

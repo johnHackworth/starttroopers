@@ -7,17 +7,26 @@ window.tr.directors.MainDirector = function() {
 };
 window.tr.config = {
   width: 1280,
-  height: 800,
+  height: 700,
   fps: 50
 }
 
 window.tr.hobbies = [
-  "sports", "gadgets", "fashion", "videogames", "cinema", "music", "hiking", "travel", "cars", "DIY", "cooking", "art", "literature", "sci-fi", "board games"
+  "sports", "gadgets", "fashion", "videogames",
+  "cinema", "music", "hiking", "travel", "cars",
+  "DIY", "cooking", "art", "literature", "sci-fi",
+  "board games", "technology", "religion", "socialize"
 ]
 window.tr.directors.MainDirector.prototype = {
   backgroundColor: '#CCCCCC',
   start: function() {
     Crafty.init();
+    Crafty.bind('SceneChange', function() {
+      var scale = window.innerWidth / 1200;
+      if(scale < 1) {
+       Crafty.viewport.scale(scale)
+      }
+    })
     Crafty.scene('Office')
     Crafty.bind("PersonSelected", this.personProfile.bind(this));
     Crafty.bind("OfficeSelected", this.office.bind(this));

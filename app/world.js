@@ -55,5 +55,14 @@ window.tr.models.World.prototype = {
       }
       j++;
     }
+  },
+  turn: function(currentTurn) {
+    this.currentTurn = currentTurn;
+    for(var n in this.availableInvestors ) {
+      this.investors[n].turn(this.currentTurn);
+    }
+    for(var q in this.POPs) {
+      this.POPs[q].turn(this.currentTurn);
+    }
   }
 }
