@@ -13,6 +13,7 @@ window.tr.models.Project.prototype = {
   launched: false,
   knowBugs: 0,
   projectPhases: ['mvp', 'polish', 'test'],
+  quality: 0,
   initialize: function() {
     this.module.started = true;
     this.name = this.module.name;
@@ -115,9 +116,42 @@ window.tr.models.Project.prototype = {
     var hourWork = person.getHourlyWork(this);
     for(var n in hourWork) {
       this.increasePhaseStat(n, hourWork[n]/10);
+      this.changeQuality(n, hourWork[n] / 10, person);
     }
   },
+  getTotalWorkDone: function() {
+    var total = 0;
+    total += this.phase.definition;
+    total += this.phase.design;
+    total += this.phase.back;
+    total += this.phase.front;
+    total += this.phase.architecture;
+    total += this.phase.operations;
+    return total;
+  },
+  changeQuality: function(stat, hours, person) {
+    if(isNaN(hours) || hours === 0) {
+      return;
+    }
+    var attr = person.workToStats[stat];
+    if(!attr || person[attr] === 0) {
+      return;
+    }
+    var total = this.getTotalWorkDone() - hours;
+    if(isNaN(total)) {
+      return;
+    }
+
+    var quality = (this.quality * (total - hours) + hours * person[attr]) / (total + hours)
+    if(isNaN(quality)) {
+      return;
+    }
+    this.quality = quality;
+  },
   increasePhaseStat: function(stat, increase) {
+    if(!stat || isNaN(increase)) {
+      return;
+    }
     this.phase[stat] += increase;
     if(this.phase[stat] > this.phase[stat + 'Goal']) {
       this.phase[stat] = this.phase[stat + 'Goal'];

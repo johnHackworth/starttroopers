@@ -27,5 +27,6 @@ window.tr.models.ProductModule.prototype = {
     for(var n in this.project.module.earlyAdopters) {
       this.earlyAdopters.push(this.project.module.earlyAdopters[n]);
     }
+    this.product.marketingPunch += this.project.module.marketingPunch;
   }
 };

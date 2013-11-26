@@ -18,6 +18,7 @@ window.tr.products.SocialNetwork.prototype = {
       },
       maxUsers: 1000000,
       earlyAdopters: ['technology', 'socialize'],
+      marketingPunch: 10000,
       description: "The basic infrastructure to make your site open to public. Creating accounts, login, public profiles, comments... all the basic stuff!"
     },
     "basicPrivacy": {
@@ -33,6 +34,7 @@ window.tr.products.SocialNetwork.prototype = {
       },
       maxUsers: 0,
       earlyAdopters: ['technology'],
+      marketingPunch: 5000,
       description: "Let your users define their own level of privacity and who can to see what"
     },
     "webscale": {
@@ -47,6 +49,7 @@ window.tr.products.SocialNetwork.prototype = {
         operationsGoal: 100,
       },
       maxUsers: 5000000,
+      marketingPunch: 3000,
       earlyAdopters: ['technology'],
       description: "Prepare your site to reach the hungry masses! You need to implement this to be able to have tons of visitors"
     },
@@ -62,6 +65,7 @@ window.tr.products.SocialNetwork.prototype = {
         operationsGoal: 50,
       },
       maxUsers: 100000,
+      marketingPunch: 7000,
       earlyAdopters: ['gadgets', 'fashion', 'travel'],
       description: "Let your users upload and share their pictures!"
     },
@@ -77,6 +81,7 @@ window.tr.products.SocialNetwork.prototype = {
         operationsGoal: 60,
       },
       maxUsers: 0,
+      marketingPunch: 100,
       earlyAdopters: [],
       flag: "externalAds",
       description: "Ad some advertising on your site and begin to monetize!"
@@ -94,6 +99,7 @@ window.tr.products.SocialNetwork.prototype = {
       },
       maxUsers: 0,
       earlyAdopters: [],
+      marketingPunch: 1000,
       flag: "internalAds",
       description: "Why to pay a share of the revenues to a provider? Create your own ad server!"
     },

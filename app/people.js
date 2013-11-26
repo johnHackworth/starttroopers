@@ -41,6 +41,15 @@ window.tr.models.Person.prototype = {
 
   projectKnowledge: 0,
 
+  workToStats: {
+    "design": "visualDesign",
+    "definition": "productDesign",
+    "front": "frontend",
+    "back": "backend",
+    "architecture": "architecture",
+    "operations": "operations"
+  },
+
   initialize: function() {
     this.name = this.options.name;
     this.culture = tr.utils.getRandomCulture();

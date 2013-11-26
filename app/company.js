@@ -35,7 +35,8 @@ window.tr.models.Company.prototype = {
     this.socialize();
     for(var p in this.projects) {
       this.projects[p].turn(this.currentTurn);
-    }
+    };
+    this.product.turn(this.currentTurn);
     this.trigger('newTurn')
   },
 

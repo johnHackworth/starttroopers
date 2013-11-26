@@ -64,5 +64,14 @@ window.tr.models.World.prototype = {
     for(var q in this.POPs) {
       this.POPs[q].turn(this.currentTurn);
     }
+  },
+  distributeMarketingPunch: function(amount, hobbies) {
+    var popN = this.POPs.length;
+    for(var i = 0; i < amount; i++) {
+      this.POPs[i % popN].knowTheProduct += tr.randInt(3);
+    }
+    for(var j = 0; j < popN; j++) {
+      this.POPs[j].trimStats();
+    }
   }
 }
