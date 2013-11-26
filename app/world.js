@@ -61,17 +61,33 @@ window.tr.models.World.prototype = {
     for(var n in this.availableInvestors ) {
       this.investors[n].turn(this.currentTurn);
     }
+    var visits = 0;
     for(var q in this.POPs) {
       this.POPs[q].turn(this.currentTurn);
+      visits += this.POPs[q].getVisits();
+      console.log(visits);
     }
+    this.createUserAccounts();
+    this.company.product.visits.push(visits);
+
   },
   distributeMarketingPunch: function(amount, hobbies) {
     var popN = this.POPs.length;
-    for(var i = 0; i < amount; i++) {
+    for(var i = tr.randInt(popN); i < amount; i++) {
       this.POPs[i % popN].knowTheProduct += tr.randInt(3);
     }
     for(var j = 0; j < popN; j++) {
       this.POPs[j].trimStats();
+    }
+  },
+  createUserAccounts: function() {
+    var product = this.company.publicProducts();
+    if(!product) {
+      return;
+    } else {
+      for(var n in this.POPs) {
+        this.POPs[n].newProductUsers();
+      }
     }
   }
 }

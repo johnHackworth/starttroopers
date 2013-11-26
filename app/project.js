@@ -193,5 +193,13 @@ window.tr.models.Project.prototype = {
     this.productModule.releaseModule();
     this.trigger('change')
     this.company.product.trigger('change')
+  },
+  test_completePhase: function() {
+    this.phase.definition = this.phase.definitionGoal;
+    this.phase.design = this.phase.designGoal;
+    this.phase.back = this.phase.backGoal;
+    this.phase.front  = this.phase.frontGoal;
+    this.phase.architecture = this.phase.architectureGoal;
+    this.phase.operations = this.phase.operationsGoal;
   }
 };

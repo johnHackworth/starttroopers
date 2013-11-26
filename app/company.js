@@ -23,6 +23,14 @@ window.tr.models.Company.prototype = {
     this.POPs = tr.app.director.world.POPs;
   },
 
+  publicProducts: function() {
+    if(this.product.openToPublic) {
+      return this.product;
+    } else {
+      return null;
+    }
+  },
+
   turn: function() {
     this.currentTurn++;
     this.world.turn(this.currentTurn);

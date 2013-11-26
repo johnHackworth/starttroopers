@@ -15,9 +15,11 @@ window.tr.models.Product.prototype = {
   globalDesign: 0,
   marketingPunch: 100,
   currentTurn: 0,
+  openToPublic: false,
   initialize: function() {
     this.name = this.options.name;
     this.modules = [];
+    this.visits = [];
   },
   defineSocialNetwork: function() {
     tr.utils.extend.call(this, tr.products.SocialNetwork)

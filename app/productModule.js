@@ -15,6 +15,7 @@ window.tr.models.ProductModule.prototype = {
   quality: 0,
   design: 0,
   released: false,
+
   maxUsers: 0,
   earlyAdopters: [],
   initialize: function() {
@@ -28,5 +29,6 @@ window.tr.models.ProductModule.prototype = {
       this.earlyAdopters.push(this.project.module.earlyAdopters[n]);
     }
     this.product.marketingPunch += this.project.module.marketingPunch;
+    this.product.openToPublic = true;
   }
 };

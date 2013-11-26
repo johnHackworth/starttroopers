@@ -22,6 +22,7 @@ window.tr.models.POP.prototype = {
   size: 100000,
   knowTheProduct: 0,
   useTheProduct: 0,
+  hype: 0,
   likeTheProduct: 0,
   initialize: function() {
     this.hobbies = [];
@@ -44,9 +45,9 @@ window.tr.models.POP.prototype = {
   },
   turn: function(currentTurn) {
     this.currentTurn = currentTurn;
-    this.knowTheProduct -= 10;
-    this.useTheProduct -= 100;
-    this.likeTheProduct -= 500;
+    this.knowTheProduct -=  Math.floor(this.knowTheProduct / 1000);;
+    this.useTheProduct -= Math.floor(this.useTheProduct / 100);
+    this.likeTheProduct -= Math.floor(this.likeTheProduct / 50);;
     this.trimStats();
   },
   trimStats: function() {
@@ -56,5 +57,26 @@ window.tr.models.POP.prototype = {
     if(this.useTheProduct > this.knowTheProduct) this.useTheProduct = this.knowTheProduct;
     if(this.likeTheProduct < 0) this.likeTheProduct = 0;
     if(this.likeTheProduct > this.useTheProduct) this.likeTheProduct = this.useTheProduct;
+  },
+  newProductUsers: function() {
+    var noAccountUsers = this.knowTheProduct - this.useTheProduct;
+    var userPercentaje = 10 + tr.randInt(this.hype);
+    console.log(noAccountUsers, userPercentaje);
+    var newUsers = Math.floor(noAccountUsers * userPercentaje / 100);
+    this.trigger('newUsers', newUsers, this);
+    this.useTheProduct += newUsers;
+  },
+  getVisits: function() {
+    var happyUsers = this.likeTheProduct;
+    var unconvinced = this.useTheProduct - happyUsers;
+    var visits = 0;
+    if(happyUsers) {
+      visits += Math.floor(3*happyUsers / 4) + tr.randInt(Math.floor(1*happyUsers / 4));
+    }
+    if(unconvinced) {
+      visits += tr.randInt(unconvinced);
+    }
+    return visits;
   }
+
 }
