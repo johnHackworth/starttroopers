@@ -42,5 +42,19 @@ window.tr.models.Product.prototype = {
     var turnPunch = Math.floor(this.marketingPunch / 10);
     this.marketingPunch -= turnPunch;
     this.world.distributeMarketingPunch(turnPunch, [])
+  },
+  getAverageQuality: function() {
+    var quality = 0;
+    var i = 0;
+    for(var n in this.modules) {
+      if(this.modules[n].released) {
+        i += this.modules[n].weight;
+        quality = this.modules[n].quality;
+      }
+    }
+    if(i>0) {
+      quality = 100 * quality / i;
+    }
+    return quality;
   }
 };

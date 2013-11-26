@@ -87,6 +87,7 @@ window.tr.models.World.prototype = {
     } else {
       for(var n in this.POPs) {
         this.POPs[n].newProductUsers();
+        this.POPs[n].whoLikesTheProduct(product);
       }
     }
   }

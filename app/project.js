@@ -201,5 +201,6 @@ window.tr.models.Project.prototype = {
     this.phase.front  = this.phase.frontGoal;
     this.phase.architecture = this.phase.architectureGoal;
     this.phase.operations = this.phase.operationsGoal;
+    this.quality = tr.randInt();
   }
 };

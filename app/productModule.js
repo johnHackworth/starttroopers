@@ -14,6 +14,7 @@ window.tr.models.ProductModule.prototype = {
   bugsOnTheWild: 0,
   quality: 0,
   design: 0,
+  weight: 0,
   released: false,
 
   maxUsers: 0,
@@ -30,5 +31,7 @@ window.tr.models.ProductModule.prototype = {
     }
     this.product.marketingPunch += this.project.module.marketingPunch;
     this.product.openToPublic = true;
+    this.quality = this.project.quality;
+    this.weight = this.project.module.weight;
   }
 };

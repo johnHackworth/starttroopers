@@ -50,6 +50,13 @@ window.tr.models.POP.prototype = {
     this.likeTheProduct -= Math.floor(this.likeTheProduct / 50);;
     this.trimStats();
   },
+  whoLikesTheProduct: function(product) {
+    var whoDontLikeYet = this.useTheProduct - this.likeTheProduct;
+    var maxLikes = Math.floor(product.getAverageQuality() / 100 * whoDontLikeYet);
+    if(maxLikes) {
+      this.likeTheProduct += tr.randInt(maxLikes);
+    }
+  },
   trimStats: function() {
     if(this.knowTheProduct < 0) this.knowTheProduct = 0;
     if(this.knowTheProduct > this.size) this.knowTheProduct = this.size;

@@ -17,6 +17,7 @@ window.tr.products.SocialNetwork.prototype = {
         operationsGoal: 50,
       },
       maxUsers: 1000000,
+      weight: 100,
       earlyAdopters: ['technology', 'socialize'],
       marketingPunch: 10000,
       description: "The basic infrastructure to make your site open to public. Creating accounts, login, public profiles, comments... all the basic stuff!"
@@ -33,6 +34,7 @@ window.tr.products.SocialNetwork.prototype = {
         operationsGoal: 30,
       },
       maxUsers: 0,
+      weight: 30,
       earlyAdopters: ['technology'],
       marketingPunch: 5000,
       description: "Let your users define their own level of privacity and who can to see what"
@@ -50,6 +52,7 @@ window.tr.products.SocialNetwork.prototype = {
       },
       maxUsers: 5000000,
       marketingPunch: 3000,
+      weight: 5,
       earlyAdopters: ['technology'],
       description: "Prepare your site to reach the hungry masses! You need to implement this to be able to have tons of visitors"
     },
@@ -65,6 +68,7 @@ window.tr.products.SocialNetwork.prototype = {
         operationsGoal: 50,
       },
       maxUsers: 100000,
+      weight: 60,
       marketingPunch: 7000,
       earlyAdopters: ['gadgets', 'fashion', 'travel'],
       description: "Let your users upload and share their pictures!"
@@ -82,6 +86,7 @@ window.tr.products.SocialNetwork.prototype = {
       },
       maxUsers: 0,
       marketingPunch: 100,
+      weight: 1,
       earlyAdopters: [],
       flag: "externalAds",
       description: "Ad some advertising on your site and begin to monetize!"
@@ -98,6 +103,7 @@ window.tr.products.SocialNetwork.prototype = {
         operationsGoal: 80,
       },
       maxUsers: 0,
+      weight: 3,
       earlyAdopters: [],
       marketingPunch: 1000,
       flag: "internalAds",
