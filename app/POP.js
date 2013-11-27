@@ -24,6 +24,7 @@ window.tr.models.POP.prototype = {
   useTheProduct: 0,
   hype: 0,
   likeTheProduct: 0,
+  newUsers: 0,
   initialize: function() {
     this.hobbies = [];
     this.ageGroup = this.options.ageGroup;
@@ -68,9 +69,9 @@ window.tr.models.POP.prototype = {
   newProductUsers: function() {
     var noAccountUsers = this.knowTheProduct - this.useTheProduct;
     var userPercentaje = 10 + tr.randInt(this.hype);
-    console.log(noAccountUsers, userPercentaje);
     var newUsers = Math.floor(noAccountUsers * userPercentaje / 100);
     this.trigger('newUsers', newUsers, this);
+    this.newUsers = newUsers;
     this.useTheProduct += newUsers;
   },
   getVisits: function() {

@@ -22,6 +22,14 @@ body {
   border-radius: 15px
 }
 
+.titleGraph {
+  font-weight: bold;
+  text-shadow: 0 0 2px #333333;
+  color: #FFFFFF;
+  text-align: center;
+  z-index: 9999999;
+}
+
 .smallButton.Button .button {
   font-size: 15px;
   padding: 1px 0 0;
@@ -58,4 +66,10 @@ body {
   margin-left: 5px;
   font-size: 12px;
   vertical-align: top;
+}
+
+.Bar {
+  color: #FFFFFF;
+  /*text-shadow: 0 0 1px #000000;*/
+  text-align: center;
 }

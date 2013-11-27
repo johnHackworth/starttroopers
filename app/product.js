@@ -20,6 +20,7 @@ window.tr.models.Product.prototype = {
     this.name = this.options.name;
     this.modules = [];
     this.visits = [];
+    this.newUsers = [];
   },
   defineSocialNetwork: function() {
     tr.utils.extend.call(this, tr.products.SocialNetwork)

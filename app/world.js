@@ -62,12 +62,15 @@ window.tr.models.World.prototype = {
       this.investors[n].turn(this.currentTurn);
     }
     var visits = 0;
+    var newUsers = 0;
     for(var q in this.POPs) {
       this.POPs[q].turn(this.currentTurn);
       visits += this.POPs[q].getVisits();
+      newUsers += this.POPs[q].newUsers;
     }
     this.createUserAccounts();
     this.company.product.visits.push(visits);
+    this.company.product.newUsers.push(newUsers);
 
   },
   distributeMarketingPunch: function(amount, hobbies) {

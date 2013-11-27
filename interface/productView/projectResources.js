@@ -2,12 +2,13 @@ Crafty.c('ProjectResources', {
   productHTML: '<div class="projectInfo">'+
   '<div class="title">%NAME%</div>'+
   '<div class="description">%DESCRIPTION%</div>'+
+  // '<div class="quality">Product Quality: %QUALITY%</div>'+
   '</div>',
   'otherDataHTML': '<div class="projectOtherData">%NAME%</div>',
   init: function() {
     this.requires('2D, DOM, Color, Faces');
     this.attr({w:1190, h:790, x: 5, y: 5});
-    this.color('rgb(104,154,104)');
+    this.color('rgba(104,154,104, 0.85)');
     this.company = tr.app.director.company;
     this.product = this.company.product;
     this.statusBar = Crafty.e('StatusBar');
@@ -16,6 +17,8 @@ Crafty.c('ProjectResources', {
     this.renderProject();
     this.renderProjectPeople();
     this.renderCompanyPeople();
+    this.renderPhase();
+    this.renderQuality();
     this.render();
     this.buttons = [];
     this.project.on('change', function() {Crafty.trigger('ProjectSelected')})
@@ -32,6 +35,8 @@ Crafty.c('ProjectResources', {
       this.productHTML
       .replace(/%NAME%/g, this.project.name)
       .replace(/%DESCRIPTION%/g, this.project.module.description)
+      .replace(/%QUALITY%/g, this.project.quality)
+
     )
   },
   render: function() {
@@ -43,9 +48,9 @@ Crafty.c('ProjectResources', {
     var self = this;
     var i = 0;
     var x = 30;
-    var y = 205;
+    var y = 405;
     var title = Crafty.e('HTMLText');
-    title.set({x:20, y:160, w: 300, h:50, text: 'People on project:', class: 'projectTitle'})
+    title.set({x:20, y:360, w: 300, h:50, text: 'People on project:', class: 'projectTitle'})
     for(var n in this.project.people) {
       var other = this.project.people[n];
       this.createOtherFace(other, x, y);
@@ -135,5 +140,46 @@ Crafty.c('ProjectResources', {
       Crafty.scene('Project')
     }).bind(this)
   },
+  renderPhase: function() {
+    var areas = ['definition', 'design', 'back', 'front', 'architecture', 'operations'];
+    var x = 50;
+    var y = 250;
+    for(var n in areas) {
+      var area = areas[n];
+      var text = Crafty.e('2D, DOM, HTML');
+      text.append('<div class="areaTitle">'+areas[n]+'</div>')
+      text.attr({x:x, y:y})
+      var percentage = 100 * this.project.phase[area] / this.project.phase[area + 'Goal'];
+      var progressBar = Crafty.e('ProgressBar');
+      progressBar.setOptions({
+        w: 180,
+        h: 12,
+        y: y,
+        x: x + 100
+      });
+      progressBar.setValue(percentage);
+
+      x += 300;
+      if(x > 900) {
+        x = 50;
+        y += 50;
+      }
+    }
+  },
+  renderQuality: function() {
+    var x = 50;
+    var y = 200;
+    var text = Crafty.e('2D, DOM, HTML');
+    text.append('<div class="areaTitle">Quality</div>')
+    text.attr({x:x, y:y})
+    var progressBar = Crafty.e('ProgressBar');
+    progressBar.setOptions({
+      w: 180,
+      h: 12,
+      y: y,
+      x: x + 100
+    });
+    progressBar.setValue(this.project.quality);
+  }
 
 })
