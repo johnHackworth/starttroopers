@@ -1,8 +1,8 @@
 Crafty.c('OfficeFloor', {
   init: function() {
     this.requires('DOM, Text, Color');
-    this.attr({w:1190, h:790, x: 5, y: 5})
-    this.color('rgb(104,104,204)');
+    this.attr({w:1200, h:700, x: 0, y: 0})
+    this.color('rgba(104,104,204,.85)');
     this.company = tr.app.director.company;
     this.render();
     this.createPersons();
@@ -35,7 +35,11 @@ Crafty.c('OfficeFloor', {
     }
   },
   createStatusBar: function() {
+    var self = this;
     this.statusBar = Crafty.e('StatusBar');
+    this.statusBar.bind('newTurn', function() {
+      self.trigger('change:background')
+    })
   },
   createCompanyLog: function() {
     this.companyLog = Crafty.e('LogView');

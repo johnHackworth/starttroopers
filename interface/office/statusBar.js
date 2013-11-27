@@ -122,5 +122,6 @@ Crafty.c('StatusBar', {
   nextTurn: function() {
     this.company.turn();
     this.render();
+    this.trigger('newTurn')
   }
 })

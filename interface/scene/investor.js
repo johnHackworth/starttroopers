@@ -1,6 +1,6 @@
 window.tr = window.tr || {};
 window.tr.scenes = window.tr.scenes || {};
-
+window.tr.app = window.tr.app || {};
 window.tr.scenes.investor = {};
 
 Crafty.scene('Investor', (function() {
@@ -9,7 +9,7 @@ Crafty.scene('Investor', (function() {
   this.bg = Crafty.e("2D, DOM")
              .attr({x:0, y: 0, w: 1200, h: 700})
 
-  window.office = Crafty.e('InvestorView')
+  window.tr.app.currentView = Crafty.e('InvestorView')
 }).bind(window.tr.scenes.investor ),
 function() {
 

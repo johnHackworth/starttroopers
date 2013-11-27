@@ -1,6 +1,6 @@
 window.tr = window.tr || {};
 window.tr.scenes = window.tr.scenes || {};
-
+window.tr.app = window.tr.app || {};
 window.tr.scenes.PersonSocial = {};
 
 Crafty.scene('PersonSocial', (function() {
@@ -9,7 +9,7 @@ Crafty.scene('PersonSocial', (function() {
   this.bg = Crafty.e("2D, DOM")
              .attr({x:0, y: 0, w: 1200, h: 700})
 
-  window.profile = Crafty.e('PersonSocialSheet')
+  tr.app.currentView = Crafty.e('PersonSocialSheet')
 }).bind(window.tr.scenes.PersonSocial ),
 function() {
 

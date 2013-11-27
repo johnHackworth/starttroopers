@@ -65,7 +65,6 @@ window.tr.models.World.prototype = {
     for(var q in this.POPs) {
       this.POPs[q].turn(this.currentTurn);
       visits += this.POPs[q].getVisits();
-      console.log(visits);
     }
     this.createUserAccounts();
     this.company.product.visits.push(visits);

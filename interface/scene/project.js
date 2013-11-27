@@ -1,6 +1,6 @@
-window.tr = window.tr || {};
+window.tr.app = window.tr.app || {};window.tr = window.tr || {};
 window.tr.scenes = window.tr.scenes || {};
-
+window.tr.app = window.tr.app || {};
 window.tr.scenes.project = {};
 
 Crafty.scene('Project', (function() {
@@ -9,7 +9,7 @@ Crafty.scene('Project', (function() {
   this.bg = Crafty.e("2D, DOM")
              .attr({x:0, y: 0, w: 1200, h: 700})
 
-  window.productView = Crafty.e('ProjectResources')
+  tr.app.currentView = Crafty.e('ProjectResources')
 }).bind(window.tr.scenes.project),
 function() {
 
