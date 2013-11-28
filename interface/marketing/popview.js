@@ -8,6 +8,7 @@ Crafty.c('POPsView', {
     this.statusBar = Crafty.e('StatusBar');
     this.statusBar.createOfficeButton();
     this.renderVisits();
+    this.renderResourcesButtons();
     this.renderNewUsers();
   },
   renderVisits: function() {
@@ -42,6 +43,19 @@ Crafty.c('POPsView', {
       title: "Last 30 days new accounts",
       barColor: '#2266CC'
     });
+  },
+  renderResourcesButtons: function() {
+    this.resourcesButton = Crafty.e('Button')
+    this.resourcesButton.set({
+      color: '#AAAA55',
+      text: "Allocate Rersources",
+      y:640,
+      x:5,
+      onClick: this.marketingResourcesView.bind(this)
+    })
+  },
+  marketingResourcesView: function() {
+    Crafty.trigger('MarketingResourcesSelected');
   },
   render: function() {
     this.ready = true;
