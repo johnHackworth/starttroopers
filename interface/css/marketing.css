@@ -1,0 +1,20 @@
+.MarketingViewPOP {
+  font-size: 10px;
+  color: #333333;
+  background-color: #999966;
+  padding: 10px;
+  /*text-shadow: 0 0 1px #000000;*/
+}
+
+.MarketingViewPOP span{
+  font-size: 14px;
+}
+.MarketingViewPOP .hobbies span{
+  font-size: 10px;
+}
+
+.MarketingViewPOP .hasAccount span {
+  color: #FFFF99;
+  font-size: 16px;
+  text-shadow: 0 0 1px #000000;
+}

@@ -227,9 +227,12 @@ window.tr.models.Person.prototype = {
 
   assignPosition: function(position) {
     if(position === 'funds') {
-      this.assignRaiseFunds ();
+      this.assignRaiseFunds();
+    } else if(position === 'marketing') {
+      this.assignMarketing();
     } else {
       this.raisingFunds = false;
+      this.marketingStaff = false;
       var positions = ['funds', 'front', 'back', 'architecture', 'operations', 'visualDesign', 'productDesign', 'qa'];
       if(positions.indexOf(position) < 0) {
         return;
@@ -244,6 +247,8 @@ window.tr.models.Person.prototype = {
   removePosition: function(position) {
     if(position === 'funds') {
       this.raisingFunds = false;
+    } else if(position === 'marketing') {
+      this.marketingStaff = false;
     } else {
       var p = this.positions.indexOf(position);
       if(p >= 0)
@@ -385,10 +390,18 @@ window.tr.models.Person.prototype = {
   assignRaiseFunds: function() {
     this.positions = [];
     for(var n in this.currentProjects) {
-      console.log(this.currentProjects[n])
       this.currentProjects[n].removePerson(this);
     }
+    this.marketingStaff = false;
     this.raisingFunds = true;
+  },
+  assignMarketing: function() {
+    this.positions = [];
+    for(var n in this.currentProjects) {
+      this.currentProjects[n].removePerson(this);
+    }
+    this.raisingFunds = false;
+    this.marketingStaff = true;
   },
   negotiateOffer: function(offer) {
     if(offer.negotiator) {

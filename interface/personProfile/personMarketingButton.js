@@ -1,38 +1,38 @@
-Crafty.c('BusinessButton', {
+Crafty.c('MarketingButton', {
   init: function(){
     this.requires('Button');
   },
   setPerson: function(person) {
     this.person = person;
     this.set({
-        onClick: this.toggleRaiseFunds.bind(this)
+        onClick: this.toggleMarketing.bind(this)
     })
 
     this.render();
   },
   render: function() {
     var businessColor = '#666666';
-    var businessColorText = '#66FF66';
-    if(this.person.raisingFunds) {
+    var businessColorText = '#FFFF66';
+    if(this.person.marketingStaff) {
       businessColor = '#FFFF66';
-      businessColorText = '#005500';
+      businessColorText = '#000055';
     }
     this.set({
         // person: this.person,
-        text: 'Raise funds',
+        text: 'Marketing',
         // position: 'funds',
         color: businessColor,
         textColor: businessColorText,
-        x: 10,
+        x: 140,
         y: 500,
         w: 120
       })
   },
-  toggleRaiseFunds: function() {
-    if(this.person.raisingFunds) {
-      this.person.removePosition('funds');
+  toggleMarketing: function() {
+    if(this.person.marketingStaff) {
+      this.person.removePosition('marketing');
     } else {
-      this.person.assignRaiseFunds();
+      this.person.assignMarketing();
     }
     this.trigger('toggle');
     this.render();

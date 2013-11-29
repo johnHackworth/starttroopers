@@ -120,7 +120,13 @@ Crafty.c('PersonProfileSheet', {
     this.businessButton = Crafty.e('BusinessButton, raiseFunds');
     this.businessButton.setPerson(this.person);
     this.buttons.push(this.businessButton)
-    this.businessButton.bind('toggle', this.render.bind(this));
+    this.businessButton.bind('toggle', this.redrawButtons.bind(this));
+
+    this.marketingButton = Crafty.e('MarketingButton, raiseFunds');
+    this.marketingButton.setPerson(this.person);
+    this.buttons.push(this.marketingButton)
+    this.marketingButton.bind('toggle', this.redrawButtons.bind(this));
+
     for(var n in positions) {
       var pos = positions[n].name;
       this[pos+'Button'] = Crafty.e('PositionButton');
@@ -129,12 +135,17 @@ Crafty.c('PersonProfileSheet', {
         person: this.person,
         text: this.positions[n].text,
         position: pos,
-        x: 150+(110*i),
+        x: 290+(110*i),
         y: 500
       })
       this[pos+'Button'].render();
-      this[pos+'Button'].bind('toggle', this.render.bind(this));
+      this[pos+'Button'].bind('toggle', this.redrawButtons.bind(this));
       i++;
+    }
+  },
+  redrawButtons: function() {
+    for(var n in this.buttons) {
+      this.buttons[n].render();
     }
   },
   renderPersonalData: function() {
