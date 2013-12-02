@@ -5,6 +5,7 @@ Crafty.c('MarketingView', {
     "<div class='hobbies'>Interests: <span>%HOBBIES%</span></div>"+
     "<div class='hasAccount'>Use us: <span>%HASACCOUNT%</span></div>"+
     "</div>",
+  otherDataHTML: '<div class="projectOtherData">%NAME%</div>',
   ageGroups: {
     16: "16-24",
     25: "25-44",
@@ -12,7 +13,7 @@ Crafty.c('MarketingView', {
     60: "60+"
   },
   init: function() {
-    this.requires('DOM, Text, Color');
+    this.requires('DOM, Text, Color, Faces');
     this.attr({w:1200, h:700, x: 0, y: 0})
     this.color('rgba(104,155,155,.85)');
     this.company = tr.app.director.company;
@@ -20,6 +21,7 @@ Crafty.c('MarketingView', {
     this.statusBar = Crafty.e('StatusBar');
     this.statusBar.createOfficeButton();
     this.renderPOPs();
+    this.renderMarketingPeople(30, 560);
   },
   renderPOPs: function() {
     var x = 20;

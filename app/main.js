@@ -16,14 +16,7 @@ window.onload = function() {
 
 
   window.comp = window.tr.app.director.company;
-  var p = []
-  for(var i = 0; i < 5; i++) {
-    var a = new window.tr.models.Person({});
-    a.randomize();
-    p.push(a);
-    comp.addPerson(a);
-    comp.projects[0].addPerson(a);
-  }
+
   window.tr.app.director.start();
 
 }

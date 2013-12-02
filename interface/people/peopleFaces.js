@@ -13,6 +13,14 @@ Crafty.c('PersonFace', {
     this.bind('Click', this.selectPerson.bind(this));
     this.bind('EnterFrame', this.turn.bind(this));
   },
+  delete: function() {
+    this.unbind('MouseOver');
+    this.unbind('MouseOut');
+    this.unbind('Click');
+    this.unbind('EnterFrame');
+    this.person.off('conversation')
+    this.destroy();
+  },
   components: [
     "Background", "Face","Facialfeatures", "Beard", "Eyes", "Nose",  "Mouth", "Hair", "Glasses", "Clothes"
   ],

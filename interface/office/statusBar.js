@@ -9,6 +9,7 @@ Crafty.c('StatusBar', {
     this.createProductButton();
     this.createProjectCompletion();
     this.createBusinessButton();
+    this.createIndustryButton();
     this.createMarketingButton();
     this.createDateContainer();
     this.createMoneyContainer();
@@ -70,6 +71,19 @@ Crafty.c('StatusBar', {
       x:640,
       onClick: this.marketingView.bind(this)
     })
+  },
+  createIndustryButton: function() {
+    this.industryButton = Crafty.e('Button');
+    this.industryButton.set({
+      color: '#AAAAAA',
+      text: "Industry View",
+      y: 5,
+      x:750,
+      onClick: this.industryView.bind(this)
+    })
+  },
+  industryView: function() {
+    Crafty.trigger('IndustryHubSelected')
   },
   productView: function() {
     Crafty.trigger('ProductSelected');

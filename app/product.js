@@ -16,6 +16,7 @@ window.tr.models.Product.prototype = {
   marketingPunch: 100,
   currentTurn: 0,
   openToPublic: false,
+  hype: 0,
   initialize: function() {
     this.name = this.options.name;
     this.modules = [];
@@ -57,5 +58,8 @@ window.tr.models.Product.prototype = {
       quality = 100 * quality / i;
     }
     return quality;
+  },
+  addHype: function(quality) {
+    this.company.addHype(quality/50);
   }
 };

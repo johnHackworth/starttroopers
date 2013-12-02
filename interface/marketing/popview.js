@@ -1,6 +1,6 @@
 Crafty.c('POPsView', {
   init: function() {
-    this.requires('DOM, Text, Color');
+    this.requires('DOM, Text, Color, Faces');
     this.attr({w:1200, h:700, x: 0, y: 0})
     this.color('rgba(104,155,155,.85)');
     this.company = tr.app.director.company;
@@ -10,6 +10,8 @@ Crafty.c('POPsView', {
     this.renderVisits();
     this.renderResourcesButtons();
     this.renderNewUsers();
+    this.renderHype();
+    this.renderMarketingPeople(30, 560);
   },
   renderVisits: function() {
     this.visitsView = Crafty.e('BarGraph');
@@ -54,8 +56,19 @@ Crafty.c('POPsView', {
       onClick: this.marketingResourcesView.bind(this)
     })
   },
+
   marketingResourcesView: function() {
     Crafty.trigger('MarketingResourcesSelected');
+  },
+  renderHype: function() {
+    this.hypeView = Crafty.e('2D, DOM, HTML');
+    this.hypeView.append('<div class="title">Hype</div><div class="value">'+this.company.hype+'</div>');
+    this.hypeView.attr({
+      x: 1000,
+      y: 640,
+      w: 200,
+      h: 60
+    })
   },
   render: function() {
     this.ready = true;

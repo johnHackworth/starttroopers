@@ -38,6 +38,9 @@ window.tr.directors.MainDirector.prototype = {
     Crafty.bind("InvestorSelected", this.investorSelected.bind(this));
     Crafty.bind("MarketingSelected", this.marketingSelected.bind(this));
     Crafty.bind("MarketingResourcesSelected", this.marketingResourcesSelected.bind(this));
+    Crafty.bind("IndustryHubSelected", this.industryHubSelected.bind(this));
+    Crafty.bind("JobOffersSelected", this.jobOffersSelected.bind(this));
+    Crafty.bind("OfferCreatorSelected", this.offerCreatorSelected.bind(this));
 
   },
   personProfile: function() {
@@ -69,6 +72,15 @@ window.tr.directors.MainDirector.prototype = {
   },
   marketingResourcesSelected: function() {
     Crafty.scene('MarketingResources')
+  },
+  industryHubSelected: function() {
+    Crafty.scene('IndustryHub')
+  },
+  jobOffersSelected: function() {
+    Crafty.scene('JobOffers')
+  },
+  offerCreatorSelected: function() {
+    Crafty.scene('JobOfferCreator')
   }
 
 }

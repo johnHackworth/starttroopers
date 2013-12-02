@@ -5,6 +5,8 @@ window.tr.models.Company = function(options) {
   this.options = options;
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Loggable);
+  tr.utils.extend.call(this, tr.utils.Stats);
+
   this.initialize();
 }
 
@@ -13,8 +15,9 @@ window.tr.models.Company.prototype = {
   currentTurn: 0,
   companyValue: 1000000,
   companyOwnShare: 100,
+  hype: 0,
   initialize: function() {
-    this.name = this.options.name;
+    this.name = this.options.name || 'the company';
     this.projects = [];
     this.offers = [];
     this.people = [];
@@ -45,6 +48,8 @@ window.tr.models.Company.prototype = {
       this.projects[p].turn(this.currentTurn);
     };
     this.product.turn(this.currentTurn);
+    this.actualizeHype();
+    this.actualizeFinantial();
     this.trigger('newTurn')
   },
 
@@ -80,6 +85,12 @@ window.tr.models.Company.prototype = {
   addPerson: function(person) {
     this.people.push(person);
     person.company = this;
+    this.log('The company has signed '+person.name)
+    if(person.followers > 500) {
+      this.log(person.name + ' is a star on the business')
+      this.addHype(person.followers / 500);
+    }
+    this.trigger('newHire', person)
   },
   getAnOffer: function(investor, share, price) {
     this.offers.push({
@@ -133,6 +144,46 @@ window.tr.models.Company.prototype = {
     this.log('BIG NEWS! '+ offer.investor.name + ' has bought a '+offer.share+'% of the company');
     offer.investor.completeOffer();
     this.retireOffer(offer, true);
+    this.addHype(tr.randInt(5));
+  },
+  addHype:function(quality) {
+    this.increaseStat('hype', quality);
+  },
+  actualizeHype: function() {
+    var hypeVariation = -1 * this.hype * 0.01;
+    this.increaseStat('hype', hypeVariation);
+  },
+  transferOwnShare: function(share, person) {
+    if(!share) {
+      return true;
+    }
+    if(this.companyOwnShare - share >= 0) {
+      person.companyShare += share;
+      this.companyOwnShare -= share;
+      this.log(share +'% of the company now belongs to '+person.name);
+      return true;
+    }
+    return false;
+  },
+  publishWorkOffer: function(options) {
+    this.world.publishWorkOffer(options, this);
+  },
+  removeWorkOffer: function(id) {
+    this.world.removeWorkOffer(id);
+  },
+  actualizeFinantial: function() {
+    var date = tr.turnToDate(this.currentTurn)
+    if(date.getDate() === 1) {
+      this.payWages();
+    }
+  },
+  payWages: function() {
+    this.log('Payday!')
+    for(var n in this.people) {
+      var monthlyPay = this.people[n].currentWage / 12;
+      this.cash -= monthlyPay;
+      this.people[n].money += monthlyPay;
+    }
   }
 
 };

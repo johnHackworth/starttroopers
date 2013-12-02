@@ -33,6 +33,7 @@ window.tr.decorators.business.prototype = {
     this.experience = tr.randInt(10);
     var posiblePastJobs = ['enterpreur', 'business', 'front', 'back', 'designer']
     var increase = 0;
+    var followersRatio = this.sociability / 100;
     for(var i = 0; i < this.experience; i++) {
       if(this.mainInterest === 'business') {
         if(tr.randInt() > 50) {
@@ -45,6 +46,7 @@ window.tr.decorators.business.prototype = {
           this.increaseStat('productDesign', tr.randInt(5 * this.learning / 100))
           this.desiredWage += increase * 1000 * (this.negotiation / 100);
         }
+        this.followers += tr.randInt(followersRatio * increase *  increase * tr.randInt(10));
       }
       this.randomizePerks();
     }
@@ -61,6 +63,14 @@ window.tr.decorators.business.prototype = {
           this.perks.push('leader');
           this.increaseStat('sociability', 10);
         }
+      }
+    }
+    if(tr.randInt(1000) < 15) {
+      this.perks.push('media savvy');
+      this.followers += 2000;
+      if(tr.randInt() < 10) {
+        this.perks.push('guru');
+        this.followrs += 5000;
       }
     }
   }

@@ -9,6 +9,7 @@ window.tr.decorators.design.prototype = {
   randomizeStudies: function() {
     if(this.mainInterest === 'design') {
       if(Math.random() * 100 < 50) {
+        this.followers += tr.randInt(200);
         this.perks.push('design school');
         this.increaseStat('visualDesign', 25);
         this.increaseStat('frontend', 5);
@@ -35,6 +36,7 @@ window.tr.decorators.design.prototype = {
     this.experience = tr.randInt(10);
     var posiblePastJobs = ['enterpreur', 'business', 'front', 'back', 'designer']
     var increase = 0;
+    var followersRatio = this.sociability / 100;
     for(var i = 0; i < this.experience; i++) {
       if(this.mainInterest === 'design') {
         increase = tr.randInt(10 * this.learning / 100)
@@ -42,6 +44,8 @@ window.tr.decorators.design.prototype = {
         this.increaseStat('visualDesign', tr.randInt(10 * this.learning / 100))
         this.desiredWage += increase * 600 * (this.negotiation / 100);
       }
+      this.followers += tr.randInt(followersRatio * increase * increase * tr.randInt(10));
+
       this.randomizePerks();
     }
   },
@@ -62,6 +66,18 @@ window.tr.decorators.design.prototype = {
           this.increaseStat('visualDesign', 10);
           this.increaseStat('productDesign', 10);
         }
+      }
+    }
+    if(tr.randInt() < 5) {
+      this.perks.push('scenester');
+      this.followers += 300;
+    }
+    if(tr.randInt(1000) < 15) {
+      this.perks.push('rock star');
+      this.followers += 1000;
+      if(tr.randInt() < 10) {
+        this.perks.push('guru');
+        this.followrs += 4000;
       }
     }
   },

@@ -9,6 +9,7 @@ window.tr.decorators.engineering.prototype = {
   randomizeStudies: function() {
     if(this.mainInterest === 'engineering') {
       if(Math.random() * 100 < 50) {
+        this.followers += tr.randInt(200);
         this.perks.push('engineering graduate');
         this.increaseStat('architecture', 20);
         this.increaseStat('backend', 15);
@@ -36,6 +37,7 @@ window.tr.decorators.engineering.prototype = {
     this.experience = tr.randInt(10);
     var posiblePastJobs = ['enterpreur', 'business', 'front', 'back', 'designer']
     var increase = 0;
+    var followersRatio = this.sociability / 100;
     for(var i = 0; i < this.experience; i++) {
       if(this.mainInterest === 'engineering') {
         var frontAlpha = tr.randInt(10 * this.learning / 100)
@@ -51,11 +53,12 @@ window.tr.decorators.engineering.prototype = {
         increase = frontAlpha + qaAlpha + backAlpha + archAlpha + opAlpha
         this.desiredWage += increase * 200 * (this.negotiation / 100);
       }
+      this.followers += tr.randInt(followersRatio * increase * increase * tr.randInt(10));
       this.randomizePerks();
     }
   },
   randomizePerks: function() {
-    if(tr.randInt() < 5) {
+    if(tr.randInt() < 7) {
       if(this.mainInterest === 'engineering') {
         var chooseInt = tr.randInt(4);
         if(chooseInt == 0) {
@@ -74,6 +77,28 @@ window.tr.decorators.engineering.prototype = {
           this.perks.push('qa');
           this.increaseStat('qa', 30);
         }
+        if(chooseInt == 4) {
+          this.perks.push('crafstman');
+          this.increaseStat('hypeable', 10);
+          this.increaseStat('workEthics', 10);
+        }
+        if(chooseInt == 5) {
+          this.perks.push('cleancoder');
+          this.increaseStat('hypeable', 15);
+          this.increaseStat('learning', 10);
+        }
+      }
+    }
+    if(tr.randInt() < 5) {
+      this.perks.push('scenester');
+      this.followers += 300;
+    }
+    if(tr.randInt(1000) < 15) {
+      this.perks.push('rock star');
+      this.followers += 1000;
+      if(tr.randInt() < 10) {
+        this.perks.push('guru');
+        this.followrs += 4000;
       }
     }
   },

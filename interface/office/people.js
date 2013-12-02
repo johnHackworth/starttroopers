@@ -11,5 +11,9 @@ Crafty.c('Person', {
     this.face.assignPerson({person: this.person});
     this.face.setSize(100);
     this.face.setPosition(this.x, this.y)
+  },
+  delete: function() {
+    this.face.delete();
+    this.destroy();
   }
 })

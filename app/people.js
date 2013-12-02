@@ -2,7 +2,6 @@ window.tr = window.tr || {};
 window.tr.models = window.tr.models || {};
 window.tr.app = window.tr.app || {};
 window.tr.app.persons = {};
-
 window.tr.models.Person = function(options) {
   this.options = options;
   tr.utils.extend.call(this, tr.utils.Eventable);
@@ -40,6 +39,9 @@ window.tr.models.Person.prototype = {
   currentWage: 0,
 
   projectKnowledge: 0,
+
+  hypeable: 0,
+  followers: 0,
 
   workToStats: {
     "design": "visualDesign",
@@ -113,6 +115,7 @@ window.tr.models.Person.prototype = {
     this.learning = tr.randInt(90) + 10;
     this.attention = tr.randInt(100);
     this.workEthics = tr.randInt(100);
+    this.hypeable = tr.randInt(100);
     if(tr.randInt() < 10) {
       this.perks.push('nerdy');
       this.increaseStat('learning', 20);
@@ -152,6 +155,7 @@ window.tr.models.Person.prototype = {
       this.dailySchedule();
     }
     this.updateHappiness();
+    this.updateOffers();
   },
   updateHappiness: function() {
     this.happiness -= 0.1;
@@ -409,5 +413,70 @@ window.tr.models.Person.prototype = {
     }
     offer.negotiator = this;
     this.negotiatingOffer = offer;
+  },
+  perceptionOfTheCompany: function(company) {
+    var perception = 0;
+    // hype
+    var hype = (company.hype + this.hypeable) / 2;
+    // friends opinion
+    perception += hype;
+
+    if(!this.company) {
+      perception += 30;
+    }
+    if(this.experience = 0) {
+      perception += 30;
+    } else if(this.experience <= 2) {
+      perception += 15;
+    }
+    //
+    return perception;
+  },
+  desiredWageForCompany: function(company) {
+    var modificator = 1.5 - this.perceptionOfTheCompany(company) / 100;
+    return Math.floor(this.desiredWage * modificator);
+  },
+  getOffer: function(amount, share, company) {
+    this.log(this.name + ' has received an offer from '+company.name);
+    var desiredCompanyWage = this.desiredWageForCompany(company);
+    var shareValue = company.companyValue * share;
+    if(shareValue + amount > desiredCompanyWage) {
+      this.acceptOffer(amount, share, company)
+    } else {
+      if(desiredCompanyWage * 0.75 < shareValue + amount) {
+        this.negotiateOffer(amount, share, company);
+      } else {
+        this.rejectOffer(amount, share, company);
+      }
+    }
+  },
+  acceptOffer: function(amount, share, company) {
+    this.acceptingOffer = {
+      amount: amount,
+      share: share,
+      company: company
+    }
+    this.log(this.name + ' is going to hire by '+company.name);
+  },
+  negotiateOffer: function(amount, share, company) {
+    company.log(this.name + ' would like to hear more from you, but the offer is too low');
+  },
+  rejectOffer: function(amount, share, company) {
+    this.rejectingOfferOf = company;
+    this.log(this.name + ' is going to reject the offer by '+company.name);
+  },
+  updateOffers: function() {
+    if(this.acceptingOffer) {
+      if(this.acceptingOffer.company.transferOwnShare(this.acceptingOffer.share, this)) {
+        this.acceptingOffer.company.addPerson(this);
+        this.currentWage = this.acceptingOffer.amount;
+      } else {
+        this.rejectOffer(0,0,this.acceptingOffer.company);
+      }
+      this.acceptingOffer = undefined;
+    } else if(this.rejectingOfferOf) {
+      this.rejectingOfferOf.log(this.name + ' has rejected the offer of the company')
+      this.rejectingOfferOf = undefined;
+    }
   }
 }

@@ -33,5 +33,6 @@ window.tr.models.ProductModule.prototype = {
     this.product.openToPublic = true;
     this.quality = this.project.quality;
     this.weight = this.project.module.weight;
+    this.product.addHype(this.quality);
   }
 };
