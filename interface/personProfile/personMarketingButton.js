@@ -24,7 +24,7 @@ Crafty.c('MarketingButton', {
         color: businessColor,
         textColor: businessColorText,
         x: 140,
-        y: 500,
+        y: 600,
         w: 120
       })
   },

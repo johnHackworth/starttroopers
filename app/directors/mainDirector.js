@@ -41,7 +41,8 @@ window.tr.directors.MainDirector.prototype = {
     Crafty.bind("IndustryHubSelected", this.industryHubSelected.bind(this));
     Crafty.bind("JobOffersSelected", this.jobOffersSelected.bind(this));
     Crafty.bind("OfferCreatorSelected", this.offerCreatorSelected.bind(this));
-
+    Crafty.bind("OfferViewSelected", this.offerViewSelected.bind(this));
+    Crafty.bind("PersonContractSelected", this.personContractSelected.bind(this));
   },
   personProfile: function() {
     Crafty.scene('PersonProfile')
@@ -81,6 +82,12 @@ window.tr.directors.MainDirector.prototype = {
   },
   offerCreatorSelected: function() {
     Crafty.scene('JobOfferCreator')
+  },
+  offerViewSelected: function() {
+    Crafty.scene('EmployeeSearch')
+  },
+  personContractSelected: function() {
+    Crafty.scene('PersonContract')
   }
 
 }

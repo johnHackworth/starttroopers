@@ -19,6 +19,9 @@ Crafty.c('PersonFace', {
     this.unbind('Click');
     this.unbind('EnterFrame');
     this.person.off('conversation')
+    for(var n in this.components) {
+      this[this.components[n].toLowerCase()].destroy();
+    }
     this.destroy();
   },
   components: [

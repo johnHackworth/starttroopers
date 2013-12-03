@@ -26,7 +26,7 @@ Crafty.c("JobOffersView", {
     this.currentJobOffersTitle.attr({x: 200})
     this.currentJobOffersTitle.render();
     for(var n in offers) {
-      var offerView = Crafty.e('2D, DOM, HTML');
+      var offerView = Crafty.e('2D, DOM, HTML, Mouse');
       offerView.replace(this.jobOfferHTML
         .replace(/%TYPE%/g, offers[n].type)
         .replace(/%DATE%/g, tr.turnToDate(offers[n].published).toDateString())
@@ -38,6 +38,7 @@ Crafty.c("JobOffersView", {
         w: 600,
         h: 50
       })
+      offerView.bind('Click', this.createOfferClickResponse(n));
       this.offerViews.push(offerView);
       y += 60;
     }
@@ -46,6 +47,15 @@ Crafty.c("JobOffersView", {
       this.offersWarning.append('<div class="offersWarning">There are no open processes right now </div>');
       this.offersWarning.attr({x: 200, y: 150, w: 600, h: 30})
     }
+  },
+  createOfferClickResponse: function(nParam) {
+    var n = nParam;
+    return function() {
+      console.log('a', n)
+      tr.app.director.currentOffer = n;
+      Crafty.trigger('OfferViewSelected')
+    }
+
   },
   renderOfferCreatorButton: function() {
     this.offerCreatorButton = Crafty.e('Button');

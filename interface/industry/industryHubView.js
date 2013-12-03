@@ -8,6 +8,20 @@ Crafty.c("IndustryHubView", {
     this.statusBar.createOfficeButton();
     this.createIndustryButtoner();
   },
+  renderPeople: function() {
+    this.peopleList = Crafty.e('PeopleList');
+    this.peopleList.set({
+      people: this.company.world.people,
+      x: 220,
+      y: 60,
+      stepX: 150,
+      stepY: 120,
+      additionalInfo: 'getPersonalHireData',
+      maxPerPage: 16
+    })
+    this.peopleList.renderPeople()
+
+  }
 
 
 })

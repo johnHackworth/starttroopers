@@ -11,6 +11,7 @@ window.tr.models.Company = function(options) {
 }
 
 window.tr.models.Company.prototype = {
+  human:true,
   cash: 100000,
   currentTurn: 0,
   companyValue: 1000000,

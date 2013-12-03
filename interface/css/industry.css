@@ -27,10 +27,52 @@
   color: #3F3;
   width: 300px;
   margin-top: 15px;
-
-}.jobOffer .applicants {
+}
+.jobOffer .applicants {
   display: inline-block;
   color: #33F;
   width: 50px;
   margin-top: 15px;
+}
+
+.otherData {
+
+}
+
+.otherData .name {
+  width: 100%;
+  color: #FFFFFF;
+  text-shadow: 0 0 1px #000000;
+  font-size: 12px;
+}
+
+.otherData .mainInterest {
+  width: 100%;
+  float: left;
+  display: inline-block;
+  font-size: 12px;
+}
+
+.otherData .experience,
+.otherData .followers {
+  width: 45%;
+  display: inline-block;
+  font-size: 8px;
+  padding: 0;
+  margin: 0;
+}
+.otherData .perks {
+  width: 100%;
+  font-size: 8px;
+}
+
+.offerData {
+  display: inline-block;
+  width: 100%;
+  color: #FFFFFF;
+}
+
+.offerData div {
+  display: inline-block;
+  width: 24%;
 }

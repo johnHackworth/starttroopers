@@ -4,13 +4,16 @@ Crafty.c('PersonProjectsSheet', {
   "</div>",
   moduleHTML: '<div class="module released_%RELEASED%"><div class="title">%NAME%</div> <div class="currentPhase">%PHASENAME%</div></div>',
   init: function() {
-    this.requires('2D, DOM, Color, Faces');
-    this.attr({w:1190, h:790, x: 5, y: 5});
+    this.requires('2D, DOM, Color, Faces, PersonProfileButtoner');
+    this.attr({w:1200, h:700, x: 0, y: 0});
     this.color('rgb(104,154,104)');
     this.person = tr.app.director.selectedPerson;
     this.render();
     this.buttons = [];
     this.otherFaces = [];
+
+    this.statusBar = Crafty.e('StatusBar, PersonProfileButtoner');
+    this.statusBar.createOfficeButton();
     this.createPersonFace();
     this.createButtoner();
     this.renderPersonData();
@@ -20,31 +23,11 @@ Crafty.c('PersonProjectsSheet', {
     this.ready = true;
     Crafty.trigger("Change");
   },
-  createPersonFace: function() {
-    this.personFaceView = Crafty.e('PersonFace');
-    this.personFaceView.assignPerson({
-      person: this.person
-    });
-    this.personFaceView.setSize(200);
-    this.personFaceView.setPosition(20,20);
-  },
-
-  createButtoner: function() {
-    this.profileButton = Crafty.e('Button');
-    this.profileButton.set({
-      color: '#AAAA00',
-      text: "Profile",
-      y: 550,
-      onClick: function() {
-        Crafty.trigger('PersonSelected');
-      }
-    });
-  },
   renderPersonData: function() {
     this.personalData = Crafty.e('2D, DOM, HTML');
     this.personalData.attr({
       x: 250,
-      y: 20,
+      y: 90,
       w: 600,
       h: 300
     }).append(

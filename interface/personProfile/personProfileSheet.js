@@ -60,8 +60,8 @@ Crafty.c('PersonProfileSheet', {
   "</div>" +
   "</div>",
   init: function() {
-    this.requires('DOM, Text, Color');
-    this.attr({w:1190, h:790, x: 5, y: 5})
+    this.requires('DOM, Text, Color, PersonProfileButtoner');
+    this.attr({w:1200, h:700, x: 0, y: 0})
     this.color('rgb(104,104,104)');
     this.person = tr.app.director.selectedPerson;
     this.render();
@@ -74,7 +74,9 @@ Crafty.c('PersonProfileSheet', {
     this.renderPersonalData();
     this.renderStats();
     this.renderPersonalStats();
-
+    if(this.person.company && this.person.company.human) {
+      this.createPositionButtons()
+    }
     // this.person.on('change', function() {Crafty.scene('PersonProfile')})
 
   },
@@ -82,67 +84,7 @@ Crafty.c('PersonProfileSheet', {
     this.ready = true;
     Crafty.trigger("Change");
   },
-  createPersonFace: function() {
-    this.personFaceView = Crafty.e('PersonFace');
-    this.personFaceView.assignPerson({
-      person: this.person
-    })
-    this.personFaceView.setSize(200);
-    this.personFaceView.setPosition(20,70)
-  },
-  createButtoner: function() {
-    this.socialButton = Crafty.e('Button');
-    this.socialButton.set({
-      color: '#6666CC',
-      text: "Social",
-      y: 550,
-      onClick: function() {
-        Crafty.trigger('SocialSelected')
-      }
-    }),
-    this.projectsButton = Crafty.e('Button');
-    this.projectsButton.set({
-      color: '#6666CC',
-      text: "Projects",
-      x: 120,
-      y: 550,
-      onClick: function() {
-        Crafty.trigger('PersonProjectsSelected')
-      }
-    }),
-    this.createPositionButtons()
-  },
-  createPositionButtons: function() {
-    var self = this;
-    var positions = this.positions;
-    var i= 0;
 
-    this.businessButton = Crafty.e('BusinessButton, raiseFunds');
-    this.businessButton.setPerson(this.person);
-    this.buttons.push(this.businessButton)
-    this.businessButton.bind('toggle', this.redrawButtons.bind(this));
-
-    this.marketingButton = Crafty.e('MarketingButton, raiseFunds');
-    this.marketingButton.setPerson(this.person);
-    this.buttons.push(this.marketingButton)
-    this.marketingButton.bind('toggle', this.redrawButtons.bind(this));
-
-    for(var n in positions) {
-      var pos = positions[n].name;
-      this[pos+'Button'] = Crafty.e('PositionButton');
-      this.buttons.push(this[pos+'Button']);
-      this[pos+'Button'].setOptions({
-        person: this.person,
-        text: this.positions[n].text,
-        position: pos,
-        x: 290+(110*i),
-        y: 500
-      })
-      this[pos+'Button'].render();
-      this[pos+'Button'].bind('toggle', this.redrawButtons.bind(this));
-      i++;
-    }
-  },
   redrawButtons: function() {
     for(var n in this.buttons) {
       this.buttons[n].render();

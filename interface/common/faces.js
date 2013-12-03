@@ -1,5 +1,12 @@
 Crafty.c('Faces', {
   otherDataHTML: '<div class="projectOtherData">%NAME%</div>',
+  otherHireDataHTML: '<div class="otherData">'+
+    '<div class="name">%NAME%</div>' +
+    '<div class="mainInterest">%MAININTEREST%</div>' +
+    '<div class="experience">%EXPERIENCE% y. of exp.</div>' +
+    '<div class="followers">%FOLLOWERS% followers</div>' +
+    '<div class="perks">%PERKS%</div>' +
+    '</div>',
   createOtherFace: function(other, x, y) {
     if(!this.otherFaces) {
       this.otherFaces = [];
@@ -44,4 +51,16 @@ Crafty.c('Faces', {
 
       }
   },
+  getPersonalHireData: function(person) {
+    var otherData = Crafty.e('2D, HTML, DOM');
+    otherData.replace(
+      this.otherHireDataHTML
+        .replace(/%NAME%/g, person.name)
+        .replace(/%EXPERIENCE%/g, person.experience)
+        .replace(/%MAININTEREST%/g, person.mainInterest)
+        .replace(/%FOLLOWERS%/g, person.followers)
+        .replace(/%PERKS%/g, person.perks.join(', '))
+    )
+    return otherData;
+  }
 })
