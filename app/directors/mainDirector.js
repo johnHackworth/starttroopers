@@ -24,7 +24,7 @@ window.tr.directors.MainDirector.prototype = {
     Crafty.bind('SceneChange', function() {
       var scale = window.innerWidth / 1200;
       if(scale < 1) {
-       Crafty.viewport.scale(scale)
+        Crafty.viewport.scale(scale)
       }
     })
     Crafty.scene('Office')

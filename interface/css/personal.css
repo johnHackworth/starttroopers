@@ -37,6 +37,12 @@
   margin-left: 15px;
   color: #333333;
 }
+.followers {
+  display: inline-block;
+  font-size: 14px;
+  margin-left: 15px;
+  color: #9999FF;
+}
 .happiness[data-happiness="Very unhappy"] {
   color: #F66;
 }
@@ -99,7 +105,7 @@
 .statCol {
   display: inline-block;
   vertical-align: top;
-  width: 250px;
+  width: 350px;
 }
 
 .stats .stat{
@@ -107,7 +113,7 @@
   margin-bottom: 10px;
   padding-right: 10px;
   text-align: right;
-  width: 230px;
+  width: 330px;
 }
 
 .stat span {
@@ -122,7 +128,7 @@
   margin-bottom: 10px;
   padding-right: 10px;
   text-align: right;
-  width: 140px;
+  width: 300px;
 }
 
 .PositionButton, .raiseFunds {
@@ -143,4 +149,36 @@
   font-size: 25px;
   text-shadow: 0 0 2px #333333;
   color: #FFFFDD;
+}
+
+.personalOfferData {
+  color: #FFFFFF;
+}
+
+.personalOfferData .interest {
+  display: block;
+  width: 100%;
+  margin: 10px 0 15px;
+}
+.personalOfferData .wage {
+  display: block;
+  width: 100%;
+  margin: 15px 0;
+}
+.personalOfferData .share {
+  display: block;
+  width: 100%;
+  margin: 15px 0 50px;
+}
+.personalOfferData .offerMoney {
+  display: block;
+  width: 100%;
+  font-size: 25px;
+  margin: 40px 0;
+}
+.personalOfferData .equity {
+  display: block;
+  width: 100%;
+  font-size: 25px;
+  margin: 40px 0;
 }

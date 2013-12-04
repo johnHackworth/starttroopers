@@ -49,6 +49,11 @@ Crafty.c('PersonProfileButtoner', {
     this.buttons.push(this.marketingButton)
     this.marketingButton.bind('toggle', this.redrawButtons.bind(this));
 
+    this.recruiterButton = Crafty.e('RecruiterButton, raiseFunds');
+    this.recruiterButton.setPerson(this.person);
+    this.buttons.push(this.recruiterButton)
+    this.recruiterButton.bind('toggle', this.redrawButtons.bind(this));
+
     for(var n in positions) {
       var pos = positions[n].name;
       this[pos+'Button'] = Crafty.e('PositionButton');
@@ -64,6 +69,11 @@ Crafty.c('PersonProfileButtoner', {
       this[pos+'Button'].bind('toggle', this.redrawButtons.bind(this));
       i++;
     }
+  },
+  createOtherCompanyButtons: function() {
+    this.scoutingButton = Crafty.e('RecruitingButton, raiseFunds');
+    this.scoutingButton.setPerson(this.person);
+    this.buttons.push(this.scoutingButton)
   },
   createPersonFace: function() {
     this.personFaceView = Crafty.e('PersonFace');

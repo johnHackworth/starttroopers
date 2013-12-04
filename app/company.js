@@ -22,6 +22,7 @@ window.tr.models.Company.prototype = {
     this.projects = [];
     this.offers = [];
     this.people = [];
+    this.beingScouted = [];
     this.world = tr.app.director.world;
     this.availableInvestors = tr.app.director.world.investors;
     this.POPs = tr.app.director.world.POPs;
@@ -84,14 +85,18 @@ window.tr.models.Company.prototype = {
   },
 
   addPerson: function(person) {
-    this.people.push(person);
-    person.company = this;
-    this.log('The company has signed '+person.name)
-    if(person.followers > 500) {
-      this.log(person.name + ' is a star on the business')
-      this.addHype(person.followers / 500);
+    if(this.people.indexOf(person) < 0) {
+      this.people.push(person);
+      person.company = this;
+      this.log('The company has signed '+person.name)
+      if(person.followers > 500) {
+        this.log(person.name + ' is a star on the business')
+        this.addHype(person.followers / 500);
+      }
+      this.trigger('newHire', person)
+    } else {
+      this.log('The company signed a new contract with'+person.name)
     }
-    this.trigger('newHire', person)
   },
   getAnOffer: function(investor, share, price) {
     this.offers.push({

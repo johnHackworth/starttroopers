@@ -11,11 +11,13 @@ Crafty.c('Slider', {
       h: 200
     }).color('#FCFCFC')
 
-    this.valueView = Crafty.e('2D, DOM, Text')
+    this.valueView = Crafty.e('2D, DOM, HTML')
     this.valueView.attr({
       w: 40,
       h: 30
     })
+
+    this.value = 0;
 
     this.bind('Click', this.clickSlider.bind(this));
     this.bind('MouseDown', this.mouseDownSlider.bind(this));
@@ -34,6 +36,8 @@ Crafty.c('Slider', {
       w: options.w || 100,
       h: options.h || 30
     })
+    this.decimals = options.decimals || 0;
+    this.subfix =  options.subfix || '';
     this.maxValue = options.max || 100;
     this.minValue = options.min || 0;
     this.bar.attr('x', this.attr('x'))
@@ -52,6 +56,9 @@ Crafty.c('Slider', {
     if(value > this.maxValue) {
       value = this.maxValue;
     }
+
+    var decimals = Math.pow(10, this.decimals);
+    value = Math.floor(value * decimals) / decimals;
     this.value = value;
     var val = this.value - this.minValue;
     var top = this.maxValue - this.minValue;
@@ -67,17 +74,19 @@ Crafty.c('Slider', {
       this.bar.attr('x', x)
     }
     if(this.showValue) {
-      this.valueView.text(Math.floor(this.value))
+      var decimals = Math.pow(10, this.decimals);
+      this.valueView.replace('<div class="sliderValue">'+(Math.floor(this.value * decimals)/decimals)+this.subfix+'</div>')
     } else {
-      this.valueView.text('');
+      this.valueView.replace('');
     }
   },
   getValue: function() {
     return this.value
   },
   clickSlider: function(ev) {
-    var posX = ev.x - this.attr('x');
-    var percentage = posX / (this.attr('w') - 10);
+    var scale = Crafty.viewport._zoom;
+    var posX = ev.x - scale *this.attr('x');
+    var percentage = posX /  (scale *this.attr('w') - 10);
     var val = (this.maxValue - this.minValue) * percentage;
     this.setValue(val + this.minValue);
   },
@@ -88,9 +97,10 @@ Crafty.c('Slider', {
     this.mouseDown = false;
   },
   checkSlide: function(ev) {
+    var scale = Crafty.viewport._zoom;
     if(this.mouseDown) {
-      var posX = ev.x - this.attr('x');
-      var percentage = posX / (this.attr('w') - 10);
+      var posX = ev.x - scale *this.attr('x');
+      var percentage = posX / (scale *this.attr('w') - 10);
       var val = (this.maxValue - this.minValue) * percentage;
       this.setValue(val + this.minValue, true);
     }

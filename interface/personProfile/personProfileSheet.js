@@ -34,6 +34,7 @@ Crafty.c('PersonProfileSheet', {
   "<div class='mainInterest' data-interest=%INTEREST%>%INTEREST%</div>" +
   "<div class='happiness' data-happiness=%HAPPINESS%>%HAPPINESS%</div>" +
   "<div class='experience'>%EXPERIENCE% years of experience</div>" +
+  "<div class='followers'>%FOLLOWERS% followers</div>" +
   "</div>",
   perkHTML: "<div class='perk'>%PERK%</div>",
   hobbieHTML: "<div class='hobbie'>%HOBBIE%</div>",
@@ -57,6 +58,8 @@ Crafty.c('PersonProfileSheet', {
   "<div class='stat sociability'>Sociability <span>%SOCIABILITY%</span></div>" +
   "<div class='stat learning'>Learning <span>%LEARNING%</span></div>" +
   "<div class='stat attention'>Attention <span>%ATTENTION%</span></div>" +
+  "<div class='stat scouting'>Scouting <span>%SCOUTING%</span></div>" +
+
   "</div>" +
   "</div>",
   init: function() {
@@ -76,6 +79,8 @@ Crafty.c('PersonProfileSheet', {
     this.renderPersonalStats();
     if(this.person.company && this.person.company.human) {
       this.createPositionButtons()
+    } else {
+      this.createOtherCompanyButtons();
     }
     // this.person.on('change', function() {Crafty.scene('PersonProfile')})
 
@@ -104,6 +109,7 @@ Crafty.c('PersonProfileSheet', {
       .replace(/%HAPPINESS%/g, happiness)
       .replace(/%INTEREST%/g, this.person.mainInterest)
       .replace(/%EXPERIENCE%/g, this.person.experience)
+      .replace(/%FOLLOWERS%/g, this.person.followers)
     )
     this.renderPerkViews();
     this.renderHobbieViews();
@@ -160,7 +166,7 @@ Crafty.c('PersonProfileSheet', {
       x: 50,
       y: 310,
       h: 400,
-      w: 500
+      w: 1000
     }).append(
       this.completeText(this.statsHTML)
     )
@@ -168,7 +174,7 @@ Crafty.c('PersonProfileSheet', {
   renderPersonalStats: function() {
     this.personalStatsView = Crafty.e('2D, DOM, HTML');
     this.personalStatsView.attr({
-      x: 600,
+      x: 750,
       y: 310,
       h: 400,
       w: 500
@@ -180,7 +186,7 @@ Crafty.c('PersonProfileSheet', {
   completeText: function(param) {
     var text = param;
     for(var n in this.person) {
-      text = text.replace(new RegExp('%'+n.toUpperCase()+'%','g'), this.person[n])
+      text = text.replace(new RegExp('%'+n.toUpperCase()+'%','g'), this.person.getStat(n))
     }
     return text;
   },

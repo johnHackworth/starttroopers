@@ -24,9 +24,7 @@ Crafty.c('ProjectCompletion', {
       x: 150
     }).css({textAlign: "center"})
 
-    var slider = Crafty.e('Slider');
-    slider.set({x: 20, y: 600, maxValue: 100000, showValue: true})
-    slider.setValue(100)
+
   },
   setCompany: function(options) {
     this.company = options.company;

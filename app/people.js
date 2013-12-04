@@ -13,6 +13,8 @@ window.tr.models.Person = function(options) {
 window.tr.models.Person.prototype = {
   money: 1000,
 
+  scoutLevel: 3,
+
   productDesign: 0,
   visualDesign: 0,
 
@@ -25,6 +27,7 @@ window.tr.models.Person.prototype = {
   business: 0,
   marketing: 0,
 
+  scouting: 0,
   negotiation: 0,
   sociability: 0,
   learning: 0,
@@ -42,6 +45,12 @@ window.tr.models.Person.prototype = {
 
   hypeable: 0,
   followers: 0,
+
+  beingScouted: false,
+  isRecruiter: false,
+
+  interviews: 0,
+  companyShare: 0,
 
   workToStats: {
     "design": "visualDesign",
@@ -111,6 +120,7 @@ window.tr.models.Person.prototype = {
 
   randomizePersonalStats: function() {
     this.negotiation = tr.randInt(100);
+    this.scouting = tr.randInt(100);
     this.sociability = tr.randInt(100);
     this.learning = tr.randInt(90) + 10;
     this.attention = tr.randInt(100);
@@ -148,6 +158,7 @@ window.tr.models.Person.prototype = {
 
   turn: function(turnNumber) {
     this.currentTurn = turnNumber;
+    this.scoutStats();
     this.coolRelations();
     if(this.negotiatingOffer) {
       this.log(this.name + ' is negotiation with ' + this.negotiatingOffer.investor.name);
@@ -177,6 +188,14 @@ window.tr.models.Person.prototype = {
       var slackingProbability = this.sociability/2 - this.stress + 100 - this.workEthics;
       if(tr.randInt() < slackingProbability) {
         hours.push('social')
+      } else if(this.isRecruiter && tr.randInt() < 5) {
+        console.log('aaaa')
+        if(this.company.beingScouted.length > 0) {
+          console.log('bbb');
+          var choosen = tr.randInt(this.company.beingScouted.length);
+          console.log(this.company.beingScouted, choosen);
+          this.company.beingScouted[choosen].interview(this);
+        }
       } else {
         if(!this.currentProjects.length) {
           if(this.raisingFunds) {
@@ -193,7 +212,6 @@ window.tr.models.Person.prototype = {
     return hours;
   },
   getRaisingFundsHour: function() {
-    console.log('raising funds hours', this.dayBusinessContact)
     // console.log(this.business, this.social)
     if(tr.randInt() < this.business &&
       tr.randInt() < this.sociability &&
@@ -429,7 +447,14 @@ window.tr.models.Person.prototype = {
     } else if(this.experience <= 2) {
       perception += 15;
     }
-    //
+
+    if(this.interviews > 0 && this.interviews < 1 + Math.floor(this.socialbility / 10)) {
+      perception += this.interviews * 5;
+    }
+    if(this.interviews >= 1 + Math.floor(this.socialbility / 10)) {
+      perception -= this.interviews * 2;
+    }
+
     return perception;
   },
   desiredWageForCompany: function(company) {
@@ -444,7 +469,7 @@ window.tr.models.Person.prototype = {
       this.acceptOffer(amount, share, company)
     } else {
       if(desiredCompanyWage * 0.75 < shareValue + amount) {
-        this.negotiateOffer(amount, share, company);
+        this.negotiateWorkOffer(amount, share, company);
       } else {
         this.rejectOffer(amount, share, company);
       }
@@ -458,8 +483,12 @@ window.tr.models.Person.prototype = {
     }
     this.log(this.name + ' is going to hire by '+company.name);
   },
-  negotiateOffer: function(amount, share, company) {
-    company.log(this.name + ' would like to hear more from you, but the offer is too low');
+  negotiateWorkOffer: function(amount, share, company) {
+    this.negotiatingWorkOffer = {
+      amount: amount,
+      share: share,
+      company: company
+    }
   },
   rejectOffer: function(amount, share, company) {
     this.rejectingOfferOf = company;
@@ -477,6 +506,55 @@ window.tr.models.Person.prototype = {
     } else if(this.rejectingOfferOf) {
       this.rejectingOfferOf.log(this.name + ' has rejected the offer of the company')
       this.rejectingOfferOf = undefined;
+    } else if(this.negotiatingWorkOffer) {
+      this.negotiatingWorkOffer.company.log(this.name + ' thinks that your offer ('+ this.negotiatingWorkOffer.amount+'$) is too low, but interesting');
+      this.negotiatingWorkOffer = undefined;
+    }
+  },
+  getStat: function(attribute) {
+    var value = this[attribute];
+    var level1 = ['abysmal', 'very bad', 'quite bad', 'mediocre', 'competent', 'quite good', 'good', 'very good', 'world-class', 'world-class']
+    var level2 = ['bad', 'bellow average', 'adecuate', 'excellent', 'master']
+    var level3 = ['incompetent', 'competent', 'very competent']
+    if(this.scoutLevel === 0) {
+      return value;
+    } else if(this.scoutLevel === 1) {
+      value = level1[Math.floor(value / 10)]
+    } else if(this.scoutLevel === 2) {
+      value = level2[Math.floor(value / 20)]
+    } else if(this.scoutLevel === 3) {
+      value = level3[Math.floor(value / 35)]
+    }
+    return value;
+  },
+  scoutStats: function() {
+    if(this.company && this.company.human && this.scoutLevel > 0 && tr.randInt() < 10) {
+      this.scoutLevel--;
+      this.company.log('Our knowledge about '+ this.name+' competence rises')
+    }
+  },
+  interview: function(other) {
+    var company = other.company;
+    if(this.perceptionOfTheCompany(company) < 30) {
+      company.log(this.name+' has declined our invitation to get interviewed');
+    } else {
+      this.interviews++;
+      if(this.scoutLevel <= 0 ||
+        (other.mainInterest != this.mainInterest && this.scoutLevel <= 1)
+      ) {
+        company.log(other.name+ ' has interviewed '+this.name+', but we know everything we can about him/her');
+      } else {
+        var randomInt = tr.randInt();
+        if(other.mainInterest == this.mainInterest) {
+          randomInt = randomint/2;
+        }
+        if(randomInt < other.scouting) {
+          this.scoutLevel--;
+          company.log(other.name+ ' is making interviews. Now we know a little more about '+this.name);
+        } else {
+          company.log(other.name+ ' has interviewed '+this.name+', but the meeting wasnt very productive');
+        }
+      }
     }
   }
 }
