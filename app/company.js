@@ -93,6 +93,11 @@ window.tr.models.Company.prototype = {
         this.log(person.name + ' is a star on the business')
         this.addHype(person.followers / 500);
       }
+      var pos = this.beingScouted.indexOf(person);
+      if(pos >= 0) {
+        this.beingScouted.splice(pos, 1);
+      }
+      person.beingScouted = false;
       this.trigger('newHire', person)
     } else {
       this.log('The company signed a new contract with'+person.name)

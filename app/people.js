@@ -188,13 +188,13 @@ window.tr.models.Person.prototype = {
       var slackingProbability = this.sociability/2 - this.stress + 100 - this.workEthics;
       if(tr.randInt() < slackingProbability) {
         hours.push('social')
-      } else if(this.isRecruiter && tr.randInt() < 5) {
-        console.log('aaaa')
+      } else if(this.isRecruiter && tr.randInt() < 20) {
         if(this.company.beingScouted.length > 0) {
-          console.log('bbb');
           var choosen = tr.randInt(this.company.beingScouted.length);
-          console.log(this.company.beingScouted, choosen);
-          this.company.beingScouted[choosen].interview(this);
+          var candidate = this.company.beingScouted[choosen];
+          if(!candidate.lastInterview || this.currentTurn - candidate.lastInterview > 3) {
+            candidate.interview(this);
+          }
         }
       } else {
         if(!this.currentProjects.length) {
@@ -535,6 +535,7 @@ window.tr.models.Person.prototype = {
   },
   interview: function(other) {
     var company = other.company;
+    this.lastInterview = this.currentTurn;
     if(this.perceptionOfTheCompany(company) < 30) {
       company.log(this.name+' has declined our invitation to get interviewed');
     } else {
@@ -546,7 +547,7 @@ window.tr.models.Person.prototype = {
       } else {
         var randomInt = tr.randInt();
         if(other.mainInterest == this.mainInterest) {
-          randomInt = randomint/2;
+          randomInt = randomInt/2;
         }
         if(randomInt < other.scouting) {
           this.scoutLevel--;
