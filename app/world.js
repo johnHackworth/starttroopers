@@ -30,6 +30,7 @@ window.tr.models.World.prototype = {
     this.createInvestors();
     this.createPOPs();
     this.createPeople();
+    this.createCompanies();
   },
   createInvestors: function() {
     this.investors = [];
@@ -75,6 +76,9 @@ window.tr.models.World.prototype = {
     }
     for(var o in this.people) {
       this.people[o].turn();
+    }
+    for(var p in this.companies) {
+      this.companies[p].turn();
     }
     this.createUserAccounts();
     this.company.product.visits.push(visits);
@@ -166,6 +170,14 @@ window.tr.models.World.prototype = {
           }
         }
       }
+    }
+  },
+  createCompanies: function() {
+    this.companies = [];
+    for(var n in tr.data.companies) {
+      var comp = new tr.models.NPCCompany(tr.data.companies[n])
+      comp.world = this;
+      this.companies.push(comp);
     }
   }
 }

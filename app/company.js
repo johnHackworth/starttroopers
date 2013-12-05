@@ -42,9 +42,6 @@ window.tr.models.Company.prototype = {
     for(var m in this.offers) {
       this.negotiateOffer(this.offers[m]);
     }
-    for(var o in this.people ) {
-      this.people[o].turn(this.currentTurn);
-    }
     this.socialize();
     for(var p in this.projects) {
       this.projects[p].turn(this.currentTurn);
