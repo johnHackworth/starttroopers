@@ -127,9 +127,9 @@ window.tr.models.NPCCompany.prototype = {
     if(person.mainInterest === prof) {
       if(person.experience >= requiredExperience[prof]) {
         var wage = maxWage[prof] * 1000
-        var randOffer = Math.floor(wage * (1 + (tr.randInt(20) - 10) / 100));
+        var randOffer = Math.floor(wage * (1 + (tr.randInt(60) - 30) / 100));
         person.getOffer(randOffer, 0, this);
-        console.log(this.name +' made an offer of ' +randOffer+ 'to '+person.name)
+        this.log(this.name +' made an offer of ' +randOffer+ 'to '+person.name)
       }
     }
   }

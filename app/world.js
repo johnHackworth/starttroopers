@@ -178,6 +178,14 @@ window.tr.models.World.prototype = {
       var comp = new tr.models.NPCCompany(tr.data.companies[n])
       comp.world = this;
       this.companies.push(comp);
+      for(var i = 0; i < 5; i++) {
+        comp.turn();
+        comp.currentTurn = 0;
+      }
+      for(var p in this.people) {
+        this.people[p].turn();
+        this.people[p].currentTurn = 0;
+      }
     }
   }
 }
