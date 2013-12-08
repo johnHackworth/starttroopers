@@ -16,7 +16,11 @@ Crafty.c('ProductProfile', {
     this.render();
     this.buttons = [];
     this.createButtoner();
-    this.product.on('change', function() {Crafty.scene('Product')})
+    this.bindProductChange = this.product.on('change', function() {Crafty.scene('Product')})
+    this.bind('Remove', this.delete.bind(this));
+  },
+  delete: function() {
+    this.product.off('change', this.bindProductChange);
   },
   createButtoner: function() {
 

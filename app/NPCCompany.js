@@ -132,5 +132,11 @@ window.tr.models.NPCCompany.prototype = {
         this.log(this.name +' made an offer of ' +randOffer+ 'to '+person.name)
       }
     }
+  },
+  addNotification: function() {
+
+  },
+  hiredByOther: function() {
+
   }
 };

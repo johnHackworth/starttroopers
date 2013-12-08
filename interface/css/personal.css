@@ -5,10 +5,18 @@
 }
 
 .personalData .name {
-
+  display: inline-block;
+  width: 70%;
   text-shadow: 0 0 2px #000;
 }
-
+.personalData .company {
+  display: inline-block;
+  color: #333399;
+  font-size: 32px;
+  width: 30%;
+  text-align: right;
+  text-shadow: 0 0 2px #000;
+}
 .mainInterest {
   color: #333;
   font-size: 30px;

@@ -8,10 +8,10 @@ Crafty.scene('MarketingResources', (function() {
   var nMarketing = 1;
   Crafty.background('#999933')
   this.bg = Crafty.e("2D, DOM")
-             .attr({x:0, y: 0, w: 1200, h: 700})
+             .attr({x:0, y: 0, w: 1200, h: 800})
   this.bgChange = function() {
     self.bg.css({
-      "background-image":"url(/assets/backgrounds/marketing/m"+tr.randInt(nMarketing)+".png)",
+      "background-image":"url(./assets/backgrounds/marketing/m"+tr.randInt(nMarketing)+".png)",
       "background-position": "center"
     })
   }

@@ -5,7 +5,7 @@ Crafty.c('PersonProjectsSheet', {
   moduleHTML: '<div class="module released_%RELEASED%"><div class="title">%NAME%</div> <div class="currentPhase">%PHASENAME%</div></div>',
   init: function() {
     this.requires('2D, DOM, Color, Faces, PersonProfileButtoner');
-    this.attr({w:1200, h:700, x: 0, y: 0});
+    this.attr({w:1200, h: 800, x: 0, y: 0});
     this.color('rgb(104,154,104)');
     this.person = tr.app.director.selectedPerson;
     this.render();

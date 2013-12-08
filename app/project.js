@@ -12,7 +12,7 @@ window.tr.models.Project.prototype = {
   bugs: 0,
   launched: false,
   knowBugs: 0,
-  projectPhases: ['mvp', 'polish', 'test'],
+  projectPhases: ['prototype', 'polish', 'test'],
   quality: 0,
   initialize: function() {
     this.module.started = true;
@@ -160,7 +160,13 @@ window.tr.models.Project.prototype = {
   },
   phaseStatCompleted: function(stat) {
     this.trigger('completedStat', stat);
-    this.log(stat + ' of ' + this.name + ' completed',2);
+    this.company.log(stat + ' of ' + this.name + ' completed',2);
+    this.company.addNotification({
+      text:"This phase of "+stat+" of "+this.name+" is complete",
+      type:"project",
+      id: this,
+      open: false
+    })
     var completed = true;
     if(this.phase.definition < this.phase.definitionGoal) completed = false;
     if(this.phase.design < this.phase.designGoal) completed = false;
@@ -173,7 +179,17 @@ window.tr.models.Project.prototype = {
   phaseCompleted: function() {
     this.phase.completed = true;
     this.trigger('completedPhase');
+    var subtext = ' We are ready for the next phase!'
+    if(this.phase.name == 'testing') {
+      subtext = ' We are ready to release the product!'
+    }
     this.log(this.name + ' completed', 2);
+    this.company.addNotification({
+      text:"We have completed the development of "+this.name+". "+subtext,
+      type:"project",
+      id: this,
+      open: true
+    })
   },
   nextPhase: function() {
     if(!this.phase.completed) {

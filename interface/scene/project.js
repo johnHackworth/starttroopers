@@ -8,10 +8,10 @@ Crafty.scene('Project', (function() {
   Crafty.background('#000000')
   var nProduct = 4;
   this.bg = Crafty.e("2D, DOM")
-             .attr({x:0, y: 0, w: 1200, h: 700})
+             .attr({x:0, y: 0, w: 1200, h: 800})
   this.bgChange = function() {
     self.bg.css({
-      "background-image":"url(/assets/backgrounds/product/prod"+tr.randInt(nProduct)+".png)",
+      "background-image":"url(./assets/backgrounds/product/prod"+tr.randInt(nProduct)+".png)",
       "background-position": "center"
     })
   }

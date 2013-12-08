@@ -22,6 +22,7 @@ window.tr.models.Company.prototype = {
     this.projects = [];
     this.offers = [];
     this.people = [];
+    this.notifications = [];
     this.beingScouted = [];
     this.world = tr.app.director.world;
     this.availableInvestors = tr.app.director.world.investors;
@@ -83,9 +84,18 @@ window.tr.models.Company.prototype = {
 
   addPerson: function(person) {
     if(this.people.indexOf(person) < 0) {
+      if(person.company) {
+        person.company.hiredByOther(person, this);
+      }
       this.people.push(person);
       person.company = this;
       this.log('The company has signed '+person.name)
+      this.addNotification({
+        text: person.name + ' has accepted your offer and ' + person.pronoum()+ ' will inmediately begin to work with you',
+        type: 'person',
+        id: person.id,
+        open: true
+      })
       if(person.followers > 500) {
         this.log(person.name + ' is a star on the business')
         this.addHype(person.followers / 500);
@@ -99,6 +109,30 @@ window.tr.models.Company.prototype = {
     } else {
       this.log('The company signed a new contract with'+person.name)
     }
+  },
+  hiredByOther: function(person, otherCompany) {
+    this.removePerson(person);
+    this.log(person.name + ' has left the company');
+    this.addNotification({
+      text: person.name +' has been hired by ' + otherCompany.name + '!!! ' + person.pronoum() + ' will leave your company ASAP',
+      type: "people",
+      id: person.id,
+      open: true
+    })
+  },
+  removePerson: function(person) {
+    if(this.people.indexOf(person) < 0) {
+
+     } else {
+        this.people.splice(this.people.indexOf(person), 1);
+        for(var n in this.product.projects) {
+          for(var i = 0, l = this.product.projects[n].people.length; i < l; i++) {
+            if(this.product.projects[n].people[i] === person) {
+              this.product.projects[n].people.splice(i,1);
+            }
+          }
+        }
+     }
   },
   getAnOffer: function(investor, share, price) {
     this.offers.push({
@@ -192,6 +226,26 @@ window.tr.models.Company.prototype = {
       this.cash -= monthlyPay;
       this.people[n].money += monthlyPay;
     }
+  },
+  addNotification: function(options) {
+    var notif = {
+      'text': options.text,
+      'type': options.type,
+      'read': false,
+      'id': options.id,
+      'company': this,
+      'autoOpen' : options.open || false
+    }
+    this.notifications.push(notif);
+    this.trigger('notificationCreated', notif);
+  },
+  getUnreadNotifications: function() {
+    var num = 0;
+    this.notifications.map(function(notif) {
+      if(!notif.read) {
+        num++;
+      }
+    })
+    return num;
   }
-
 };

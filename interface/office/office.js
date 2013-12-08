@@ -1,7 +1,7 @@
 Crafty.c('OfficeFloor', {
   init: function() {
     this.requires('DOM, Text, Color');
-    this.attr({w:1200, h:700, x: 0, y: 0})
+    this.attr({w:1200, h: 800, x: 0, y: 0})
     this.color('rgba(104,104,204,.85)');
     this.company = tr.app.director.company;
     this.render();
@@ -10,6 +10,11 @@ Crafty.c('OfficeFloor', {
     this.createPersons();
     this.createStatusBar();
     this.createCompanyLog();
+    this.bind('Remote', this.delete.bind(this));
+  },
+  delete: function() {
+    this.company.off('newHire')
+    this.company.off('newTurn');
   },
   render: function() {
     this.ready = true;

@@ -1,7 +1,7 @@
 Crafty.c('POPsView', {
   init: function() {
     this.requires('DOM, Text, Color, Faces');
-    this.attr({w:1200, h:700, x: 0, y: 0})
+    this.attr({w:1200, h: 800, x: 0, y: 0})
     this.color('rgba(104,155,155,.85)');
     this.company = tr.app.director.company;
     this.render();

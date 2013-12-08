@@ -41,7 +41,6 @@ window.tr.models.Investor.prototype = {
     this.negociateOffers();
   },
   getADemo: function(person) {
-    console.log(this.currentTurn, this.lastDemo);
     if(this.currentTurn - this.lastDemo < 20) {
       return;
     }

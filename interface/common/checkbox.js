@@ -58,7 +58,6 @@ Crafty.c('PropertyCheckbox', {
     var checkboxes = Crafty('PropertyCheckbox');
     for(var n in checkboxes) {
       var check = Crafty(checkboxes[n]);
-      console.log(check.group);
       if(check.group && check.group === this.group && check != this) {
         check.unselect();
       }

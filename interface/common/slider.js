@@ -85,7 +85,8 @@ Crafty.c('Slider', {
   },
   clickSlider: function(ev) {
     var scale = Crafty.viewport._zoom;
-    var posX = ev.x - scale *this.attr('x');
+    var windowAdjust = (window.innerWidth - 1200 ) /2
+    var posX = ev.x - scale * windowAdjust - scale *this.attr('x');
     var percentage = posX /  (scale *this.attr('w') - 10);
     var val = (this.maxValue - this.minValue) * percentage;
     this.setValue(val + this.minValue);
@@ -99,7 +100,8 @@ Crafty.c('Slider', {
   checkSlide: function(ev) {
     var scale = Crafty.viewport._zoom;
     if(this.mouseDown) {
-      var posX = ev.x - scale *this.attr('x');
+      var windowAdjust = (window.innerWidth - 1200 ) /2
+      var posX = ev.x - scale * windowAdjust - scale *this.attr('x');
       var percentage = posX / (scale *this.attr('w') - 10);
       var val = (this.maxValue - this.minValue) * percentage;
       this.setValue(val + this.minValue, true);

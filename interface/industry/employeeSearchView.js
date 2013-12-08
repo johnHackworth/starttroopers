@@ -9,7 +9,7 @@ Crafty.c("EmployeeSearchView", {
   firstElement: 0,
   init: function() {
     this.requires('DOM, Text, Color, IndustryButtoner, Faces');
-    this.attr({w:1200, h:700, x: 0, y: 0})
+    this.attr({w:1200, h: 800, x: 0, y: 0})
     this.color('rgba(200,50,50,.85)');
     this.company = tr.app.director.company;
     this.offer = this.company.world.workOffers[tr.app.director.currentOffer];

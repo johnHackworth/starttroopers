@@ -120,7 +120,7 @@ Crafty.c('InvestorView', {
   },
   renderNegotiator: function() {
     if(this.negotiatorTitle) this.negotiatorTitle.destroy();
-    if(this.negotiatorFace) this.negotiatorFace.delete();
+    if(this.negotiatorFace) this.negotiatorFace.destroy();
     if(this.negotiatorName) this.negotiatorName.destroy();
     if(this.offer) {
       var negotiator = this.offer.negotiator;

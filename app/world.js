@@ -143,19 +143,7 @@ window.tr.models.World.prototype = {
         var company = this.workOffers[n].company;
         var randomPerson = tr.randInt(this.TOTAL_PEOPLE);
         var person = this.people[randomPerson];
-        console.log(person.perceptionOfTheCompany(this.workOffers[n].company),
-          person.experience + ':' +this.workOffers[n].minExperience,
-          person.mainInterest + ':' + this.workOffers[n].type,
-          person.desiredWageForCompany(company) + ':' + this.workOffers[n].maxWage
-        );
-        console.log(person.perceptionOfTheCompany(this.workOffers[n].company) > 40,
-          person.experience >= this.workOffers[n].minExperience,
-          person.mainInterest === this.workOffers[n].type,
-          (
-            !this.workOffers[n].maxWage ||
-            this.workOffers[n].maxWage >= person.desiredWageForCompany(company)
-            )
-          )
+
         if(person.perceptionOfTheCompany(this.workOffers[n].company) > 40 &&
           person.experience >= this.workOffers[n].minExperience &&
           person.mainInterest === this.workOffers[n].type &&
@@ -164,28 +152,48 @@ window.tr.models.World.prototype = {
             this.workOffers[n].maxWage >= person.desiredWageForCompany(company)
             )
           ) {
-          console.log('cv')
           if(this.workOffers[n].curriculae.indexOf(person) < 0) {
-            this.workOffers[n].curriculae.push(person);
+            this.workOffers[n].curriculae.unshift(person);
           }
         }
       }
     }
   },
   createCompanies: function() {
+    var self = this;
+    var lastTurn = 5;
+    var iterations = lastTurn * tr.data.companies.length;
+    var currentIteration = 0;
+    var companyTurn = function(company, isLastTurn) {
+      return function() {
+        company.turn();
+        company.currentTurn = 0;
+        currentIteration++;
+        if(isLastTurn) {
+          for(var p in this.people) {
+            self.people[p].turn();
+            self.people[p].currentTurn = 0;
+          }
+          company.turn();
+          company.currentTurn = 0;
+          if(currentIteration === iterations) {
+            tr.app.director.worldCreated = true;
+            Crafty.trigger('WorldCreated')
+          }
+        }
+      }
+    }
     this.companies = [];
+
     for(var n in tr.data.companies) {
       var comp = new tr.models.NPCCompany(tr.data.companies[n])
       comp.world = this;
       this.companies.push(comp);
-      for(var i = 0; i < 5; i++) {
-        comp.turn();
-        comp.currentTurn = 0;
+
+      for(var i = 0; i < lastTurn; i++) {
+        setTimeout(companyTurn(comp, lastTurn === (i+1)),1);
       }
-      for(var p in this.people) {
-        this.people[p].turn();
-        this.people[p].currentTurn = 0;
-      }
+
     }
   }
 }

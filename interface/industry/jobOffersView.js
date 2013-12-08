@@ -6,7 +6,7 @@ Crafty.c("JobOffersView", {
     '</div>',
   init: function() {
     this.requires('DOM, Text, Color, IndustryButtoner');
-    this.attr({w:1200, h:700, x: 0, y: 0})
+    this.attr({w:1200, h: 800, x: 0, y: 0})
     this.color('rgba(200,50,50,.85)');
     this.company = tr.app.director.company;
     this.statusBar = Crafty.e('StatusBar');
@@ -51,7 +51,6 @@ Crafty.c("JobOffersView", {
   createOfferClickResponse: function(nParam) {
     var n = nParam;
     return function() {
-      console.log('a', n)
       tr.app.director.currentOffer = n;
       Crafty.trigger('OfferViewSelected')
     }

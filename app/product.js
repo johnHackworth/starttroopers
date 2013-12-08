@@ -26,6 +26,9 @@ window.tr.models.Product.prototype = {
   defineSocialNetwork: function() {
     tr.utils.extend.call(this, tr.products.SocialNetwork)
   },
+  getAvailableModules: function() {
+
+  },
   createModule: function(project) {
     var module = new tr.models.ProductModule({
       name: project.name,

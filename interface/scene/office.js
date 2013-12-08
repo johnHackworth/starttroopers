@@ -8,18 +8,25 @@ Crafty.scene('Office', (function() {
   var nOffices=23;
   Crafty.background('#000000')
   this.bg = Crafty.e("2D, DOM")
-             .attr({x:0, y: 0, w: 1200, h: 700})
+             .attr({x:0, y: 0, w: 1200, h: 800})
 
   this.bgChange = function() {
     self.bg.css({
-      "background-image":"url(/assets/backgrounds/back"+tr.randInt(nOffices)+".png)",
+      "background-image":"url(./assets/backgrounds/back"+tr.randInt(nOffices)+".png)",
       "background-position": "center"
     })
   }
   this.bgChange();
 
-  tr.app.currentView = Crafty.e('OfficeFloor')
-  tr.app.currentView.bind('change:background', this.bgChange.bind(this));
+  // if(tr.app.director.worldCreated) {
+    tr.app.currentView = Crafty.e('OfficeFloor')
+    tr.app.currentView.bind('change:background', this.bgChange.bind(this));
+  // } else {
+  //   Crafty.bind('WorldCreated', function() {
+  //     tr.app.currentView = Crafty.e('OfficeFloor')
+  //     tr.app.currentView.bind('change:background', self.bgChange.bind(this));
+  //   })
+  // }
 }).bind(window.tr.scenes.office ),
 function() {
 

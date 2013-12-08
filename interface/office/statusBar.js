@@ -13,6 +13,14 @@ Crafty.c('StatusBar', {
     this.createMarketingButton();
     this.createDateContainer();
     this.createMoneyContainer();
+    this.createNotificationCounter();
+    this.bindNotificationCreated = this.company.on('notificationCreated', this.checkNotificationPopUp.bind(this));
+    this.bindNotificationClose = this.company.on('notificationClose', this.updateNotificationCounter.bind(this))
+    this.bind('Remove', this.delete.bind(this));
+  },
+  delete: function() {
+    this.company.off('notificationCreated', this.bindNotificationCreated)
+    this.company.off('notificationClose', this.bindNotificationClose)
   },
   render: function() {
     this.ready = true;
@@ -29,6 +37,7 @@ Crafty.c('StatusBar', {
       text: "Next Turn",
       y: 5,
       x: 5,
+      hintText: 'Finish the current turn',
       onClick: this.nextTurn.bind(this)
     })
   },
@@ -39,6 +48,7 @@ Crafty.c('StatusBar', {
       text: "Main Office",
       y: 5,
       x: 5,
+      hintText: 'Back to the office screen',
       onClick: this.backToOffice.bind(this)
     })
   },
@@ -47,6 +57,7 @@ Crafty.c('StatusBar', {
     this.productButton.set({
       color: '#CC00AA',
       text: "Product View",
+      hintText: 'Product and projects screen',
       y: 5,
       x:420,
       onClick: this.productView.bind(this)
@@ -57,6 +68,7 @@ Crafty.c('StatusBar', {
     this.businessButton.set({
       color: '#00AA55',
       text: "Business View",
+      hintText: 'Money related issues',
       y: 5,
       x:530,
       onClick: this.businessView.bind(this)
@@ -67,6 +79,7 @@ Crafty.c('StatusBar', {
     this.marketingButton.set({
       color: '#AAAA55',
       text: "Marketing View",
+      hintText: 'Promote your product!',
       y: 5,
       x:640,
       onClick: this.marketingView.bind(this)
@@ -77,6 +90,7 @@ Crafty.c('StatusBar', {
     this.industryButton.set({
       color: '#AAAAAA',
       text: "Industry View",
+      hintText: 'Companies and people building the net!',
       y: 5,
       x:750,
       onClick: this.industryView.bind(this)
@@ -137,5 +151,24 @@ Crafty.c('StatusBar', {
     this.company.turn();
     this.render();
     this.trigger('newTurn')
+  },
+  createNotificationCounter: function() {
+    this.notificationCounter = Crafty.e('NotificationCounter');
+    this.notificationCounter.attr({
+      x: 120,
+      y: 5
+    })
+    this.notificationCounter.assignCompany(this.company);
+    this.notificationCounter.render();
+  },
+  updateNotificationCounter: function() {
+    this.notificationCounter.render();
+  },
+  checkNotificationPopUp: function(notif) {
+    this.updateNotificationCounter();
+    if(notif.autoOpen) {
+      var pop = Crafty.e('Notification');
+      pop.set(notif)
+    }
   }
 })

@@ -1,6 +1,7 @@
 Crafty.c('Button', {
+  hintText: '',
   init: function() {
-    this.requires('2D, DOM, Mouse, HTML');
+    this.requires('2D, DOM, Mouse, HTML, Hint');
     this.text = Crafty.e('2D, DOM, , Mouse')
   },
   set: function(options) {
@@ -12,6 +13,7 @@ Crafty.c('Button', {
       h: options.h + 10 || 30,
       z: 999999
     })
+    this.hintText = options.hintText || '';
     this.replace('<div class="button">'+options.text+'</div>');
     // this.text.text(options.text || 'button');
     // this.text.attr({x: this.attr('x'), y: this.attr('y') + 10, w: this.attr('w')})

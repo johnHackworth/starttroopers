@@ -44,7 +44,16 @@ window.tr.directors.MainDirector.prototype = {
     Crafty.bind("OfferViewSelected", this.offerViewSelected.bind(this));
     Crafty.bind("PersonContractSelected", this.personContractSelected.bind(this));
   },
-  personProfile: function() {
+  personProfile: function(id) {
+    if(id) {
+      for(var n in this.world.people) {
+        if(this.world.people[n].id === id) {
+          this.selectedPerson = this.world.people[n];
+          Crafty.scene('PersonProfile')
+          return;
+        }
+      }
+    }
     Crafty.scene('PersonProfile')
   },
   socialProfile: function() {
@@ -56,7 +65,10 @@ window.tr.directors.MainDirector.prototype = {
   productProfile: function() {
     Crafty.scene('Product')
   },
-  projectSelected: function() {
+  projectSelected: function(project) {
+    if(project) {
+      this.selectedProject = project;
+    }
     Crafty.scene('Project')
   },
   businessSelected: function() {

@@ -12,6 +12,7 @@ Crafty.c('PersonFace', {
     this.bind('MouseOut', this.hideName.bind(this));
     this.bind('Click', this.selectPerson.bind(this));
     this.bind('EnterFrame', this.turn.bind(this));
+    this.bind('Remove', this.delete.bind(this));
   },
   delete: function() {
     this.unbind('MouseOver');
@@ -22,7 +23,6 @@ Crafty.c('PersonFace', {
     for(var n in this.components) {
       this[this.components[n].toLowerCase()].destroy();
     }
-    this.destroy();
   },
   components: [
     "Background", "Face","Facialfeatures", "Beard", "Eyes", "Nose",  "Mouth", "Hair", "Glasses", "Clothes"

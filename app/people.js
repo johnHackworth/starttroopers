@@ -5,7 +5,7 @@ window.tr.app.persons = {};
 window.tr.models.Person = function(options) {
   this.options = options;
   tr.utils.extend.call(this, tr.utils.Eventable);
-  tr.utils.extend.call(this, tr.utils.Loggable);
+  // tr.utils.extend.call(this, tr.utils.Loggable);
   tr.utils.extend.call(this, tr.utils.Stats);
   this.initialize();
 }
@@ -87,7 +87,13 @@ window.tr.models.Person.prototype = {
     this.randomizeExperience();
     this.randomizeHobbies();
   },
-
+  pronoum: function() {
+    if(this.DNA.get('sex')) {
+      return 'she'
+    } else {
+      return 'he'
+    }
+  },
   randomizeHobbies: function() {
     this.hobbies = [];
     var amount = 3 + tr.randInt(3);
@@ -505,9 +511,21 @@ window.tr.models.Person.prototype = {
       this.acceptingOffer = undefined;
     } else if(this.rejectingOfferOf) {
       this.rejectingOfferOf.log(this.name + ' has rejected the offer of the company')
+      this.rejectingOfferOf.addNotification({
+        text: this.name+" has rejected your offer and "+this.pronoum() + ' not interested in continue with the negociation',
+        type: "person",
+        id: this.id,
+        open: false
+      })
       this.rejectingOfferOf = undefined;
     } else if(this.negotiatingWorkOffer) {
       this.negotiatingWorkOffer.company.log(this.name + ' thinks that your offer ('+ this.negotiatingWorkOffer.amount+'$) is too low, but interesting');
+      this.negotiatingWorkOffer.company.addNotification({
+        text: this.name+" is interested in your offer, but " + this.pronoum() + " thinks that is still too low",
+        type: "person",
+        id: this.id,
+        open: true
+      })
       this.negotiatingWorkOffer = undefined;
     }
   },
@@ -544,6 +562,12 @@ window.tr.models.Person.prototype = {
         (other.mainInterest != this.mainInterest && this.scoutLevel <= 1)
       ) {
         company.log(other.name+ ' has interviewed '+this.name+', but we know everything we can about him/her');
+        company.addNotification({
+          text: "With our current resources, we can't improve our knowledge about "+this.name+" skills. Continuing with the interviews will only produce annoyances on both sides",
+          type: "person",
+          id: this.id,
+          open: false
+        })
       } else {
         var randomInt = tr.randInt();
         if(other.mainInterest == this.mainInterest) {
@@ -552,10 +576,19 @@ window.tr.models.Person.prototype = {
         if(randomInt < other.scouting) {
           this.scoutLevel--;
           company.log(other.name+ ' is making interviews. Now we know a little more about '+this.name);
+          company.addNotification({
+            text: "We have interviewed "+this.name+" and learned a little about "+this.pronoum()+" skills",
+            type: "person",
+            id: this.id,
+            open: false
+          })
         } else {
           company.log(other.name+ ' has interviewed '+this.name+', but the meeting wasnt very productive');
         }
       }
     }
+  },
+  log: function(data) {
+
   }
 }

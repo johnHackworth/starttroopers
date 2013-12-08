@@ -21,7 +21,11 @@ Crafty.c('ProjectResources', {
     this.renderQuality();
     this.render();
     this.buttons = [];
-    this.project.on('change', function() {Crafty.trigger('ProjectSelected')})
+    this.bindProjectChange = this.project.on('change', function() {Crafty.trigger('ProjectSelected')})
+    this.bind('Remove', this.delete.bind(this));
+  },
+  delete: function() {
+    this.project.off('change', this.bindProjectChange);
   },
   renderProject: function() {
     this.productInfo = Crafty.e('2D, DOM, HTML');

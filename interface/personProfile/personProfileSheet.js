@@ -31,6 +31,7 @@ Crafty.c('PersonProfileSheet', {
   happinessArray: ['Very Unhappy', 'Unhappy', 'Content', 'Happy', 'Joyfull'],
   personalDataHTML: "<div class='personalData'>"+
   "<div class='name'>%NAME%</div>"+
+  "<div class='company'>%COMPANY%</div>"+
   "<div class='mainInterest' data-interest=%INTEREST%>%INTEREST%</div>" +
   "<div class='happiness' data-happiness=%HAPPINESS%>%HAPPINESS%</div>" +
   "<div class='experience'>%EXPERIENCE% years of experience</div>" +
@@ -64,7 +65,7 @@ Crafty.c('PersonProfileSheet', {
   "</div>",
   init: function() {
     this.requires('DOM, Text, Color, PersonProfileButtoner');
-    this.attr({w:1200, h:700, x: 0, y: 0})
+    this.attr({w:1200, h: 800, x: 0, y: 0})
     this.color('rgb(104,104,104)');
     this.person = tr.app.director.selectedPerson;
     this.render();
@@ -98,10 +99,11 @@ Crafty.c('PersonProfileSheet', {
   renderPersonalData: function() {
     this.personalData = Crafty.e('2D, DOM, HTML');
     var happiness = this.happinessArray[Math.floor(this.person.happiness / 20)];
+    var company = this.person.company? this.person.company.name : '';
     this.personalData.attr({
       x: 250,
       y: 70,
-      w: 600,
+      w: 800,
       h: 300
     }).append(
       this.personalDataHTML
@@ -110,6 +112,7 @@ Crafty.c('PersonProfileSheet', {
       .replace(/%INTEREST%/g, this.person.mainInterest)
       .replace(/%EXPERIENCE%/g, this.person.experience)
       .replace(/%FOLLOWERS%/g, this.person.followers)
+      .replace(/%COMPANY%/g, company)
     )
     this.renderPerkViews();
     this.renderHobbieViews();
