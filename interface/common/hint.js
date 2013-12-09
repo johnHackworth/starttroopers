@@ -1,5 +1,7 @@
 Crafty.c('Hint', {
   hintHTML: '<div class="hintBox">%TEXT%</div>',
+  hintWidth: 100,
+  hintMargin: 10,
   init: function() {
     this.requires('Mouse');
     this.bind('MouseOver', this.showHint.bind(this));
@@ -14,7 +16,7 @@ Crafty.c('Hint', {
     var self = this;
     if(!this.hintObj) {
       this.hintObj = Crafty.e('2D, DOM, HTML, Tween, Delay')
-      .attr({alpha: 0, x: this.attr('x'), y: 10 + this.y + this.h, w: 100, h: 30})
+      .attr({alpha: 0, x: this.attr('x'), y: this.hintMargin + this.y + this.h, w: this.hintWidth, h: 30})
       .replace(this.hintHTML
         .replace(/%TEXT%/g, this.hintText)
       )

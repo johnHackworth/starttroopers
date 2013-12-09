@@ -17,6 +17,7 @@ window.tr.models.Project.prototype = {
   initialize: function() {
     this.module.started = true;
     this.name = this.module.name;
+    this.id = this.module.id;
     this.phases = []
     this.people = [];
     this.initPhases();
@@ -149,7 +150,9 @@ window.tr.models.Project.prototype = {
     this.quality = quality;
   },
   increasePhaseStat: function(stat, increase) {
-    if(!stat || isNaN(increase)) {
+    if(!stat || isNaN(increase) ||
+      this.phase[stat] === this.phase[stat + 'Goal']
+    ) {
       return;
     }
     this.phase[stat] += increase;
@@ -211,12 +214,12 @@ window.tr.models.Project.prototype = {
     this.company.product.trigger('change')
   },
   test_completePhase: function() {
-    this.phase.definition = this.phase.definitionGoal;
-    this.phase.design = this.phase.designGoal;
-    this.phase.back = this.phase.backGoal;
-    this.phase.front  = this.phase.frontGoal;
-    this.phase.architecture = this.phase.architectureGoal;
-    this.phase.operations = this.phase.operationsGoal;
+    this.phase.definition = this.phase.definitionGoal - 0.00001;
+    this.phase.design = this.phase.designGoal - 0.00001;
+    this.phase.back = this.phase.backGoal - 0.00001;
+    this.phase.front  = this.phase.frontGoal - 0.00001;
+    this.phase.architecture = this.phase.architectureGoal - 0.00001;
+    this.phase.operations = this.phase.operationsGoal - 0.00001;
     this.quality = tr.randInt();
   }
 };

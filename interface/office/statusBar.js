@@ -5,6 +5,8 @@ Crafty.c('StatusBar', {
     this.company = tr.app.director.company;
     this.color('#333333')
     this.render();
+    this.checks = Crafty.e('WarningChecks');
+    this.checks.set({company: this.company});
     this.createNextButton();
     this.createProductButton();
     this.createProjectCompletion();
@@ -149,6 +151,8 @@ Crafty.c('StatusBar', {
   },
   nextTurn: function() {
     this.company.turn();
+    this.checks.checkOngoingProjectsPeople();
+    this.checks.checkOngoingProjectsPeopleActive();
     this.render();
     this.trigger('newTurn')
   },

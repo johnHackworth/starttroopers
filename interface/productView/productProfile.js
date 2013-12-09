@@ -7,7 +7,7 @@ Crafty.c('ProductProfile', {
   init: function() {
     this.requires('2D, DOM, Color');
     this.attr({w:1190, h:790, x: 5, y: 5});
-    this.color('rgb(104,154,104)');
+    this.color('rgba(104,154,104,0.8)');
     this.company = tr.app.director.company;
     this.product = this.company.product;
     this.statusBar = Crafty.e('StatusBar');
@@ -38,17 +38,21 @@ Crafty.c('ProductProfile', {
     )
     this.renderModules();
     this.renderAvailableModules();
+    this.renderSoonAvailableModules();
   },
   renderModules: function() {
     var i = 0;
     for(var n in this.product.modules) {
-      var module = Crafty.e('2D, DOM, HTML, Mouse')
-        module.attr({
-        x:20,
-        y:200 + i * 60,
-        w:1000,
-        h:200
-      })
+      var module = Crafty.e('2D, DOM, HTML, Mouse, Hint')
+      module.attr({
+        x:20 + (i%2)*600,
+        y:200 + Math.floor(i/2) * 60,
+        w:450,
+        h:40
+      });
+      module.hintWidth = 400;
+      module.hintMargin = 5;
+      module.hintText = this.product.modules[n].project.module.description;
       module.append(
         this.moduleHTML
         .replace(/%NAME%/g, this.product.modules[n].name)
@@ -82,8 +86,10 @@ Crafty.c('ProductProfile', {
       launchButton = Crafty.e('2D, DOM, HTML');
       launchButton.append('<div class="launched">Shipped</div>')
       launchButton.attr({
-        x:930,
-        y: 255 + i*60
+        x: 500 + (i%2)*500,
+        y: 200 + Math.floor(i/2)* 50,
+        color: '#FCFCFC',
+        textColor: '#008833'
       })
     } else {
       this.createOnGoingProjectButtons(module, i)
@@ -100,8 +106,9 @@ Crafty.c('ProductProfile', {
       launchButton.set({
         color: '#CCAA00',
         text: "Ship it",
-        x: x,
-        y: 205 + i*60,
+        x: 500 + (i%2)*500,
+        y: 205 + Math.floor(i/2)* 50,
+        hintText: "Open to public! Remember, if you don't test it enough you won't find all the possible bugs and the product will fail on the wild!",
         onClick: function() {
           module.project.launchProduct();
           module.trigger('change')
@@ -115,7 +122,7 @@ Crafty.c('ProductProfile', {
       var click = function() {}
       if(project.phaseCompletedness() >=99) {
         color = '#DDDD66';
-        textColor = '#FFFFFF';
+        textColor = '#333333';
         click = function() {
           module.project.nextPhase();
         }
@@ -124,9 +131,10 @@ Crafty.c('ProductProfile', {
       nextPhaseButton.set({
         color: color,
         textColor:  textColor,
+        hintText: 'Proceed to the next phase of the project. Only avaible when all the areas are completed.',
         text: "Next phase",
-        x: x,
-        y: 205 + i*60,
+        x: 490 + (i%2)*500,
+        y: 202 + Math.floor(i/2)* 50,
         onClick: click
       });
     }
@@ -134,22 +142,26 @@ Crafty.c('ProductProfile', {
   renderAvailableModules: function() {
     var self = this;
     var i = this.product.modules.length;
-    for(var n in this.product.availableModules) {
-      if(!this.product.availableModules[n].started) {
-        var module = Crafty.e('2D, DOM, HTML, Mouse')
+    var available = this.product.getAvailableModules();
+    for(var n in available) {
+      if(!available[n].started) {
+        var module = Crafty.e('2D, DOM, HTML, Mouse, Hint')
           module.attr({
-          x:20,
-          y:230 + i * 50,
-          w:1000,
+          x:20 + (i%2)*600,
+          y:230 + Math.floor(i/2) * 50,
+          w:450,
           h:50
         })
+        module.hintWidth = 400;
+        module.hintMargin = 2;
+        module.hintText = available[n].description;
         module.append(
           this.availableModuleHTML
-          .replace(/%NAME%/g, this.product.availableModules[n].name)
-          .replace(/%DESCRIPTION%/g, this.product.availableModules[n].description)
+          .replace(/%NAME%/g, available[n].name)
+          .replace(/%DESCRIPTION%/g, available[n].description)
         )
         module.bind('Click', this.createAvailableClickResponse(this.product.availableModules[n]))
-        this.createAvailableModuleButtons(n, i);
+        this.createAvailableModuleButtons(available[n].id, i);
         i++;
       }
     }
@@ -157,7 +169,7 @@ Crafty.c('ProductProfile', {
   createAvailableClickResponse: function(module) {
     var localModule = module;
     return (function() {
-      alert(localModule.name)
+
     }).bind(this);
   },
   createAvailableModuleButtons: function(moduleName, i) {
@@ -167,14 +179,40 @@ Crafty.c('ProductProfile', {
     initButton.set({
       color: '#00CC66',
       text: "Init Project",
-      x:930,
+      x:500 + (i%2) * 600,
       h:20,
-      y:230 + i*54,
+      y:230 + Math.floor(i/2) *50,
       onClick: function() {
         self.company.initProject(moduleName);
       }
     });
 
+  },
+  renderSoonAvailableModules: function() {
+    var self = this;
+    var i = this.product.modules.length;
+    i += this.product.getAvailableModules().length;
+    var available = this.product.getSoonAvailableModules();
+    for(var n in available) {
+      if(!available[n].started) {
+        var module = Crafty.e('2D, DOM, HTML, Mouse, Hint')
+          module.attr({
+          x:20 + (i%2)*600,
+          y:230 + Math.floor(i/2) * 50,
+          w:450,
+          h:50
+        })
+        module.hintWidth = 400;
+        module.hintMargin = 2;
+        module.hintText = available[n].description;
+        module.append(
+          this.availableModuleHTML
+          .replace(/%NAME%/g, available[n].name)
+          .replace(/%DESCRIPTION%/g, available[n].description)
+        )
+        i++;
+      }
+    }
   },
   render: function() {
     for(var n in this.buttons) {

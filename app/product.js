@@ -26,8 +26,52 @@ window.tr.models.Product.prototype = {
   defineSocialNetwork: function() {
     tr.utils.extend.call(this, tr.products.SocialNetwork)
   },
+  isModuleReady: function(id) {
+    for(var m in this.modules) {
+      if(
+        (this.modules[m].released ||
+        this.modules[m].project.phase.name === 'testing') &&
+        this.modules[m].project.id === id) {
+        return true;
+      }
+    }
+    return false;
+  },
+  isModuleGettingReady: function(id) {
+    for(var m in this.modules) {
+      if(!this.modules[m].released &&
+        this.modules[m].project.phase.name != 'testing' &&
+        this.modules[m].project.id === id) {
+        return true;
+      }
+    }
+    return false;
+  },
   getAvailableModules: function() {
-
+    var available = [];
+    for(var m in this.availableModules) {
+      var mod = this.availableModules[m];
+      mod.id = m;
+      if(!mod.required) {
+        available.push(mod)
+      } else {
+        if(this.isModuleReady(mod.required)) {
+          available.push(mod);
+        }
+      }
+    }
+    return available;
+  },
+  getSoonAvailableModules: function() {
+    var available = [];
+    for(var m in this.availableModules) {
+      if(this.isModuleGettingReady(this.availableModules[m].required)) {
+        var mod = this.availableModules[m]
+        mod.id = m;
+        available.push(mod);
+      }
+    }
+    return available;
   },
   createModule: function(project) {
     var module = new tr.models.ProductModule({

@@ -93,7 +93,7 @@ window.tr.products.SocialNetwork.prototype = {
     },
     "adServer": {
       name: "Create own ad adServer",
-      required: "adServer",
+      required: "integrateExternalAdvertising",
       goals: {
         definitionGoal: 70,
         designGoal: 70,

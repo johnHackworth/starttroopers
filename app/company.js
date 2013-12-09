@@ -77,6 +77,7 @@ window.tr.models.Company.prototype = {
 
   initProject: function(name) {
     var module = this.product.availableModules[name]
+    module.id = name;
     var project = new tr.models.Project(module);
     project.setCompany(this);
     this.projects.push(project);
