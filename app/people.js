@@ -52,6 +52,9 @@ window.tr.models.Person.prototype = {
   interviews: 0,
   companyShare: 0,
 
+  bugModificator: 1,
+  detailModificator: 1,
+
   workToStats: {
     "design": "visualDesign",
     "definition": "productDesign",
@@ -79,6 +82,13 @@ window.tr.models.Person.prototype = {
     tr.app.persons[this.id] = this;
   },
 
+  addPerk: function(perkName) {
+    if(this.perks.indexOf(perkName) >= 0) {
+      return false;
+    }
+    this.perks.push(perkName);
+    return true;
+  },
 
   randomize: function() {
     this.randomizeInterest();
@@ -287,6 +297,8 @@ window.tr.models.Person.prototype = {
 
   getHourlyWork: function(project) {
     var position = '';
+    var bugModificator = this.bugModificator;
+    var detailModificator = this.detailModificator;
     this.increaseStat("projectKnowledge", 10 * Math.random() * this.learning / 100);
     if(this.positions.length > 0) {
       var p = tr.randInt(this.positions.length);
@@ -294,18 +306,18 @@ window.tr.models.Person.prototype = {
     }
     if(position === 'front') {
       return {
-        front: 2 * (this.frontend/200  + this.stress/200) * this.projectKnowledge / 100,
+        front: detailModificator * 2 * (this.frontend/200  + this.stress/200) * this.projectKnowledge / 100,
         design: 0.5 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge / 100,
         definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge / 100,
-        bugs: Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+        bugs: bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
       }
     }
     if(position === 'back') {
       return {
-        back: 2 * (this.backend/200  + this.stress/200) * this.projectKnowledge / 100,
+        back:  detailModificator * 2 * (this.backend/200  + this.stress/200) * this.projectKnowledge / 100,
         architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge / 100,
         definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge / 100,
-        bugs: Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+        bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
       }
     }
     if(position === 'architecture') {
@@ -318,15 +330,15 @@ window.tr.models.Person.prototype = {
     if(position === 'operations') {
       return {
         operations: 2 * (this.operations/200  + this.stress/200) * this.projectKnowledge / 100,
-        back: 0.5 * (this.back/200  + this.stress/200) * this.projectKnowledge / 100,
+        back:  detailModificator *  detailModificator * 0.5 * (this.back/200  + this.stress/200) * this.projectKnowledge / 100,
         architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge / 100,
-        bugs: Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+        bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
 
       }
     }
     if(position === 'visualDesign') {
       return {
-        front: 0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge / 100,
+        front: detailModificator *  0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge / 100,
         design: 2 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge / 100,
         definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge / 100
       }
@@ -342,10 +354,10 @@ window.tr.models.Person.prototype = {
       design: 0.5 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge / 100,
       definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge / 100,
       operations: 0.5 * (this.operations/200  + this.stress/200) * this.projectKnowledge / 100,
-      back: 0.5 * (this.backend/200  + this.stress/200) * this.projectKnowledge / 100,
+      back:  detailModificator * 0.5 * (this.backend/200  + this.stress/200) * this.projectKnowledge / 100,
       architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge / 100,
-      front: 0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge / 100
-
+      front:  detailModificator * 0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge / 100,
+      bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
     }
   },
 

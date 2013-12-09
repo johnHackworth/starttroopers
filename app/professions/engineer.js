@@ -58,46 +58,47 @@ window.tr.decorators.engineering.prototype = {
     }
   },
   randomizePerks: function() {
-    if(tr.randInt() < 7) {
+    if(tr.randInt() < 8) {
       if(this.mainInterest === 'engineering') {
         var chooseInt = tr.randInt(4);
-        if(chooseInt == 0) {
-          this.perks.push('frontender');
+        if(chooseInt == 0 && this.addPerk('frontender')) {
           this.increaseStat('frontend', 30);
         }
-        if(chooseInt == 1) {
-          this.perks.push('back-man');
+        if(chooseInt == 1 && this.addPerk('backman')) {
           this.increaseStat('backend', 30);
         }
-        if(chooseInt == 2) {
-          this.perks.push('devops');
+        if(chooseInt == 2 && this.addPerk('devops')) {
           this.increaseStat('operations', 30);
         }
-        if(chooseInt == 3) {
-          this.perks.push('qa');
+        if(chooseInt == 3 && this.addPerk('qa')) {
           this.increaseStat('qa', 30);
         }
-        if(chooseInt == 4) {
-          this.perks.push('crafstman');
+        if(chooseInt == 4 && this.addPerk('craftsman')) {
           this.increaseStat('hypeable', 10);
           this.increaseStat('workEthics', 10);
+          this.bugModificator -= 0.20;
+          this.detailModificator -= 0.10;
         }
-        if(chooseInt == 5) {
-          this.perks.push('cleancoder');
+        if(chooseInt == 5 && this.addPerk('cleancoder')) {
           this.increaseStat('hypeable', 15);
           this.increaseStat('learning', 10);
+          this.bugModificator -= 0.20;
+          this.detailModificator -= 0.20;
+        }
+        if(chooseInt == 6 && this.addPerk('cowboy coder')) {
+          this.increaseStat('hypeable', -5);
+          this.increaseStat('learning', 10);
+          this.bugModificator += 0.20;
+          this.detailModificator += 0.20;
         }
       }
     }
-    if(tr.randInt() < 5) {
-      this.perks.push('scenester');
+    if(tr.randInt() < 5 && this.addPerk('scenester')) {
       this.followers += 300;
     }
-    if(tr.randInt(1000) < 15) {
-      this.perks.push('rock star');
+    if(tr.randInt(1000) < 15 && this.addPerk('rock star')) {
       this.followers += 1000;
-      if(tr.randInt() < 10) {
-        this.perks.push('guru');
+      if(tr.randInt() < 10 && this.addPerk('guru')) {
         this.followrs += 4000;
       }
     }
