@@ -11,8 +11,8 @@ window.tr.utils.Stats.prototype = {
     if(this[statName] > 100) {
       this[statName] = 100;
     }
-    if(this[statName] < 0) {
-      this[statName] = 0;
+    if(this[statName] < 1) {
+      this[statName] = 1;
     }
   }
 }
