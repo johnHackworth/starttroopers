@@ -99,7 +99,7 @@ Crafty.c('StatusBar', {
     })
   },
   industryView: function() {
-    Crafty.trigger('IndustryHubSelected')
+    Crafty.trigger('JobOffersSelected')
   },
   productView: function() {
     Crafty.trigger('ProductSelected');

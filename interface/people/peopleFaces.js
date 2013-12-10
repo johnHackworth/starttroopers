@@ -1,7 +1,7 @@
 Crafty.c('PersonFace', {
   size: 100,
   showNameFlag: true,
-  _NOTIFICATION_DURATION: 60,
+  _NOTIFICATION_DURATION: 100,
   init: function() {
     this.currentTurn = 0;
     this.lastNotificationInserted = 0;

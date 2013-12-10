@@ -27,7 +27,7 @@ window.tr.data.companies = [
   {name: 'vodafone', type: 'operator', size: [10, 5, 10], level: [0,0,0], wages: [30,30, 30], hype: 5},
   {name: 'ticketea', type: 'ecommerce', size: [5, 2, 5], level: [0,0,0], wages: [30,30, 30], hype: 10},
   {name: 'rumbo', type: 'ecommerce', size: [10, 2, 5], level: [0,0,0], wages: [30,30, 30], hype: 5},
-  {name: 'vodafone', type: 'operator', size: [10, 5, 10], level: [0,0,0], wages: [30,30, 30], hype: 5},
+  {name: 'jazztel', type: 'operator', size: [10, 5, 10], level: [0,0,0], wages: [30,30, 30], hype: 5},
 
 
 ]

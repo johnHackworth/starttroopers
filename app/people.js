@@ -544,7 +544,7 @@ window.tr.models.Person.prototype = {
     if(!this.company) {
       perception += 30;
     }
-    if(this.experience = 0) {
+    if(this.experience == 0) {
       perception += 30;
     } else if(this.experience <= 2) {
       perception += 15;
