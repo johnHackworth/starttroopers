@@ -220,7 +220,6 @@ window.tr.models.Person.prototype = {
     if(!this.talkedToSomeone) {
       if(tr.randInt() < 20) {
         if(tr.randInt() < this.sociability) {
-          console.log('aaa')
           this.happines -= 0.1;
           this.trigger('conversation', "I don't like to be so isolated, I want to socialize")
         }

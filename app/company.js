@@ -85,6 +85,8 @@ window.tr.models.Company.prototype = {
 
   addPerson: function(person) {
     if(this.people.indexOf(person) < 0) {
+      if(this.name === 'the company') {
+      }
       if(person.company) {
         person.company.hiredByOther(person, this);
       }
@@ -122,18 +124,17 @@ window.tr.models.Company.prototype = {
     })
   },
   removePerson: function(person) {
-    if(this.people.indexOf(person) < 0) {
+    if(this.people.indexOf(person) >= 0) {
+      this.people.splice(this.people.indexOf(person), 1);
 
-     } else {
-        this.people.splice(this.people.indexOf(person), 1);
-        for(var n in this.product.projects) {
-          for(var i = 0, l = this.product.projects[n].people.length; i < l; i++) {
-            if(this.product.projects[n].people[i] === person) {
-              this.product.projects[n].people.splice(i,1);
-            }
-          }
-        }
-     }
+    }
+    for(var n in this.product.projects) {
+      var pos = this.product.projects[n].people(person);
+      if(pos >= 0) {
+        this.product.projects[n].people.splice(pos,1);
+      }
+    }
+
   },
   getAnOffer: function(investor, share, price) {
     this.offers.push({

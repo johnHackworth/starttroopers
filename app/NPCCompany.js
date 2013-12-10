@@ -136,7 +136,13 @@ window.tr.models.NPCCompany.prototype = {
   addNotification: function() {
 
   },
-  hiredByOther: function() {
-
-  }
+  hiredByOther: function(person, otherCompany) {
+    this.removePerson(person);
+    this.log(person.name + ' has left the company');
+  },
+  removePerson: function(person) {
+    if(this.people.indexOf(person) >= 0) {
+      this.people.splice(this.people.indexOf(person), 1);
+    }
+  },
 };
