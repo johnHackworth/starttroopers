@@ -73,6 +73,22 @@ window.tr.models.NPCCompany.prototype = {
       this.log('The company signed a new contract with'+person.name)
     }
   },
+  addPerson: function(person) {
+    if(this.people.indexOf(person) < 0) {
+      if(person.company) {
+        person.company.hiredByOther(person, this);
+      }
+      this.people.push(person);
+      person.company = this;
+      this.log('The company has signed '+person.name)
+      if(person.followers > 500) {
+        this.log(person.name + ' is a star on the business')
+        this.addHype(person.followers / 500);
+      }
+    } else {
+      this.log('The company signed a new contract with'+person.name)
+    }
+  },
   addHype:function(quality) {
     this.increaseStat('hype', quality);
   },

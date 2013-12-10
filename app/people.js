@@ -245,8 +245,8 @@ window.tr.models.Person.prototype = {
         if(this.company.beingScouted.length > 0) {
           var choosen = tr.randInt(this.company.beingScouted.length);
           var candidate = this.company.beingScouted[choosen];
-          if(!candidate.lastInterview || this.currentTurn - candidate.lastInterview > 3) {
-            candidate.interview(this);
+          if(!candidate.lastInterview || this.company.currentTurn - candidate.lastInterview > 3) {
+            candidate.interview(this, this.company.currentTurn);
           }
         }
       } else {
@@ -648,10 +648,10 @@ window.tr.models.Person.prototype = {
       this.company.log('Our knowledge about '+ this.name+' competence rises')
     }
   },
-  interview: function(other) {
+  interview: function(other, companyTurn) {
     var company = other.company;
     other.trigger('conversation', 'I have interviewed '+this.name);
-    this.lastInterview = this.currentTurn;
+    this.lastInterview = companyTurn;
     if(this.perceptionOfTheCompany(company) < 30) {
       company.log(this.name+' has declined our invitation to get interviewed');
     } else {
