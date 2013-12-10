@@ -7,6 +7,7 @@ Crafty.c("IndustryHubView", {
     this.statusBar = Crafty.e('StatusBar');
     this.statusBar.createOfficeButton();
     this.createIndustryButtoner();
+    this.renderPeople();
   },
   renderPeople: function() {
     this.peopleList = Crafty.e('PeopleList');
@@ -17,7 +18,7 @@ Crafty.c("IndustryHubView", {
       stepX: 150,
       stepY: 120,
       additionalInfo: 'getPersonalHireData',
-      maxPerPage: 16
+      maxPerPage: 25
     })
     this.peopleList.renderPeople()
 

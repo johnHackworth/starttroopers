@@ -52,19 +52,31 @@ window.tr.decorators.design.prototype = {
   randomizePerks: function() {
     if(tr.randInt() < 5) {
       if(this.mainInterest === 'design') {
-        var chooseInt = tr.randInt(3);
-        if(chooseInt == 0) {
-          this.perks.push('UX');
+        var chooseInt = tr.randInt(7);
+        if(chooseInt == 0 && this.addPerk('UX')) {
           this.increaseStat('productDesign', 30);
         }
-        if(chooseInt == 1) {
-          this.perks.push('color theory');
+        if(chooseInt == 1 && this.addPerk('color theory')) {
           this.increaseStat('visualDesign', 10);
         }
-        if(chooseInt == 1) {
-          this.perks.push('seniority');
+        if(chooseInt == 2 && this.addPerk('seniority')) {
           this.increaseStat('visualDesign', 10);
           this.increaseStat('productDesign', 10);
+        }
+        if(chooseInt == 3 && this.addPerk('dribbbler')) {
+          this.increaseStat('visualDesign', 10);
+          this.increaseStat('productDesign', -10);
+          this.followrs  += tr.randInt(1000);
+        }
+        if(chooseInt == 4 && this.addPerk('develop. skills')) {
+          this.increaseStat('frontend', 30);
+          this.increaseStat('backend', 20);
+        }
+        if(chooseInt == 5 && this.addPerk('app designer')) {
+          this.appDesign = true;
+        }
+        if(chooseInt == 6 && this.addPerk('industrial designer')) {
+          this.increaseStat('productDesign', 20);
         }
       }
     }
