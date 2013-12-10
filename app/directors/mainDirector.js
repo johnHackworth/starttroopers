@@ -43,6 +43,8 @@ window.tr.directors.MainDirector.prototype = {
     Crafty.bind("OfferCreatorSelected", this.offerCreatorSelected.bind(this));
     Crafty.bind("OfferViewSelected", this.offerViewSelected.bind(this));
     Crafty.bind("PersonContractSelected", this.personContractSelected.bind(this));
+    Crafty.bind("PersonCreatorSelected", this.personCreatorSelected.bind(this));
+
   },
   personProfile: function(id) {
     if(id) {
@@ -100,6 +102,9 @@ window.tr.directors.MainDirector.prototype = {
   },
   personContractSelected: function() {
     Crafty.scene('PersonContract')
+  },
+  personCreatorSelected: function() {
+    Crafty.scene('CharCreator')
   }
 
 }
