@@ -1,0 +1,14 @@
+input#name {
+  border: 0;
+  padding: 10px;
+  width: 400px;
+  color: #666;
+  text-align:center;
+  font-size: 16px;
+  margin-left: 100px;
+  border-radius: 15px;
+}
+
+.creatorProp.PropertyCheckbox .text {
+  color: #FFFFFF;
+}

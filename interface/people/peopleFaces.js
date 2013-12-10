@@ -43,8 +43,6 @@ Crafty.c('PersonFace', {
   },
   setSize: function(size) {
     this.attr({
-      x:size,
-      y:size,
       w: size,
       h: size
     });

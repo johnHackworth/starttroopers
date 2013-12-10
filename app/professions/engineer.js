@@ -58,9 +58,9 @@ window.tr.decorators.engineering.prototype = {
     }
   },
   randomizePerks: function() {
-    if(tr.randInt() < 8) {
+    if(tr.randInt() < 5) {
       if(this.mainInterest === 'engineering') {
-        var chooseInt = tr.randInt(4);
+        var chooseInt = tr.randInt(11);
         if(chooseInt == 0 && this.addPerk('frontender')) {
           this.increaseStat('frontend', 30);
         }
@@ -90,6 +90,19 @@ window.tr.decorators.engineering.prototype = {
           this.increaseStat('learning', 10);
           this.bugModificator += 0.20;
           this.detailModificator += 0.20;
+        }
+        if(chooseInt == 7 && this.addPerk('debugger')) {
+          this.debugger = true;
+        }
+        if(chooseInt == 8 && this.addPerk('design eye')) {
+          this.increaseStat('visualDesign', 25);
+          this.increaseStat('frontend',10);
+        }
+        if(chooseInt == 9 && this.addPerk('brogrammer')) {
+          this.increaseStat('sociability', 20);
+        }
+        if(chooseInt == 10 && this.addPerk('data scientist')) {
+          this.increaseStat('architecture', 30);
         }
       }
     }
