@@ -68,6 +68,22 @@ window.tr.models.Project.prototype = {
     }
     return 100 * done / toGo;
   },
+  phaseCompletednessArray: function() {
+    var toGo = 0;
+    var done = 0;
+    var areas = ['design', 'definition', 'front', 'back', 'architecture', 'operations']
+    var res = [];
+    for(var n in areas) {
+      // console.log(areas[n])
+      var value = 100 * this.phase[areas[n]] / this.phase[areas[n]+'Goal'];
+      if(! this.phase[areas[n]]) {
+        value = 0;
+      }
+      res.push( value);
+
+    }
+    return res;
+  },
   initPhases: function() {
     this.phases = {
       mvp: this.createPhase('mvp', this.module.goals),

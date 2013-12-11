@@ -5,7 +5,15 @@ Crafty.c('ProjectCompletion', {
       w: 100,
       h: 25,
       y: 5,
-      x: 300
+      x: 300,
+      values: [
+        '#BD0026',
+        '#E31A1C',
+        '#FC4E2A',
+        '#FD8D3C',
+        '#FEB24C',
+        '#FED976'
+      ]
     });
     this.title = Crafty.e('2D, DOM, Text');
     this.title.attr({
@@ -34,7 +42,7 @@ Crafty.c('ProjectCompletion', {
     this.render();
   },
   render: function() {
-    var completedness = this.company.projects[0].phaseCompletedness()
-    this.progressBar.setValue(completedness)
+    var completedness = this.company.projects[0].phaseCompletednessArray()
+    this.progressBar.setValues(completedness)
   }
 })

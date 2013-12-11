@@ -35,7 +35,7 @@ Crafty.c('StatusBar', {
   createNextButton: function() {
     this.firstButton = Crafty.e('Button');
     this.firstButton.set({
-      color: '#CCAA00',
+      color: 'rgb(26, 152, 80)',
       text: "Next Turn",
       y: 5,
       x: 5,
@@ -57,7 +57,7 @@ Crafty.c('StatusBar', {
   createProductButton: function() {
     this.productButton = Crafty.e('Button');
     this.productButton.set({
-      color: '#CC00AA',
+      color: 'rgb(140, 206, 138)',
       text: "Product View",
       hintText: 'Product and projects screen',
       y: 5,
@@ -68,7 +68,7 @@ Crafty.c('StatusBar', {
   createBusinessButton: function() {
     this.businessButton = Crafty.e('Button');
     this.businessButton.set({
-      color: '#00AA55',
+      color: 'rgb(255, 242, 204)',
       text: "Business View",
       hintText: 'Money related issues',
       y: 5,
@@ -79,7 +79,7 @@ Crafty.c('StatusBar', {
   createMarketingButton: function() {
     this.marketingButton = Crafty.e('Button');
     this.marketingButton.set({
-      color: '#AAAA55',
+      color: 'rgb(247, 146, 114)',
       text: "Marketing View",
       hintText: 'Promote your product!',
       y: 5,
@@ -90,7 +90,7 @@ Crafty.c('StatusBar', {
   createIndustryButton: function() {
     this.industryButton = Crafty.e('Button');
     this.industryButton.set({
-      color: '#AAAAAA',
+      color: 'rgb(215, 48, 39)',
       text: "Industry View",
       hintText: 'Companies and people building the net!',
       y: 5,
