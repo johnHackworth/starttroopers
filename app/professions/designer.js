@@ -7,6 +7,7 @@ window.tr.decorators.design = function(options) {
 window.tr.decorators.design.prototype = {
 
   randomizeStudies: function() {
+    this.resetStats();
     if(this.mainInterest === 'design') {
       if(Math.random() * 100 < 50) {
         this.followers += tr.randInt(200);

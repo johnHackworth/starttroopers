@@ -42,13 +42,18 @@ window.tr.models.World.prototype = {
       this.investors.push(investor);
     }
   },
-  setPlayer: function(company) {
+  setPlayer: function(company, person) {
     this.company = company;
 
     for(var n in this.investors) {
       this.investors[n].setCompany(company);
     }
-    this.company.addPerson(this.people[0])
+    if(person) {
+      person.founder = true;
+      this.company.addPerson(person)
+    } else {
+      this.company.addPerson(this.people[0])
+    }
   },
   createPOPs: function() {
     this.POPs = [];

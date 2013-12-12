@@ -86,6 +86,21 @@ window.tr.models.Person.prototype = {
     tr.app.persons[this.id] = this;
   },
 
+  resetStats: function() {
+    this.perks = [];
+    this.productDesign = 1;
+    this.visualDesign = 1;
+
+    this.architecture = 1;
+    this.backend = 1;
+    this.frontend = 1;
+    this.operations = 1;
+    this.qa = 1;
+
+    this.business = 1;
+    this.marketing = 1;
+  },
+
   addPerk: function(perkName) {
     if(this.perks.indexOf(perkName) >= 0) {
       return false;
@@ -154,7 +169,11 @@ window.tr.models.Person.prototype = {
     var interests = ['business', 'engineering', 'design']
     this.mainInterest = interests[Math.floor(Math.random() * interests.length)]
     tr.utils.extend.call(this, tr.decorators[this.mainInterest]);
+  },
 
+  setInterest: function(interest) {
+    this.mainInterest = interest;
+    tr.utils.extend.call(this, tr.decorators[this.mainInterest]);
   },
 
   randomizePersonalStats: function() {
@@ -555,6 +574,14 @@ window.tr.models.Person.prototype = {
     }
     if(this.interviews >= 1 + Math.floor(this.socialbility / 10)) {
       perception -= this.interviews * 2;
+    }
+
+    if(this.founder) {
+      if(company === this.company) {
+        perception += 50;
+      } else {
+        perception -= 50;
+      }
     }
 
     return perception;

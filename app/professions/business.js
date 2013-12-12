@@ -7,6 +7,7 @@ window.tr.decorators.business = function(options) {
 window.tr.decorators.business.prototype = {
 
   randomizeStudies: function() {
+    this.resetStats();
     if(this.mainInterest === 'business') {
       if(Math.random() * 100 < 50) {
         this.perks.push('MBA');

@@ -5,7 +5,7 @@ window.tr.scenes.office = {};
 
 Crafty.scene('Office', (function() {
   var self = this;
-  var nOffices=23;
+  var nOffices=26;
   Crafty.background('#333333')
   this.bg = Crafty.e("2D, DOM")
              .attr({x:0, y: 0, w: 1200, h: 800})

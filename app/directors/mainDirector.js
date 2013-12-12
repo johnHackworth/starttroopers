@@ -7,7 +7,7 @@ window.tr.directors.MainDirector = function() {
 };
 window.tr.config = {
   width: 1280,
-  height: 700,
+  height: 800,
   fps: 50
 }
 
@@ -23,11 +23,15 @@ window.tr.directors.MainDirector.prototype = {
     Crafty.init();
     Crafty.bind('SceneChange', function() {
       var scale = window.innerWidth / 1200;
+      var scale2 = window.innerHeight / 800;
+      if(scale2 < scale) {
+        scale = scale2;
+      }
       if(scale < 1) {
         Crafty.viewport.scale(scale)
       }
     })
-    Crafty.scene('Office')
+    Crafty.scene('MainMenu')
     Crafty.bind("PersonSelected", this.personProfile.bind(this));
     Crafty.bind("OfficeSelected", this.office.bind(this));
     Crafty.bind("SocialSelected", this.socialProfile.bind(this));
@@ -46,6 +50,26 @@ window.tr.directors.MainDirector.prototype = {
     Crafty.bind("PersonCreatorSelected", this.personCreatorSelected.bind(this));
     Crafty.bind("CompanyListSelected", this.companyListSelected.bind(this));
     Crafty.bind("CompanyViewSelected", this.companyViewSelected.bind(this));
+    Crafty.bind("MainMenuSelected", this.mainMenuSelected.bind(this));
+
+  },
+  createWorld: function(person, company) {
+    this.world = new window.tr.models.World({});
+    window.world = tr.app.director.world;
+    if(company) {
+      this.company = company
+    } else {
+      this.company = new window.tr.models.Company({})
+      this.company.initProduct({
+        name: "The social network",
+        world: this.world
+      });
+      this.company.product.defineSocialNetwork();
+      this.company.initProject("basicSite");
+    }
+
+    this.world.setPlayer(window.tr.app.director.company, person);
+    window.comp = window.tr.app.director.company;
   },
   personProfile: function(id) {
     if(id) {
@@ -115,6 +139,9 @@ window.tr.directors.MainDirector.prototype = {
       this.selectedCompany = company;
     }
     Crafty.scene('CompanyView')
+  },
+  mainMenuSelected: function() {
+    Crafty.scene('MainMenu')
   }
 
 }

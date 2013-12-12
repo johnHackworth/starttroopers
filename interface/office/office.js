@@ -10,7 +10,8 @@ Crafty.c('OfficeFloor', {
     this.createPersons();
     this.createStatusBar();
     this.createCompanyLog();
-    this.bind('Remote', this.delete.bind(this));
+    this.createMainMenuButton();
+    this.bind('Remove', this.delete.bind(this));
   },
   delete: function() {
     this.company.off('newHire')
@@ -75,5 +76,19 @@ Crafty.c('OfficeFloor', {
     });
     this.companyLog.render()
     this.company.on("newTurn", this.companyLog.render.bind(this.companyLog))
+  },
+  createMainMenuButton: function() {
+    this.mainMenuButton = Crafty.e('2D, DOM, HTML, Mouse')
+      .attr({
+        x: 5,
+        y: 760,
+        w: 100,
+        h: 30,
+        z: 9999999999
+      })
+      .replace('<div class="mainMenuButton">Main menu</div> ' )
+      .bind('Click', function() {
+        Crafty.trigger('MainMenuSelected')
+      })
   }
 })
