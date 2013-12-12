@@ -136,5 +136,19 @@ window.tr.models.DNA.prototype = {
 
     }
     return true;
+  },
+  export: function() {
+    var json = {};
+    json.chromosomes = [];
+    for(var i in this.chromosomes) {
+      json.chromosomes.push(this.chromosomes[i]);
+    }
+    return json;
+  },
+  import: function(json) {
+    this.chromosomes = [];
+    for(var i in json.chromosomes) {
+      this.chromosomes[i] = json.chromosomes[i];
+    }
   }
 }

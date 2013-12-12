@@ -85,6 +85,44 @@ window.tr.models.POP.prototype = {
       visits += tr.randInt(unconvinced);
     }
     return visits;
+  },
+  export: function() {
+    var json = {}
+    for(var n in this) {
+      if(this[n].export) {
+
+        json[n] = this[n].export();
+      } else if(typeof this[n] !== 'object' && typeof this[n] !== 'function') {
+        json[n] = this[n]
+      }
+    }
+
+    var arrays = ['hobbies']
+    for(var m in arrays) {
+      var propName = arrays[m];
+      json[propName] = [];
+      for(var o in this[propName]) {
+        json[propName].push(this[propName][o]);
+      }
+    }
+    return json;
+  },
+  import: function(json) {
+
+    for(var n in json) {
+      if(typeof json[n] !== 'object') {
+        this[n] = json[n];
+      }
+    }
+    var arrays = ['hobbies']
+    for(var m in arrays) {
+      var propName = arrays[m];
+      this[propName] = [];
+      for(var o in this[propName]) {
+        this[propName].push(json[propName][o]);
+      }
+    }
+
   }
 
 }

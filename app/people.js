@@ -483,8 +483,8 @@ window.tr.models.Person.prototype = {
     this.log(this.name + ' enjoyed a good conversation with ' + person.name, 1, true);
     this.trigger('conversation', 'I have socialized with ' + person.name);
     if(this.socialCircle[person.id] > 50 && tr.randInt() < this.socialCircle[person.id]) {
-      if(this.friends.indexOf(person) < 0) {
-        this.friends.push(person);
+      if(this.friends.indexOf(person.id) < 0) {
+        this.friends.push(person.id);
         this.happiness += 5 * this.sociability / 100;
         this.increaseStat('sociability', 3);
         this.log(this.name + ' is now friend of ' + person.name);
@@ -715,5 +715,44 @@ window.tr.models.Person.prototype = {
   },
   log: function(data) {
 
+  },
+  export: function() {
+    var json = {}
+    for(var n in this) {
+      if(this[n].export) {
+
+        json[n] = this[n].export();
+      } else if(typeof this[n] !== 'object' && typeof this[n] !== 'function') {
+        json[n] = this[n]
+      }
+    }
+    var arrays = ['proyectKnowledge', 'perks', 'positions', 'hobbies', 'socialCircle', 'friends']
+    for(var m in arrays) {
+      var propName = arrays[m];
+      json[propName] = [];
+      for(var o in this[propName]) {
+        json[propName].push(this[propName][o]);
+      }
+    }
+    json.DNA = this.DNA.export();
+
+    return json;
+  },
+  import: function(json) {
+
+    for(var n in json) {
+      if(typeof json[n] !== 'object') {
+        this[n] = json[n];
+      }
+    }
+    var arrays = ['proyectKnowledge', 'perks', 'positions', 'hobbies', 'socialCircle', 'friends']
+    for(var m in arrays) {
+      var propName = arrays[m];
+      this[propName] = [];
+      for(var o in this[propName]) {
+        this[propName].push(json[propName][o]);
+      }
+    }
+    this.DNA.import(json.DNA)
   }
 }

@@ -161,4 +161,47 @@ window.tr.models.NPCCompany.prototype = {
       this.people.splice(this.people.indexOf(person), 1);
     }
   },
+  export: function() {
+    var json = {}
+    for(var n in this) {
+      if(this[n].export) {
+
+        json[n] = this[n].export();
+      } else if(typeof this[n] !== 'object' && typeof this[n] !== 'function') {
+        json[n] = this[n]
+      }
+    }
+
+    var arrays = ['wages', 'level', 'size']
+    for(var m in arrays) {
+      var propName = arrays[m];
+      json[propName] = [];
+      for(var o in this[propName]) {
+        json[propName].push(this[propName][o]);
+      }
+    }
+    json.people = [];
+    for(var n in this.people) {
+      json.people.push(this.people[n].id)
+    }
+
+    return json;
+  },
+  import: function(json) {
+
+    for(var n in json) {
+      if(typeof json[n] !== 'object') {
+        this[n] = json[n];
+      }
+    }
+    var arrays = ['wages', 'level', 'size']
+    for(var m in arrays) {
+      var propName = arrays[m];
+      this[propName] = [];
+      for(var o in this[propName]) {
+        this[propName].push(json[propName][o]);
+      }
+    }
+
+  }
 };
