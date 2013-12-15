@@ -20,10 +20,10 @@ Crafty.c("MainMenuView", {
     this.createExitButton();
     this.createFooter();
 
-    setTimeout(function() {
+/*    setTimeout(function() {
       tr.app.director.createWorld()
       Crafty.trigger('OfficeSelected');
-    },500);
+    },500);*/
   },
   createTitle: function() {
     this.mainMenuTitle = Crafty.e('2D, DOM, HTML')

@@ -65,8 +65,8 @@ Crafty.c('ProductProfile', {
       progressBar.setOptions({
         w: 50,
         h: 12,
-        y: 212 + 60*i,
-        x: 300
+        x: 300 + (i%2)*600,
+        y: 212 + Math.floor(i/2) * 60,
       });
       progressBar.setValue(this.product.modules[n].project.phaseCompletedness());
       this.createModuleButtons(this.product.modules[n], i)
@@ -133,7 +133,7 @@ Crafty.c('ProductProfile', {
         textColor:  textColor,
         hintText: 'Proceed to the next phase of the project. Only avaible when all the areas are completed.',
         text: "Next phase",
-        x: 490 + (i%2)*500,
+        x: 490 + (i%2)* 600,
         y: 202 + Math.floor(i/2)* 50,
         onClick: click
       });
@@ -143,12 +143,17 @@ Crafty.c('ProductProfile', {
     var self = this;
     var i = this.product.modules.length;
     var available = this.product.getAvailableModules();
+
+    this.availableTitle = Crafty.e('2D, DOM, HTML');
+    this.availableTitle.attr({y: 270 + Math.floor(i/2) * 50, x: 20, w: 300, h: 30})
+      .append('<div class="projectModules"><div class="title">Available projects</div></div>');
+    i += 2;
     for(var n in available) {
       if(!available[n].started) {
         var module = Crafty.e('2D, DOM, HTML, Mouse, Hint')
           module.attr({
-          x:20 + (i%2)*600,
-          y:230 + Math.floor(i/2) * 50,
+          x:20 + ((i+1)%2)*600,
+          y:260 + Math.floor(i/2) * 50,
           w:450,
           h:50
         })
@@ -179,9 +184,9 @@ Crafty.c('ProductProfile', {
     initButton.set({
       color: '#00CC66',
       text: "Init Project",
-      x:500 + (i%2) * 600,
+      x:500 + ((i+1)%2) * 600,
       h:20,
-      y:230 + Math.floor(i/2) *50,
+      y:260 + Math.floor(i/2) * 50,
       onClick: function() {
         self.company.initProject(moduleName);
       }
@@ -191,14 +196,19 @@ Crafty.c('ProductProfile', {
   renderSoonAvailableModules: function() {
     var self = this;
     var i = this.product.modules.length;
-    i += this.product.getAvailableModules().length;
+    i += this.product.getAvailableModules().length ;
+    i += 2;
+    this.soonAvailableTitle = Crafty.e('2D, DOM, HTML');
+    this.soonAvailableTitle.attr({y: 270 + Math.floor(i/2) * 50, x: 20, w: 1000, h: 30})
+      .append('<div class="projectModules"><div class="title">Next modules (dependant of the available ones)</div></div>');
+    i += 2;
     var available = this.product.getSoonAvailableModules();
     for(var n in available) {
       if(!available[n].started) {
         var module = Crafty.e('2D, DOM, HTML, Mouse, Hint')
           module.attr({
-          x:20 + (i%2)*600,
-          y:230 + Math.floor(i/2) * 50,
+          x:20 + ((i+1)%2)*600,
+          y:260 + Math.floor(i/2) * 50,
           w:450,
           h:50
         })

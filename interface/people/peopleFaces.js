@@ -1,7 +1,7 @@
 Crafty.c('PersonFace', {
   size: 100,
   showNameFlag: true,
-  _NOTIFICATION_DURATION: 100,
+  _NOTIFICATION_DURATION: 120,
   init: function() {
     this.currentTurn = 0;
     this.lastNotificationInserted = 0;
@@ -13,6 +13,7 @@ Crafty.c('PersonFace', {
     this.bind('Click', this.selectPerson.bind(this));
     this.bind('EnterFrame', this.turn.bind(this));
     this.bind('Remove', this.delete.bind(this));
+    this.clearTimeouts();
   },
   delete: function() {
     this.unbind('MouseOver');
@@ -20,6 +21,7 @@ Crafty.c('PersonFace', {
     this.unbind('Click');
     this.unbind('EnterFrame');
     this.person.off('conversation')
+    this.clearTimeouts();
     for(var n in this.components) {
       this[this.components[n].toLowerCase()].destroy();
     }
@@ -94,43 +96,75 @@ Crafty.c('PersonFace', {
     Crafty.trigger("PersonSelected");
   },
   addNotification: function(notification) {
-    this.notifications.push({text:notification, turn: this.currentTurn});
+    for(var i in this.notifications) {
+      if(this.notifications[i] && this.notifications[i].text === notification &&
+        this.notification[i].turn === this.currentTurn) {
+        return;
+      }
+    }
+    this.notifications.unshift({text:notification, turn: this.currentTurn});
+  },
+  clearTimeouts: function() {
+    if(!this.notifTimeouts) this.notifTimeouts = [];
+    var timeout = this.notifTimeouts.pop();
+    while(timeout) {
+      clearTimeout(timeout);
+      timeout = this.notifTimeouts.pop();
+    }
   },
   turn: function() {
+    var self = this;
     this.currentTurn++;
     var toBeRemoved = [];
-    if(this.notifications.length > 0) {
-      for(var i = 0, l = this.notifications.length; i < l; i++) {
-        if(this.currentTurn - this.notifications[i].turn > this._NOTIFICATION_DURATION) {
-          toBeRemoved.push(i);
-        } else {
-          if(!this.notifications[i].view && this.currentTurn - this.lastNotificationInserted > this._NOTIFICATION_DURATION/4 ) {
-            this.lastNotificationInserted = this.currentTurn;
-            this.notifications[i].turn = this.currentTurn;
-            this.notifications[i].view = Crafty.e('2D, DOM, Text, Tween');
-            this.notifications[i].view.attr({
-              x: this.attr('x'),
-              y: this.attr('y') + this.size ,
-              w: this.attr('w'),
-              h: 15
+    var notif = this.notifications.pop();
+    var notifDelay = 0;
+    while(notif) {
+      notifDelay += tr.randInt(2000)
+      var timeout = setTimeout(
+        (function(notif) {
+          return function() {
+            self.trigger('newNotif');
+            notif.view = Crafty.e('2D, DOM, HTML, Tween');
+            notif.view.attr({
+              x: self.attr('x') + (self.size / 3),
+              y: self.attr('y') + self.size - 20 ,
+              w: self.attr('w'),
+              h: 15,
+              alpha: 0.6
             }).css({textAlign: "center"})
-            .text(this.notifications[i].text)
-            .textColor('#333333')
-            .tween({y: this.attr('y')}, this._NOTIFICATION_DURATION);
+            .replace('<div class="conversationText">'+notif.text+'</div>')
+            .tween({alpha: 1, y: self.attr('y')}, self._NOTIFICATION_DURATION);
+            notif.destroyExt = self.destroyNotif(notif);
+            self.bind('newNotif', notif.destroyExt)
+            self.talk();
+            setTimeout(self.destroyNotif(notif), self._NOTIFICATION_DURATION * 30)
           }
-        }
-      }
-      this.talk();
-      setTimeout(this.shutUp.bind(this), this._NOTIFICATION_DURATION * this.notifications.length)
+        })(notif),
+        notifDelay
+      )
+      this.notifTimeouts.push(timeout);
+      notifDelay += self._NOTIFICATION_DURATION * 30;
+      notifDelay += tr.randInt(2000)
+
+      notif = this.notifications.pop()
     }
-    toBeRemoved.reverse();
-    for(var n in toBeRemoved) {
-      if(this.notifications[toBeRemoved[n]]) {
-        if(this.notifications[toBeRemoved[n]].view) {
-          this.notifications[toBeRemoved[n]].view.destroy();
-        }
-        this.notifications.splice(toBeRemoved[n],1);
-      }
+    // for(var n in toBeRemoved) {
+    //   if(this.notifications[toBeRemoved[n]]) {
+    //     if(this.notifications[toBeRemoved[n]].view) {
+    //       this.notifications[toBeRemoved[n]].view.destroy();
+    //     }
+    //     this.notifications.splice(toBeRemoved[n],1);
+    //   }
+    // }
+  },
+  destroyNotif: function(notifParam) {
+    var self = this;
+    var notif = notifParam;
+    return function() {
+      console.log(1);
+      self.unbind('newNotif', notif.destroyExt)
+      self.shutUp();
+      notif.view.destroy();
     }
   },
   talk: function() {

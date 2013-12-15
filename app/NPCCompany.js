@@ -18,6 +18,7 @@ window.tr.models.NPCCompany.prototype = {
   companyOwnShare: 100,
   hype: 0,
   initialize: function() {
+    this.id = tr.randInt(1000000);
     this.name = this.options.name || 'the company';
     this.type = this.options.type;
     this.hype = this.options.hype;

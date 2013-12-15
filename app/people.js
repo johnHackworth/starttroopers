@@ -7,6 +7,7 @@ window.tr.models.Person = function(options) {
   tr.utils.extend.call(this, tr.utils.Eventable);
   // tr.utils.extend.call(this, tr.utils.Loggable);
   tr.utils.extend.call(this, tr.utils.Stats);
+  tr.utils.extend.call(this, tr.utils.PersonEvent)
   this.initialize();
 }
 
@@ -58,6 +59,9 @@ window.tr.models.Person.prototype = {
 
   happinessFromWork: 0,
 
+  hasBeenFired: false,
+  turnModificator: 1,
+
   workToStats: {
     "design": "visualDesign",
     "definition": "productDesign",
@@ -81,6 +85,7 @@ window.tr.models.Person.prototype = {
     this.positions = [];
     this.hobbies = [];
     this.socialCircle = {};
+    this.companyOpinions = {};
     this.friends = [];
     this.id = tr.randInt(1000000);
     tr.app.persons[this.id] = this;
@@ -215,10 +220,17 @@ window.tr.models.Person.prototype = {
   },
 
   turn: function(turnNumber) {
+
+    this.stayAtHome = false;
+    this.eventChance();
     this.talkedToSomeone = false;
     this.currentTurn = turnNumber;
     this.scoutStats();
     this.coolRelations();
+    if(this.stayAtHome) {
+      this.hours = [];
+      return;
+    }
     if(this.negotiatingOffer) {
       this.log(this.name + ' is negotiation with ' + this.negotiatingOffer.investor.name);
     } else {
@@ -226,6 +238,7 @@ window.tr.models.Person.prototype = {
     }
     this.updateHappiness();
     this.updateOffers();
+    this.turnModificator = 1;
   },
   updateHappiness: function() {
     this.happiness -= 0.1;
@@ -357,6 +370,18 @@ window.tr.models.Person.prototype = {
     };
     this.trigger('change');
   },
+  getRandomProjectKnowledge: function() {
+    var projects = [];
+    // if(this.company && this.company.human) debugger;
+    for(var n in this.projectKnowledge) {
+      projects.push(n);
+    }
+    if(projects.length === 0) {
+      return false;
+    }
+    var randomN = tr.randInt(projects.length);
+    return this.projectKnowledge[projects[randomN]];
+  },
   increaseProjectKnowledge: function(project, amount) {
     if(!this.projectKnowledge[project.id] ) {
       this.projectKnowledge[project.id] = 0;
@@ -371,7 +396,7 @@ window.tr.models.Person.prototype = {
   getHourlyWork: function(project) {
     var position = '';
     var bugModificator = this.bugModificator;
-    var detailModificator = this.detailModificator;
+    var detailModificator = this.detailModificator * this.turnModificator;
     this.increaseProjectKnowledge(project, 1 * Math.random() * (50 + this.learning) / 200);
     if(this.positions.length > 0) {
       var p = tr.randInt(this.positions.length);
@@ -473,21 +498,25 @@ window.tr.models.Person.prototype = {
     this.socialCircle[person.id] = this.socialCircle[person.id] || 0;
     var conversationQuality = 0.1 * sharedInterests + 0.1 * person.sociability /100;
     this.happiness += 0.1 * this.sociability / 100;
-    if(conversationQuality > 0.2) {
+    if(conversationQuality > 0.3) {
       this.happiness += 0.1 * this.sociability / 100;
       if(person.happiness < 25) {
         this.happines -= 0.2 * this.sociability / 100;
+        this.trigger('conversation', 'I had a little depressing conversation with ' + person.name);
+      } else {
+        this.trigger('conversation', 'I had a great conversation with ' + person.name);
       }
     }
     this.socialCircle[person.id] += conversationQuality;
     this.log(this.name + ' enjoyed a good conversation with ' + person.name, 1, true);
-    this.trigger('conversation', 'I have socialized with ' + person.name);
+    // this.trigger('conversation', 'I have socialized with ' + person.name);
     if(this.socialCircle[person.id] > 50 && tr.randInt() < this.socialCircle[person.id]) {
       if(this.friends.indexOf(person.id) < 0) {
         this.friends.push(person.id);
         this.happiness += 5 * this.sociability / 100;
         this.increaseStat('sociability', 3);
         this.log(this.name + ' is now friend of ' + person.name);
+        this.trigger('conversation', "I'm now friend of "+person.name);
         this.company.log(this.name + ' is now friend of ' + person.name);
       }
     }
@@ -754,5 +783,34 @@ window.tr.models.Person.prototype = {
       }
     }
     this.DNA.import(json.DNA)
+  },
+  reactToFiring: function(person) {
+    for(var n in this.socialCircle) {
+      if(person.id === n) {
+        var change = tr.randInt(this.socialCircle[n]);
+        this.happiness -= change;
+        if(change > 5) {
+          this.trigger('conversation', "I'm upset for the firing of "+person.name);
+        }
+        if(change > 15) {
+          this.company.addNotification({
+            text: this.name+" is very upset because the firing of "+person.name,
+            type: "person",
+            id: this.id,
+            open: false
+          })
+        }
+      }
+    }
+  },
+  beingFired: function(company) {
+    if(company.human) {
+      this.hasBeenFired = true;
+    }
+    if(!this.companyOpinions[company.id]) {
+      this.companyOpinions[company.id] = -50;
+    } else {
+      this.companyOpinions[company.id] -= 50;
+    }
   }
 }

@@ -13,6 +13,7 @@ window.tr.models.Project.prototype = {
   launched: false,
   knowBugs: 0,
   projectPhases: ['prototype', 'polish', 'test'],
+  autoAdd: false,
   quality: 0,
   initialize: function() {
     this.module.started = true;
@@ -131,7 +132,9 @@ window.tr.models.Project.prototype = {
   },
   addWork: function(person) {
     var hourWork = person.getHourlyWork(this);
+    person.lastHours = {};
     for(var n in hourWork) {
+      person.lastHours[n] = hourWork[n];
       this.increasePhaseStat(n, hourWork[n]/10);
       this.changeQuality(n, hourWork[n] / 10, person);
     }
@@ -237,5 +240,18 @@ window.tr.models.Project.prototype = {
     this.phase.architecture = this.phase.architectureGoal - 0.00001;
     this.phase.operations = this.phase.operationsGoal - 0.00001;
     this.quality = tr.randInt();
+  },
+  getRandomPerson: function(isNotPerson) {
+    if(!this.people.length || (this.people.length === 1 && isNotPerson && this.people[0] === isNotPerson)) {
+      return null;
+    } else {
+      var nPerson = tr.randInt(this.people.length);
+      var person = this.people[nPerson];
+      if(person != isNotPerson) {
+        return person;
+      } else {
+        return this.getRandomPerson(isNotPerson);
+      }
+    }
   }
 };

@@ -12,7 +12,7 @@ Crafty.scene('Office', (function() {
 
   this.bgChange = function() {
     self.bg.css({
-      "background-image":"url(./assets/backgrounds/back"+tr.randInt(nOffices)+".png)",
+      "background-image":"url(./assets/backgrounds/b"+tr.randInt(nOffices)+".png)",
       "background-position": "center"
     })
   }

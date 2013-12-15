@@ -8,8 +8,8 @@ window.tr.utils.Stats = function() {
 window.tr.utils.Stats.prototype = {
   increaseStat: function(statName, value) {
     this[statName] += value;
-    if(this[statName] > 100) {
-      this[statName] = 100;
+    if(this[statName] >= 100) {
+      this[statName] = 99;
     }
     if(this[statName] < 1) {
       this[statName] = 1;

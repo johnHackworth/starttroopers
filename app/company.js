@@ -18,6 +18,7 @@ window.tr.models.Company.prototype = {
   companyOwnShare: 100,
   hype: 0,
   initialize: function() {
+    this.id = tr.randInt(1000000);
     this.name = this.options.name || 'the company';
     this.projects = [];
     this.offers = [];
@@ -82,7 +83,32 @@ window.tr.models.Company.prototype = {
     project.setCompany(this);
     this.projects.push(project);
   },
-
+  firePerson: function(person) {
+    var index = this.people.indexOf(person);
+    if(index < 0) {
+      this.removePerson(person);
+      this.reactionToFiring(person);
+      person.company = null;
+      this.log('The company has fired '+person.name)
+      this.addNotification({
+        text: person.name + ' has been fired from the company',
+        type: 'person',
+        id: person.id,
+        open: true
+      })
+      if(person.followers > 500 && tr.randInt() < 20) {
+        this.addNotification({
+          text: 'the firing of ' + person.name + ' has created some flame against us on the net.',
+          type: 'person',
+          id: person.id,
+          open: true,
+          hint: '-- hype'
+        })
+        this.addHype(-1 * person.followers / 500);
+      }
+      this.trigger('fire', person)
+    }
+  },
   addPerson: function(person) {
     if(this.people.indexOf(person) < 0) {
       if(this.name === 'the company') {
@@ -108,9 +134,17 @@ window.tr.models.Company.prototype = {
         this.beingScouted.splice(pos, 1);
       }
       person.beingScouted = false;
+      this.autoAddToProjects(person);
       this.trigger('newHire', person)
     } else {
       this.log('The company signed a new contract with'+person.name)
+    }
+  },
+  autoAddToProjects: function(person) {
+    for(var n in this.projects) {
+      if(this.projects[n].autoAdd) {
+        this.projects[n].addPerson(person);
+      }
     }
   },
   hiredByOther: function(person, otherCompany) {
@@ -123,15 +157,20 @@ window.tr.models.Company.prototype = {
       open: true
     })
   },
+  reactionToFiring: function(person) {
+    person.beingFired(this);
+    for(var n in this.people) {
+      this.people[n].reactToFiring(person);
+    }
+  },
   removePerson: function(person) {
     if(this.people.indexOf(person) >= 0) {
       this.people.splice(this.people.indexOf(person), 1);
-
     }
-    for(var n in this.product.projects) {
-      var pos = this.product.projects[n].people(person);
+    for(var n in this.projects) {
+      var pos = this.projects[n].people(person);
       if(pos >= 0) {
-        this.product.projects[n].people.splice(pos,1);
+        this.projects[n].people.splice(pos,1);
       }
     }
 

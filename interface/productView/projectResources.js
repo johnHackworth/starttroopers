@@ -19,6 +19,7 @@ Crafty.c('ProjectResources', {
     this.renderCompanyPeople();
     this.renderPhase();
     this.renderQuality();
+    this.renderAutoAdd();
     this.render();
     this.buttons = [];
     this.bindProjectChange = this.project.on('change', function() {Crafty.trigger('ProjectSelected')})
@@ -70,12 +71,12 @@ Crafty.c('ProjectResources', {
 
       var otherButton = Crafty.e('Button, smallButton');
       otherButton.set({
-        x: x + 10,
+        x: x + 0,
         y: y+52,
-        w: 30,
+        w: 50,
         color: '#660000',
         h: 10,
-        text: '-',
+        text: 'remove',
         onClick: self.clickRemoveGenerator(other).bind(this)
       })
 
@@ -120,12 +121,12 @@ Crafty.c('ProjectResources', {
 
         var otherButton = Crafty.e('Button, smallButton');
         otherButton.set({
-          x: x + 10,
+          x: x + 5,
           y: y+52,
           color: '#006600',
-          w: 30,
+          w: 40,
           h: 10,
-          text: '+',
+          text: 'add',
           onClick: self.clickAddGenerator(other)
         })
         x += 80;
@@ -184,6 +185,12 @@ Crafty.c('ProjectResources', {
       x: x + 100
     });
     progressBar.setValue(this.project.quality);
+  },
+  renderAutoAdd: function() {
+    this.autoAddCheck = Crafty.e('PropertyCheckbox')
+    this.autoAddCheck.bindWithProperty(this.project, "autoAdd", "Auto-add new hires");
+    this.autoAddCheck.attr({x: 20, y: 700, w: 400, h: 30});
+    this.autoAddCheck.render();
   }
 
 })
