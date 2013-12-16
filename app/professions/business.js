@@ -12,10 +12,12 @@ window.tr.decorators.business.prototype = {
       if(Math.random() * 100 < 33) {
         this.perks.push('MBA');
         this.increaseStat('business', 30);
+        this.increaseStat('marketing', 10);
         this.desiredWage += 20000;
       } else if(Math.random() * 100 < 33) {
         this.perks.push('Marketing');
         this.increaseStat('marketing', 30);
+        this.increaseStat('business', 10);
         this.desiredWage += 15000;
       } else {
         this.selfTaught()
@@ -24,7 +26,8 @@ window.tr.decorators.business.prototype = {
   },
   selfTaught: function() {
     this.perks.push('selfTaught');
-    this.increaseStat('business', tr.randInt(50));
+    this.increaseStat('business', tr.randInt(30));
+    this.increaseStat('marketing', tr.randInt(30));
     this.increaseStat('architecture',  tr.randInt(5));
     this.increaseStat('backend',  tr.randInt(5));
     this.increaseStat('frontend',  tr.randInt(10));
@@ -41,13 +44,26 @@ window.tr.decorators.business.prototype = {
     var followersRatio = this.sociability / 100;
     for(var i = 0; i < this.experience; i++) {
       if(this.mainInterest === 'business') {
-        if(tr.randInt() > 50) {
+        if(tr.randInt() < 33) {
           increase = tr.randInt(10 * this.learning / 100);
-          this.increaseStat('business', increase)
+          this.increaseStat('business', increase);
+          this.desiredWage += increase * 1000 * (this.negotiation / 100);
+        } else if(tr.randInt() < 33) {
+          increase = tr.randInt(10 * this.learning / 100);
+          this.increaseStat('marketing', increase);
+          this.desiredWage += increase * 1000 * (this.negotiation / 100);
+        } else if(tr.randInt() < 15 ) {
+          increase = tr.randInt(10 * this.learning / 100);
+          this.increaseStat('marketing', increase);
+          increase = tr.randInt(10 * this.learning / 100);
+          this.increaseStat('business', increase);
+          increase = tr.randInt(10 * this.learning / 100);
+          this.increaseStat('productDesign', increase);
           this.desiredWage += increase * 1000 * (this.negotiation / 100);
         } else {
-          increase = tr.randInt(8 * this.learning / 100)
+          increase = tr.randInt(6 * this.learning / 100)
           this.increaseStat('business', increase)
+          this.increaseStat('marketing', increase)
           this.increaseStat('productDesign', tr.randInt(5 * this.learning / 100))
           this.desiredWage += increase * 1000 * (this.negotiation / 100);
         }
@@ -57,9 +73,9 @@ window.tr.decorators.business.prototype = {
     }
   },
   randomizePerks: function() {
-    if(tr.randInt() < 8) {
+    if(tr.randInt() < 5 ) {
       if(this.mainInterest === 'business') {
-        var chooseInt = tr.randInt(50);
+        var chooseInt = tr.randInt(8);
         if(chooseInt == 0 && this.addPerk('negotiator')) {
           this.increaseStat('negotiation', 20);
         }
@@ -72,7 +88,7 @@ window.tr.decorators.business.prototype = {
           this.increaseStat('business', 5);
         }
         if(chooseInt == 3 && this.addPerk('publicist')) {
-          this.increaseStat('marketing', 30);
+          this.increaseStat('marketing', 40);
           this.increaseStat('productDesign', 15);
         }
         if(chooseInt == 4 && this.addPerk('account executive')){
