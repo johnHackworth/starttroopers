@@ -73,6 +73,7 @@ window.tr.models.Person.prototype = {
 
   initialize: function() {
     this.name = this.options.name;
+    this.conversationFlags = {};
     this.culture = tr.utils.getRandomCulture();
 
     this.DNA = new tr.models.DNA(this);
@@ -218,9 +219,12 @@ window.tr.models.Person.prototype = {
   },
   randomizePerks: function() {
   },
+  resolveConversations: function() {
+
+  },
 
   turn: function(turnNumber) {
-
+    this.resolveConversations();
     this.stayAtHome = false;
     this.eventChance();
     this.talkedToSomeone = false;
