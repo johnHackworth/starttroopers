@@ -190,3 +190,34 @@
   font-size: 25px;
   margin: 40px 0;
 }
+
+.conversationOption:hover {
+  color: #FFFFFF;
+  text-shadow: 0 0 1px #000000;
+}
+
+.conversationTitle {
+  color: #FFFFAA;
+  text-shadow: 0 0 1px #333333;
+  font-size: 20px;
+}
+
+.responseInteractionView {
+  color: #AA3333;
+  text-shadow: 0 0 1px #000000;
+}
+.responseInteractionView span {
+  text-transform: capitalize;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+.responseView {
+  color: #3333FF;
+  text-shadow: 0 0 1px #000000;
+}
+.responseView span {
+  text-transform: capitalize;
+  margin-right: 15px;
+  font-weight: bold;
+}

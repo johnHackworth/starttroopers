@@ -7,6 +7,7 @@ window.tr.models.Person = function(options) {
   tr.utils.extend.call(this, tr.utils.Eventable);
   // tr.utils.extend.call(this, tr.utils.Loggable);
   tr.utils.extend.call(this, tr.utils.Stats);
+  tr.utils.extend.call(this, tr.utils.Conversation);
   tr.utils.extend.call(this, tr.utils.PersonEvent)
   this.initialize();
 }
@@ -224,6 +225,7 @@ window.tr.models.Person.prototype = {
   },
 
   turn: function(turnNumber) {
+    this.currentTurn = turnNumber;
     this.resolveConversations();
     this.stayAtHome = false;
     this.eventChance();

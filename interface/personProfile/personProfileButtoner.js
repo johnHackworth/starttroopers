@@ -31,6 +31,16 @@ Crafty.c('PersonProfileButtoner', {
       onClick: function() {
         Crafty.trigger('PersonContractSelected')
       }
+    });
+    this.interactionButton = Crafty.e('Button');
+    this.interactionButton.set({
+      color: '#6666CC',
+      text: "Interaction",
+      x: 340,
+      y: 650,
+      onClick: function() {
+        Crafty.trigger('PersonInteractionSelected')
+      }
     })
 
   },

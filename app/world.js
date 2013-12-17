@@ -49,6 +49,7 @@ window.tr.models.World.prototype = {
       this.investors[n].setCompany(company);
     }
     if(person) {
+      this.people.push(person);
       person.founder = true;
       this.company.addPerson(person)
     } else {
@@ -80,10 +81,10 @@ window.tr.models.World.prototype = {
       newUsers += this.POPs[q].newUsers;
     }
     for(var o in this.people) {
-      this.people[o].turn();
+      this.people[o].turn(this.currentTurn);
     }
     for(var p in this.companies) {
-      this.companies[p].turn();
+      this.companies[p].turn(this.currentTurn);
     }
     this.createUserAccounts();
     this.company.product.visits.push(visits);
