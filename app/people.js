@@ -226,6 +226,9 @@ window.tr.models.Person.prototype = {
 
   turn: function(turnNumber) {
     this.currentTurn = turnNumber;
+    if(this.isBeingFired) {
+      this.company.firePerson(this);
+    }
     this.resolveConversations();
     this.stayAtHome = false;
     this.eventChance();
@@ -809,7 +812,18 @@ window.tr.models.Person.prototype = {
       }
     }
   },
+  fire: function() {
+    this.isBeingFired = true;
+    this.trigger('conversation', "Shit... I'll begin to pick my stuff.")
+    this.company.addNotification({
+      text: this.name+" is being fired. "+this.pronoum() + " doens't work for the company anymore.",
+      type: "person",
+      id: this.id,
+      open: true
+    })
+  },
   beingFired: function(company) {
+    this.isBeingFired = false;
     if(company.human) {
       this.hasBeenFired = true;
     }

@@ -46,16 +46,19 @@ Crafty.c('InteractionView', {
     }
   },
   createFireButton: function() {
-    this.fireButton = Crafty.e('Button');
-    this.fireButton.set({
-      color: '#ff6655',
-      text: "FIRE PERSON",
-      x: 1050,
-      y: 80,
-      onClick: function() {
-        Crafty.trigger('PersonInteractionSelected')
-      }
-    })
+    var self = this;
+    if(this.person.company.human) {
+      this.fireButton = Crafty.e('Button');
+      this.fireButton.set({
+        color: '#ff6655',
+        text: "FIRE PERSON",
+        x: 1050,
+        y: 80,
+        onClick: function() {
+          self.person.fire();
+        }
+      })
+    }
   },
   clearInteractionOptions: function() {
     for(var n in this.conversationOptionViews) {

@@ -85,7 +85,7 @@ window.tr.models.Company.prototype = {
   },
   firePerson: function(person) {
     var index = this.people.indexOf(person);
-    if(index < 0) {
+    if(index >= 0) {
       this.removePerson(person);
       this.reactionToFiring(person);
       person.company = null;
@@ -168,7 +168,7 @@ window.tr.models.Company.prototype = {
       this.people.splice(this.people.indexOf(person), 1);
     }
     for(var n in this.projects) {
-      var pos = this.projects[n].people(person);
+      var pos = this.projects[n].people.indexOf(person);
       if(pos >= 0) {
         this.projects[n].people.splice(pos,1);
       }
