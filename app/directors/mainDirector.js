@@ -52,6 +52,8 @@ window.tr.directors.MainDirector.prototype = {
     Crafty.bind("CompanyViewSelected", this.companyViewSelected.bind(this));
     Crafty.bind("MainMenuSelected", this.mainMenuSelected.bind(this));
     Crafty.bind("PersonInteractionSelected", this.interactionViewSelected.bind(this));
+    Crafty.bind("PersonWorkLogSelected", this.personWorkLogSelected.bind(this));
+
   },
   createWorld: function(person, company) {
     this.world = new window.tr.models.World({});
@@ -145,6 +147,9 @@ window.tr.directors.MainDirector.prototype = {
   },
   interactionViewSelected: function() {
     Crafty.scene('PersonInteraction');
-  }
+  },
+  personWorkLogSelected: function() {
+    Crafty.scene('PersonWorkLog');
+  },
 
 }

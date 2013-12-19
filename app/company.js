@@ -117,7 +117,7 @@ window.tr.models.Company.prototype = {
         person.company.hiredByOther(person, this);
       }
       this.people.push(person);
-      person.company = this;
+      person.setCompany(this);
       this.log('The company has signed '+person.name)
       this.addNotification({
         text: person.name + ' has accepted your offer and ' + person.pronoum()+ ' will inmediately begin to work with you',

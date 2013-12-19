@@ -42,7 +42,16 @@ Crafty.c('PersonProfileButtoner', {
         Crafty.trigger('PersonInteractionSelected')
       }
     })
-
+    this.workLogButton = Crafty.e('Button');
+    this.workLogButton.set({
+      color: '#6666CC',
+      text: "Work Log",
+      x: 450,
+      y: 650,
+      onClick: function() {
+        Crafty.trigger('PersonWorkLogSelected')
+      }
+    })
   },
   createPositionButtons: function() {
     var self = this;

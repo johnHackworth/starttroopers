@@ -19,6 +19,7 @@ window.tr.models.Project.prototype = {
     this.module.started = true;
     this.name = this.module.name;
     this.id = this.module.id;
+    this.color = this.module.color;
     this.phases = []
     this.people = [];
     this.initPhases();

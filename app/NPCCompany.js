@@ -37,7 +37,6 @@ window.tr.models.NPCCompany.prototype = {
     this.checkPersonal();
     this.trigger('newTurn')
   },
-
   socialize: function() {
     var hourly = [];
     for(var i = 0; i < 12; i++) {

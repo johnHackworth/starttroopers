@@ -93,6 +93,13 @@ window.tr.models.Person.prototype = {
     tr.app.persons[this.id] = this;
   },
 
+  setCompany: function(company) {
+    this.company = company;
+    if(company.human) {
+      this.hoursLog = [];
+    }
+  },
+
   resetStats: function() {
     this.perks = [];
     this.productDesign = 1;
@@ -223,7 +230,22 @@ window.tr.models.Person.prototype = {
   resolveConversations: function() {
 
   },
-
+  setHours: function(hours) {
+    this.hours = hours;
+    if(this.company && this.company.human) {
+      var hourGroup = {}
+      for(var n in hours) {
+        if(!hourGroup[hours[n]]) {
+          hourGroup[hours[n]] = 0;
+        }
+        hourGroup[hours[n]]++;
+      }
+      if(this.hoursLog.length >= 30) {
+        this.hoursLog.shift();
+      }
+      this.hoursLog.push(hourGroup);
+    }
+  },
   turn: function(turnNumber) {
     this.currentTurn = turnNumber;
     if(this.isBeingFired) {
@@ -237,7 +259,7 @@ window.tr.models.Person.prototype = {
     this.scoutStats();
     this.coolRelations();
     if(this.stayAtHome) {
-      this.hours = [];
+      this.setHours([]);
       return;
     }
     if(this.negotiatingOffer) {
@@ -283,6 +305,7 @@ window.tr.models.Person.prototype = {
       if(tr.randInt() < slackingProbability) {
         hours.push('social')
       } else if(this.isRecruiter && tr.randInt() < 20) {
+        hours.push('recruiting');
         if(this.company.beingScouted.length > 0) {
           var choosen = tr.randInt(this.company.beingScouted.length);
           var candidate = this.company.beingScouted[choosen];
@@ -307,7 +330,7 @@ window.tr.models.Person.prototype = {
         }
       }
     }
-    this.hours = hours;
+    this.setHours( hours);
     return hours;
   },
   getRaisingFundsHour: function() {
