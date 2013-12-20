@@ -83,6 +83,31 @@ window.tr.models.Company.prototype = {
     project.setCompany(this);
     this.projects.push(project);
   },
+  leavingCompany: function(person) {
+    var index = this.people.indexOf(person);
+    if(index >= 0) {
+      this.removePerson(person);
+      this.reactionToLeaving(person);
+      person.company = null;
+      this.log('The company has lost '+person.name+' as worker')
+      this.addNotification({
+        text: person.name + ' has left the company',
+        type: 'person',
+        id: person.id,
+        open: true
+      })
+      if(person.followers > 500 && tr.randInt() < 20) {
+        this.addNotification({
+          text: 'the leaving of ' + person.name + ' has created some flame against us on the net.',
+          type: 'person',
+          id: person.id,
+          open: true,
+          hint: '-- hype'
+        })
+        this.addHype((1+tr.randInt(2))/2 * person.followers / 500);
+      }
+    }
+  },
   firePerson: function(person) {
     var index = this.people.indexOf(person);
     if(index >= 0) {
@@ -160,7 +185,12 @@ window.tr.models.Company.prototype = {
   reactionToFiring: function(person) {
     person.beingFired(this);
     for(var n in this.people) {
-      this.people[n].reactToFiring(person);
+      this.people[n].reactToLeaving(person);
+    }
+  },
+  reactionToLeaving: function(person) {
+    for(var n in this.people) {
+      this.people[n].reactToLeaving(person);
     }
   },
   removePerson: function(person) {

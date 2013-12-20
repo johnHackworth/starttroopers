@@ -50,6 +50,24 @@ window.tr.data.userEvents = [
   }
 },
 {
+  "title": "viralBlogPost",
+  "text": function(){ return this.name +" has written a very popular post in "+this.pronoum()+" own blog, receiving a ton of new followers"},
+  "notification": 1,
+  "conversation": false,
+  "effects": function() {
+    this.followers += tr.randInt(1000) + 50;
+  }
+},
+{
+  "title": "hackerNewsBlogPost",
+  "text": function(){ return "The blog of " + this.name +" has appeared on hacker news! The server is near exploding! " + this.pronoum() + ' is now a star of the business'},
+  "notification": 1,
+  "conversation": false,
+  "effects": function() {
+    this.followers += tr.randInt(2000) + 50;
+  }
+},
+{
   "title": "projectConfusion",
   "text": function(){ return "I've realized a lot of assupmtions I've made about "+this.eventProject.name+" are plain wrong. I need to rethink everything I know about the project"},
   "precondition": function() {

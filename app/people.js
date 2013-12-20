@@ -63,6 +63,8 @@ window.tr.models.Person.prototype = {
   hasBeenFired: false,
   turnModificator: 1,
 
+  bugsRemoved: 0,
+
   workToStats: {
     "design": "visualDesign",
     "definition": "productDesign",
@@ -250,6 +252,11 @@ window.tr.models.Person.prototype = {
     this.currentTurn = turnNumber;
     if(this.isBeingFired) {
       this.company.firePerson(this);
+      this.isBeingFired = false;
+    }
+    if(this.isLeavingCompany) {
+      this.company.leavingCompany(this);
+      this.isLeavingCompany = false;
     }
     this.resolveConversations();
     this.stayAtHome = false;
@@ -270,6 +277,7 @@ window.tr.models.Person.prototype = {
     this.updateHappiness();
     this.updateOffers();
     this.turnModificator = 1;
+    this.checkHappiness();
   },
   updateHappiness: function() {
     this.happiness -= 0.1;
@@ -278,6 +286,23 @@ window.tr.models.Person.prototype = {
     }
     this.getHappinessFromWork();
     this.getHappinessFromConversations();
+  },
+  checkHappiness: function() {
+    if(this.happiness > 80) {
+      if(this.sociability > 60 &&
+        tr.randInt() > 90) {
+        this.trigger('conversation', "I'm delighted with my work");
+      }
+    } else if(this.happiness < 25) {
+      if((this.sociability + this.happiness) > 60 &&
+        tr.randInt() > 90) {
+        this.trigger('conversation', "I'm not happy here");
+      } else if(
+        tr.randInt() > 75 + this.happiness
+      ) {
+        this.leaveCompany();
+      }
+    }
   },
   getHappinessFromConversations: function() {
     if(!this.talkedToSomeone) {
@@ -288,6 +313,16 @@ window.tr.models.Person.prototype = {
         }
       }
     }
+  },
+  leaveCompany: function() {
+    this.company.addNotification({
+      text: this.name+": I've had enough. I'm not happy here, so I'm leaving the company.",
+      type: "person",
+      id: this.id,
+      open: true
+    })
+    this.trigger('conversation', 'Fuck off. I\'m leaving');
+    this.isLeavingCompany = true;
   },
   getHappinessFromWork: function() {
     this.happines += this.happinessFromWork;
@@ -433,6 +468,21 @@ window.tr.models.Person.prototype = {
     if(this.positions.length > 0) {
       var p = tr.randInt(this.positions.length);
       position = this.positions[p];
+    }
+    if(position === 'qa') {
+      if(this.perks.indexOf('qa') >= 0) {
+        this.happinessFromWork += 0.01;
+      }
+      this.learn('qa');
+
+      var unfoundBugs = project.bugs - project.knowBugs;
+      var found = (unfoundBugs > 0 &&
+        tr.randInt() < 40 &&
+        tr.randInt() < this.qa)
+
+      return {
+        foundBugs: found? 1: 0
+      }
     }
     if(position === 'front') {
       if(this.perks.indexOf('frontender') >= 0) {
@@ -617,16 +667,20 @@ window.tr.models.Person.prototype = {
   perceptionOfTheCompany: function(company) {
     var perception = 0;
     // hype
-    var hype = (company.hype + this.hypeable) / 2;
+    var hype = (company.hype) * (this.hypeable) / 100;
     // friends opinion
     perception += hype;
 
     if(!this.company) {
       perception += 30;
+    } else {
+      perception += (company.hype - this.company.hype) * this.hypeable / 100;
     }
     if(this.experience == 0) {
-      perception += 30;
-    } else if(this.experience <= 2) {
+      perception += 40;
+    } else if(this.experience == 1) {
+      perception += 35;
+    } else if(this.experience == 2) {
       perception += 15;
     }
 
@@ -639,9 +693,9 @@ window.tr.models.Person.prototype = {
 
     if(this.founder) {
       if(company === this.company) {
-        perception += 50;
+        perception += 100;
       } else {
-        perception -= 50;
+        perception -= 100;
       }
     }
 
@@ -816,17 +870,17 @@ window.tr.models.Person.prototype = {
     }
     this.DNA.import(json.DNA)
   },
-  reactToFiring: function(person) {
+  reactToLeaving: function(person) {
     for(var n in this.socialCircle) {
       if(person.id === n) {
         var change = tr.randInt(this.socialCircle[n]);
         this.happiness -= change;
         if(change > 5) {
-          this.trigger('conversation', "I'm upset for the firing of "+person.name);
+          this.trigger('conversation', "I'm upset for the leaving of "+person.name);
         }
         if(change > 15) {
           this.company.addNotification({
-            text: this.name+" is very upset because the firing of "+person.name,
+            text: this.name+" is very upset because the leaving of "+person.name,
             type: "person",
             id: this.id,
             open: false
@@ -855,5 +909,14 @@ window.tr.models.Person.prototype = {
     } else {
       this.companyOpinions[company.id] -= 50;
     }
+  },
+  getDebugStat: function() {
+    var stats = ['architecture', 'backend', 'frontend', 'operation'];
+    var n = tr.randInt(4);
+    var stat = this[stats[n]];
+    if(this.debugger) {
+      stat = stat * 3;
+    }
+    return stat;
   }
 }

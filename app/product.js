@@ -30,7 +30,7 @@ window.tr.models.Product.prototype = {
     for(var m in this.modules) {
       if(
         (this.modules[m].released ||
-        this.modules[m].project.phase.name === 'testing') &&
+        this.modules[m].project.phase.name === 'test') &&
         this.modules[m].project.id === id) {
         return true;
       }
@@ -40,7 +40,7 @@ window.tr.models.Product.prototype = {
   isModuleGettingReady: function(id) {
     for(var m in this.modules) {
       if(!this.modules[m].released &&
-        this.modules[m].project.phase.name != 'testing' &&
+        this.modules[m].project.phase.name != 'test' &&
         this.modules[m].project.id === id) {
         return true;
       }

@@ -135,10 +135,30 @@ window.tr.models.Project.prototype = {
     var hourWork = person.getHourlyWork(this);
     person.lastHours = {};
     for(var n in hourWork) {
-      person.lastHours[n] = hourWork[n];
-      this.increasePhaseStat(n, hourWork[n]/10);
-      this.changeQuality(n, hourWork[n] / 10, person);
+      if(n === 'foundBugs') {
+        if(this.bugs > this.knowBugs) {
+          console.log('********')
+          console.log(person, hourWork[n])
+          this.knowBugs += hourWork[n];
+        }
+      } else {
+        person.lastHours[n] = hourWork[n];
+        if(this.name != 'test') {
+          if(n != 'bugs') {
+            this.increasePhaseStat(n, hourWork[n]/10);
+          } else {
+            this.increaseBugs(hourWork[n]);
+          }
+        } else {
+         this.removeBugs(person)
+        }
+        this.changeQuality(n, hourWork[n] / 10, person);
+      }
     }
+  },
+  increaseBugs: function(bugs) {
+    console.log('bugs '+bugs);
+    this.bugs += bugs;
   },
   getTotalWorkDone: function() {
     var total = 0;
@@ -167,6 +187,9 @@ window.tr.models.Project.prototype = {
     if(isNaN(quality)) {
       return;
     }
+    if(this.name === 'polish') {
+      quality = quality * 1.25;
+    }
     this.quality = quality;
   },
   increasePhaseStat: function(stat, increase) {
@@ -179,6 +202,19 @@ window.tr.models.Project.prototype = {
     if(this.phase[stat] > this.phase[stat + 'Goal']) {
       this.phase[stat] = this.phase[stat + 'Goal'];
       this.phaseStatCompleted(stat);
+    }
+  },
+  removeBugs: function(person) {
+    if(this.knowBugs > 0) {
+      var debugStat = person.getDebugStat();
+      if(tr.randInt() < debugStat &&
+        tr.randInt() < 20
+      ) {
+        this.knowBugs--;
+        this.bugs--;
+        person.bugsRemoved++;
+        person.trigger('conversation', 'SUCCESS!! I have removed a bug')
+      }
     }
   },
   phaseStatCompleted: function(stat) {
@@ -203,7 +239,7 @@ window.tr.models.Project.prototype = {
     this.phase.completed = true;
     this.trigger('completedPhase');
     var subtext = ' We are ready for the next phase!'
-    if(this.phase.name == 'testing') {
+    if(this.phase.name == 'test') {
       subtext = ' We are ready to release the product!'
     }
     this.log(this.name + ' completed', 2);
