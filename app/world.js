@@ -91,10 +91,16 @@ window.tr.models.World.prototype = {
     this.company.product.newUsers.push(newUsers);
     this.workOffersEvaluation();
   },
-  distributeMarketingPunch: function(amount, hobbies) {
+  distributeMarketingPunch: function(amount, adopters) {
     var popN = this.POPs.length;
     for(var i = tr.randInt(popN); i < amount; i++) {
-      this.POPs[i % popN].knowTheProduct += tr.randInt(3);
+      var multiplier = 1;
+      for(var n in adopters) {
+        if(this.POPs[i % popN].hobbies.indexOf(adopters[n]) >= 0) {
+          multiplier++;
+        }
+      }
+      this.POPs[i % popN].knowTheProduct += multiplier * tr.randInt(3);
     }
     for(var j = 0; j < popN; j++) {
       this.POPs[j].trimStats();

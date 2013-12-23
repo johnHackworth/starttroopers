@@ -1,5 +1,5 @@
 window.tr = window.tr || {};
-window.tr.models = window.tr.models || {};
+window.tr.utils = window.tr.utils || {};
 
 window.tr.utils.PersonEvent = function(options) {
 

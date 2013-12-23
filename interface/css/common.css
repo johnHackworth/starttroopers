@@ -246,3 +246,10 @@ body {
   vertical-align: middle;
   font-size: 10px;
 }
+
+.progressBarText {
+  text-align: center;
+  color: #FFFFFF;
+  opacity: .6;
+  margin-top: 2px;
+}

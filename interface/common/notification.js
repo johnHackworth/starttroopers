@@ -19,7 +19,7 @@ Crafty.c('Notification', {
       text: "Close",
       y: this.y + 370,
       x: this.x + 500,
-      z: 1,
+      z: 9999999,
       onClick: this.close.bind(this)
     })
     this.firstPlane();
@@ -64,14 +64,14 @@ Crafty.c('Notification', {
     this.destroy();
   },
   secondPlane: function() {
-    this.attr({'z': 99998});
-    this.closeButton.attr({'z': 99998});
-    this.actionButton && this.actionButton.attr({'z': 99998});
+    this.attr({'z': 9999998});
+    this.closeButton.attr({'z': 9999998});
+    this.actionButton && this.actionButton.attr({'z': 9999998});
   },
   firstPlane: function() {
-    this.attr({'z': 99999});
-    this.closeButton.attr({'z': 99999})
-    this.actionButton && this.actionButton.attr({'z': 99999});
+    this.attr({'z': 9999999});
+    this.closeButton.attr({'z': 9999999})
+    this.actionButton && this.actionButton.attr({'z': 9999999});
   },
   setPersonButton: function(personId) {
     var self = this;
@@ -81,7 +81,7 @@ Crafty.c('Notification', {
       text: "Profile",
       y: this.y + 370,
       x: this.x + 20,
-      z: 1,
+      z: 9999999,
       onClick:function() {
         self.notification.read = true;
         self.notification.company.trigger('notificationClose');
@@ -97,7 +97,7 @@ Crafty.c('Notification', {
       text: "Project",
       y: this.y + 370,
       x: this.x + 20,
-      z: 1,
+      z: 9999999,
       onClick:function() {
         self.notification.read = true;
         self.notification.company.trigger('notificationClose');

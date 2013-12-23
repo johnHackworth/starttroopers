@@ -1,4 +1,4 @@
-Crafty.c('PersonProjectsSheet', {
+  Crafty.c('PersonProjectsSheet', {
   personalDataHTML: "<div class='socialData'>"+
   "<div class='name'>%NAME%'s current projects</div>"+
   "</div>",
@@ -41,7 +41,7 @@ Crafty.c('PersonProjectsSheet', {
       var module = Crafty.e('2D, DOM, HTML')
         module.attr({
         x:240,
-        y:100 + i * 60,
+        y:150 + i * 60,
         w:1000,
         h:200,
         z: 999999
@@ -51,15 +51,24 @@ Crafty.c('PersonProjectsSheet', {
         .replace(/%NAME%/g, this.person.currentProjects[n].name)
         .replace(/%PHASENAME%/g, this.person.currentProjects[n].phase.name)
       );
-      var name = this.person.currentProjects[n].name
+      var project = this.person.currentProjects[n];
+      var name = project.name
       var progressBar = Crafty.e('ProgressBar');
+      var knowledge = this.person.projectKnowledge[project.id];
+      if(!knowledge) {
+        knowledge = 0;
+      }
       progressBar.setOptions({
         w: 150,
         h: 12,
-        y: 102 + 60*i,
-        x: 500
+        y: 162 + 60*i,
+        x: 515,
+        color: '#000000',
+        progressColor: "rgb(70, "+(100+Math.floor(155 * knowledge / 100))+", 20)",
+        text: 'knowledge'
       });
-      progressBar.setValue(this.product.modules[n].project.phaseCompletedness());
+
+      progressBar.setValue(knowledge);
       i++;
     }
   },

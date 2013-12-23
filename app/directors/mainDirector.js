@@ -10,6 +10,17 @@ window.tr.config = {
   height: 800,
   fps: 50
 }
+window.tr.getScale = function() {
+  var scale = window.innerWidth / 1200;
+  var scale2 = window.innerHeight / 800;
+  if(scale2 < scale) {
+    scale = scale2;
+  }
+  if(scale > 1) {
+    scale = 1;
+  }
+  return scale;
+}
 
 window.tr.hobbies = [
   "sports", "gadgets", "fashion", "videogames",
@@ -22,14 +33,9 @@ window.tr.directors.MainDirector.prototype = {
   start: function() {
     Crafty.init();
     Crafty.bind('SceneChange', function() {
-      var scale = window.innerWidth / 1200;
-      var scale2 = window.innerHeight / 800;
-      if(scale2 < scale) {
-        scale = scale2;
-      }
-      if(scale < 1) {
-        Crafty.viewport.scale(scale)
-      }
+      var width = tr.config.width * tr.getScale();
+
+      Crafty.viewport.scale(tr.getScale());
     })
     Crafty.scene('MainMenu')
     Crafty.bind("PersonSelected", this.personProfile.bind(this));

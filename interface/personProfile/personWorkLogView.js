@@ -43,7 +43,8 @@ Crafty.c('PersonWorkLogView', {
     var colors = {
       social: '#7799FF',
       unoccupied: '#CC4422',
-      recruiting: '#AA9933'
+      recruiting: '#AA9933',
+      marketing: '#3399AA'
     }
     if(this.company) {
       for(var n in this.company.projects) {

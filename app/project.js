@@ -12,6 +12,7 @@ window.tr.models.Project.prototype = {
   bugs: 0,
   launched: false,
   knowBugs: 0,
+  isRefactor: false,
   projectPhases: ['prototype', 'polish', 'test'],
   autoAdd: false,
   quality: 0,
@@ -87,9 +88,13 @@ window.tr.models.Project.prototype = {
     return res;
   },
   initPhases: function() {
+    var prefix= '';
+    if(this.isRefactor) {
+      prefix = '(rftr) '
+    }
     this.phases = {
-      mvp: this.createPhase('mvp', this.module.goals),
-      polish: this.createPhase('polish',this.module.goals),
+      mvp: this.createPhase(prefix + 'prototype', this.module.goals),
+      polish: this.createPhase(prefix + 'polish',this.module.goals),
       test: this.createPhase('test',this.module.goals)
     }
     this.phase = this.phases.mvp;
@@ -137,8 +142,6 @@ window.tr.models.Project.prototype = {
     for(var n in hourWork) {
       if(n === 'foundBugs') {
         if(this.bugs > this.knowBugs) {
-          console.log('********')
-          console.log(person, hourWork[n])
           this.knowBugs += hourWork[n];
         }
       } else {
@@ -213,6 +216,9 @@ window.tr.models.Project.prototype = {
         this.knowBugs--;
         this.bugs--;
         person.bugsRemoved++;
+        if(this.productModule.released && !this.isRefactor) {
+          this.productModule.removeBugs()
+        }
         person.trigger('conversation', 'SUCCESS!! I have removed a bug')
       }
     }
@@ -290,5 +296,9 @@ window.tr.models.Project.prototype = {
         return this.getRandomPerson(isNotPerson);
       }
     }
+  },
+  beginRefactor: function() {
+    this.isRefactor = true;
+    this.initPhases();
   }
 };

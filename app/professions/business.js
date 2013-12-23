@@ -10,12 +10,12 @@ window.tr.decorators.business.prototype = {
     this.resetStats();
     if(this.mainInterest === 'business') {
       if(Math.random() * 100 < 33) {
-        this.perks.push('MBA');
+        this.addPerk('MBA');
         this.increaseStat('business', 30);
         this.increaseStat('marketing', 10);
         this.desiredWage += 20000;
       } else if(Math.random() * 100 < 33) {
-        this.perks.push('Marketing');
+        this.addPerk('Marketing');
         this.increaseStat('marketing', 30);
         this.increaseStat('business', 10);
         this.desiredWage += 15000;
@@ -25,7 +25,7 @@ window.tr.decorators.business.prototype = {
     }
   },
   selfTaught: function() {
-    this.perks.push('selfTaught');
+    this.addPerk('selfTaught');
     this.increaseStat('business', tr.randInt(30));
     this.increaseStat('marketing', tr.randInt(30));
     this.increaseStat('architecture',  tr.randInt(5));
@@ -43,32 +43,30 @@ window.tr.decorators.business.prototype = {
     var increase = 0;
     var followersRatio = this.sociability / 100;
     for(var i = 0; i < this.experience; i++) {
-      if(this.mainInterest === 'business') {
-        if(tr.randInt() < 33) {
-          increase = tr.randInt(10 * this.learning / 100);
-          this.increaseStat('business', increase);
-          this.desiredWage += increase * 1000 * (this.negotiation / 100);
-        } else if(tr.randInt() < 33) {
-          increase = tr.randInt(10 * this.learning / 100);
-          this.increaseStat('marketing', increase);
-          this.desiredWage += increase * 1000 * (this.negotiation / 100);
-        } else if(tr.randInt() < 15 ) {
-          increase = tr.randInt(10 * this.learning / 100);
-          this.increaseStat('marketing', increase);
-          increase = tr.randInt(10 * this.learning / 100);
-          this.increaseStat('business', increase);
-          increase = tr.randInt(10 * this.learning / 100);
-          this.increaseStat('productDesign', increase);
-          this.desiredWage += increase * 1000 * (this.negotiation / 100);
-        } else {
-          increase = tr.randInt(6 * this.learning / 100)
-          this.increaseStat('business', increase)
-          this.increaseStat('marketing', increase)
-          this.increaseStat('productDesign', tr.randInt(5 * this.learning / 100))
-          this.desiredWage += increase * 1000 * (this.negotiation / 100);
-        }
-        this.followers += tr.randInt(followersRatio * increase *  increase * tr.randInt(10));
+      if(tr.randInt() < 33) {
+        increase = tr.randInt(20 * this.learning / 100);
+        this.increaseStat('business', increase);
+        this.desiredWage += increase * 1000 * (this.negotiation / 100);
+      } else if(tr.randInt() < 33) {
+        increase = tr.randInt(20 * this.learning / 100);
+        this.increaseStat('marketing', increase);
+        this.desiredWage += increase * 1000 * (this.negotiation / 100);
+      } else if(tr.randInt() < 15 ) {
+        increase = tr.randInt(10 * this.learning / 100);
+        this.increaseStat('marketing', increase);
+        increase = tr.randInt(10 * this.learning / 100);
+        this.increaseStat('business', increase);
+        increase = tr.randInt(10 * this.learning / 100);
+        this.increaseStat('productDesign', increase);
+        this.desiredWage += increase * 1000 * (this.negotiation / 100);
+      } else {
+        increase = tr.randInt(6 * this.learning / 100)
+        this.increaseStat('business', increase)
+        this.increaseStat('marketing', increase)
+        this.increaseStat('productDesign', tr.randInt(5 * this.learning / 100))
+        this.desiredWage += increase * 1000 * (this.negotiation / 100);
       }
+      this.followers += tr.randInt(followersRatio * increase *  increase * tr.randInt(10));
       this.randomizePerks();
     }
   },
@@ -102,19 +100,20 @@ window.tr.decorators.business.prototype = {
         if(chooseInt == 6 && this.addPerk('social media')) {
           this.increaseStat('marketing', 15);
           this.increaseStat('sociability', 15);
-          this.followers += 300;
+          this.followers += 700;
         }
         if(chooseInt == 7 && this.addPerk('head hunter')) {
           this.increaseStat('scouting', 40);
+          this.followers += 200;
         }
       }
     }
     if(tr.randInt(1000) < 15) {
-      this.perks.push('media savvy');
+      this.addPerk('media savvy');
       this.followers += 2000;
       if(tr.randInt() < 10) {
-        this.perks.push('guru');
-        this.followrs += 5000;
+        this.addPerk('guru');
+        this.followers += 5000;
       }
     }
   }

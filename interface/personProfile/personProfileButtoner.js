@@ -7,7 +7,7 @@ Crafty.c('PersonProfileButtoner', {
     this.socialButton.set({
       color: '#6666CC',
       text: "Social",
-      y: 650,
+      y: 750,
       onClick: function() {
         Crafty.trigger('SocialSelected')
       }
@@ -17,7 +17,7 @@ Crafty.c('PersonProfileButtoner', {
       color: '#6666CC',
       text: "Projects",
       x: 120,
-      y: 650,
+      y: 750,
       onClick: function() {
         Crafty.trigger('PersonProjectsSelected')
       }
@@ -27,7 +27,7 @@ Crafty.c('PersonProfileButtoner', {
       color: '#6666CC',
       text: "Contract",
       x: 230,
-      y: 650,
+      y: 750,
       onClick: function() {
         Crafty.trigger('PersonContractSelected')
       }
@@ -37,7 +37,7 @@ Crafty.c('PersonProfileButtoner', {
       color: '#6666CC',
       text: "Interaction",
       x: 340,
-      y: 650,
+      y: 750,
       onClick: function() {
         Crafty.trigger('PersonInteractionSelected')
       }
@@ -47,7 +47,7 @@ Crafty.c('PersonProfileButtoner', {
       color: '#6666CC',
       text: "Work Log",
       x: 450,
-      y: 650,
+      y: 750,
       onClick: function() {
         Crafty.trigger('PersonWorkLogSelected')
       }
@@ -82,7 +82,7 @@ Crafty.c('PersonProfileButtoner', {
         text: this.positions[n].text,
         position: pos,
         x: 290+(110*i),
-        y: 600
+        y: 700
       })
       this[pos+'Button'].render();
       this[pos+'Button'].bind('toggle', this.redrawButtons.bind(this));

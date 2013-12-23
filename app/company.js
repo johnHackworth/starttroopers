@@ -6,6 +6,7 @@ window.tr.models.Company = function(options) {
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Loggable);
   tr.utils.extend.call(this, tr.utils.Stats);
+  tr.utils.extend.call(this, tr.utils.MarketingEvents)
 
   this.initialize();
 }
@@ -49,6 +50,7 @@ window.tr.models.Company.prototype = {
       this.projects[p].turn(this.currentTurn);
     };
     this.product.turn(this.currentTurn);
+    this.marketingActions();
     this.actualizeHype();
     this.actualizeFinantial();
     this.trigger('newTurn')
@@ -266,6 +268,39 @@ window.tr.models.Company.prototype = {
     var hypeVariation = -1 * this.hype * 0.01;
     this.increaseStat('hype', hypeVariation);
   },
+  marketingActions: function() {
+    var marketingPoints = this.getMarketingPoints();
+    var marketingEvent = null;
+    for(var i = 0; i < marketingPoints; i++) {
+      marketingEvent = this.getMarketingEvent();
+      if(marketingEvent) {
+        return;
+      }
+    }
+  },
+  getMarketingEvent: function() {
+    this.getMarketingChance(this.marketingLead)
+  },
+  getMarketingPoints: function() {
+    var marketingPoints = 0;
+    var sumMarketing = 0;
+
+    for(var n in this.people) {
+      if(this.people[n].marketingPoints) {
+        this.marketingLead = this.people[n];
+        marketingPoints += this.people[n].marketingPoints;
+        sumMarketing += this.people[n].marketing;
+      }
+    }
+    var maxPoints = Math.floor(sumMarketing / 50)
+    if(maxPoints < 1) {
+      maxPoints = 1;
+    }
+    if(marketingPoints > maxPoints) {
+      marketingPoints = maxPoints;
+    }
+    return marketingPoints;
+  },
   transferOwnShare: function(share, person) {
     if(!share) {
       return true;
@@ -318,5 +353,9 @@ window.tr.models.Company.prototype = {
       }
     })
     return num;
+  },
+  getRandomPerson: function() {
+    var n = tr.randInt(this.people.length);
+    return this.people[n];
   }
 };

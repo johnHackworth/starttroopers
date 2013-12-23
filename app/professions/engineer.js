@@ -113,7 +113,7 @@ window.tr.decorators.engineering.prototype = {
     if(tr.randInt(1000) < 15 && this.addPerk('rock star')) {
       this.followers += 1000;
       if(tr.randInt() < 10 && this.addPerk('guru')) {
-        this.followrs += 4000;
+        this.followers += 4000;
       }
     }
   },

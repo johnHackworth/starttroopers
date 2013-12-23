@@ -101,9 +101,13 @@ Crafty.c('OfficeFloor', {
       var person = this.personViews[n].person;
       var lastHours = person.lastHours;
       for(var m in lastHours) {
+        console.log('333333')
         var progressBubble = Crafty.e('ProgressBubble');
         setTimeout((
           function(progressBubble, n, m) {
+            if(!lastHours || !self || !m){
+              return;
+            }
             return function() {
               progressBubble.set({
                 workType: m,

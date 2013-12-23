@@ -5,7 +5,6 @@ window.tr.app.persons = {};
 window.tr.models.Person = function(options) {
   this.options = options;
   tr.utils.extend.call(this, tr.utils.Eventable);
-  // tr.utils.extend.call(this, tr.utils.Loggable);
   tr.utils.extend.call(this, tr.utils.Stats);
   tr.utils.extend.call(this, tr.utils.Conversation);
   tr.utils.extend.call(this, tr.utils.PersonEvent)
@@ -35,6 +34,7 @@ window.tr.models.Person.prototype = {
   learning: 0,
   workEthics: 0,
   attention: 0,
+  conflictive: 0,
 
   happiness: 50,
   stress: 50,
@@ -193,13 +193,14 @@ window.tr.models.Person.prototype = {
   },
 
   randomizePersonalStats: function() {
-    this.negotiation = 1+tr.randInt(100);
-    this.scouting = 1+tr.randInt(100);
-    this.sociability = 1+tr.randInt(100);
+    this.negotiation = 1+tr.randInt(99);
+    this.scouting = 1+tr.randInt(99);
+    this.sociability = 1+tr.randInt(99);
     this.learning = tr.randInt(90) + 10;
-    this.attention = 1+tr.randInt(100);
-    this.workEthics = 1+tr.randInt(100);
-    this.hypeable = 1+tr.randInt(100);
+    this.attention = 1+tr.randInt(99);
+    this.conflictive = 1+tr.randInt(99);
+    this.workEthics = 1+tr.randInt(99);
+    this.hypeable = 1+tr.randInt(99);
     if(tr.randInt() < 10) {
       this.perks.push('nerdy');
       this.increaseStat('learning', 20);
@@ -315,14 +316,16 @@ window.tr.models.Person.prototype = {
     }
   },
   leaveCompany: function() {
-    this.company.addNotification({
-      text: this.name+": I've had enough. I'm not happy here, so I'm leaving the company.",
-      type: "person",
-      id: this.id,
-      open: true
-    })
-    this.trigger('conversation', 'Fuck off. I\'m leaving');
-    this.isLeavingCompany = true;
+    if(this.company) {
+      this.company.addNotification({
+        text: this.name+": I've had enough. I'm not happy here, so I'm leaving the company.",
+        type: "person",
+        id: this.id,
+        open: true
+      })
+      this.trigger('conversation', 'Fuck off. I\'m leaving');
+      this.isLeavingCompany = true;
+    }
   },
   getHappinessFromWork: function() {
     this.happines += this.happinessFromWork;
@@ -341,12 +344,19 @@ window.tr.models.Person.prototype = {
         hours.push('social')
       } else if(this.isRecruiter && tr.randInt() < 20) {
         hours.push('recruiting');
-        if(this.company.beingScouted.length > 0) {
+        if(this.company && this.company.beingScouted.length > 0) {
           var choosen = tr.randInt(this.company.beingScouted.length);
           var candidate = this.company.beingScouted[choosen];
           if(!candidate.lastInterview || this.company.currentTurn - candidate.lastInterview > 3) {
             candidate.interview(this, this.company.currentTurn);
           }
+        }
+      } else if(this.marketingStaff) {
+        hours.push('marketing');
+        this.marketingPoints = 0;
+        if(tr.randInt() < this.marketing) {
+          this.learn('marketing');
+          this.marketingPoints++;
         }
       } else {
         if(!this.currentProjects.length) {
@@ -372,7 +382,8 @@ window.tr.models.Person.prototype = {
     // console.log(this.business, this.social)
     if(tr.randInt() < this.business &&
       tr.randInt() < this.sociability &&
-      !this.dayBusinessContact) {
+      !this.dayBusinessContact &&
+      this.company) {
       this.dayBusinessContact = true;
       var nInvestors = this.company.availableInvestors.length;
       var objetiveInvestor = this.company.availableInvestors[tr.randInt(nInvestors)];
@@ -658,6 +669,9 @@ window.tr.models.Person.prototype = {
     this.marketingStaff = true;
   },
   negotiateOffer: function(offer) {
+    if(!offer) {
+      return;
+    }
     if(offer.negotiator) {
       offer.negotiator.negotiatingOffer = null;
     }
@@ -918,5 +932,21 @@ window.tr.models.Person.prototype = {
       stat = stat * 3;
     }
     return stat;
+  },
+  addFollowers: function(numberF) {
+    this.followers += numberF;
+    if(this.followers > 1000 &&
+      this.perks.indexOf('TweetStar') < 0 &&
+      tr.randInt() < 20
+      ) {
+      this.addPerson('TweetStar');
+      this.followers += tr.randInt(1000);
+      this.company.addNotification({
+        text: this.name + ' is now a star on the social media networks!',
+        type: "people",
+        id: this.id,
+        open: 1
+      })
+    }
   }
 }

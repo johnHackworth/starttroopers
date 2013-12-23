@@ -63,14 +63,16 @@ Crafty.c('ProductProfile', {
       );
       var name = this.product.modules[n].name
       module.bind('Click', this.createModuleClickResponse(this.product.modules[n]));
-      var progressBar = Crafty.e('ProgressBar');
-      progressBar.setOptions({
-        w: 50,
-        h: 12,
-        x: 300 + (i%2)*600,
-        y: 212 + Math.floor(i/2) * 60,
-      });
-      progressBar.setValue(this.product.modules[n].project.phaseCompletedness());
+      if(this.product.modules[n].project.phase.name != 'test') {
+        var progressBar = Crafty.e('ProgressBar');
+        progressBar.setOptions({
+          w: 50,
+          h: 12,
+          x: 300 + (i%2)*600,
+          y: 210 + Math.floor(i/2) * 60,
+        });
+        progressBar.setValue(this.product.modules[n].project.phaseCompletedness());
+      }
       this.createModuleButtons(this.product.modules[n], i)
       i++;
     }
@@ -84,15 +86,16 @@ Crafty.c('ProductProfile', {
   },
   createModuleButtons: function(module, i) {
     var launchButton = '';
-    if(module.released) {
+    if(module.released && !module.project.isRefactor) {
       launchButton = Crafty.e('2D, DOM, HTML');
       launchButton.append('<div class="launched">Shipped</div>')
       launchButton.attr({
-        x: 500 + (i%2)*500,
+        x: 300 + (i%2)*500,
         y: 200 + Math.floor(i/2)* 50,
         color: '#FCFCFC',
         textColor: '#008833'
       })
+      this.createRefactorButton(module.project, i);
     } else {
       this.createOnGoingProjectButtons(module, i)
     }
@@ -108,8 +111,8 @@ Crafty.c('ProductProfile', {
       launchButton.set({
         color: '#CCAA00',
         text: "Ship it",
-        x: 250 + (i%2)*500,
-        y: 205 + Math.floor(i/2)* 50,
+        x: 254 + (i%2)*500,
+        y: 203 + Math.floor(i/2)* 50,
         hintText: "Open to public! Remember, if you don't test it enough you won't find all the possible bugs and the product will fail on the wild!",
         onClick: function() {
           module.project.launchProduct();
@@ -120,7 +123,7 @@ Crafty.c('ProductProfile', {
     if(project.phase.name != 'test') {
       this.createNextPhaseButton(project, i);
     } else {
-      this.createRefactorButton(project, i);
+
     }
   },
   createNextPhaseButton: function(project, i) {
@@ -146,8 +149,8 @@ Crafty.c('ProductProfile', {
     });
   },
   createRefactorButton: function(project, i) {
-    var color = '#999999';
-    var textColor = '#666666'
+    var color = '#FF9999';
+    var textColor = '#222222'
     var click = function() {
       project.beginRefactor();
     }

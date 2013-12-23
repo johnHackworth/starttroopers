@@ -24,7 +24,7 @@ Crafty.c('BusinessButton', {
         color: businessColor,
         textColor: businessColorText,
         x: 10,
-        y: 600,
+        y: 700,
         w: 120
       })
   },

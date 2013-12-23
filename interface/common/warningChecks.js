@@ -13,7 +13,7 @@ Crafty.c('WarningChecks', {
       var modules = this.company.product.modules;
       for(var n in modules) {
         if(modules[n].project.people.length === 0 &&
-          !modules[n].project.released
+          (!modules[n].project.released || modules[n].project.isRefactor)
         ) {
           this.company.addNotification({
             text: "Nobody in your company is working on " + modules[n].name + "! you need to assign people to your projects to make them advance!",
