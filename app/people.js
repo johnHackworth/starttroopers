@@ -590,11 +590,11 @@ window.tr.models.Person.prototype = {
     var sharedInterests = this.getSharedInterests(person);
     this.socialCircle[person.id] = this.socialCircle[person.id] || 0;
     var conversationQuality = 0.1 * sharedInterests + 0.1 * person.sociability /100;
-    this.happiness += 0.1 * this.sociability / 100;
+    this.increaseStat('happiness', 0.1 * this.sociability / 100);
     if(conversationQuality > 0.3) {
-      this.happiness += 0.1 * this.sociability / 100;
+      this.increaseStat('happiness', 0.1 * this.sociability / 100);
       if(person.happiness < 25) {
-        this.happines -= 0.2 * this.sociability / 100;
+        this.increaseStat('happiness', -0.2 * this.sociability / 100);
         this.trigger('conversation', 'I had a little depressing conversation with ' + person.name);
       } else {
         this.trigger('conversation', 'I had a great conversation with ' + person.name);
@@ -606,7 +606,7 @@ window.tr.models.Person.prototype = {
     if(this.socialCircle[person.id] > 50 && tr.randInt() < this.socialCircle[person.id]) {
       if(this.friends.indexOf(person.id) < 0) {
         this.friends.push(person.id);
-        this.happiness += 5 * this.sociability / 100;
+        this.increaseStat('happiness', 5 * this.sociability / 100);
         this.increaseStat('sociability', 3);
         this.log(this.name + ' is now friend of ' + person.name);
         this.trigger('conversation', "I'm now friend of "+person.name);

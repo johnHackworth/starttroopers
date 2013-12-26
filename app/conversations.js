@@ -14,8 +14,8 @@ var talkOptions = {
         this.conversationFlags.greatJob =  this.currentTurn;
         var newHappines = -1 * tr.randInt(5);
         var newStress = 1 * tr.randInt(5);
-        this.happiness += newHappines;
-        this.stress += newStress;
+        this.increaseStat('happiness',newHappines);
+        this.indreaseStat('stress', newStress);
         return {
           text: "Please, don't try to buy my happiness with lies"
         }
@@ -23,8 +23,8 @@ var talkOptions = {
         this.conversationFlags.greatJob =  this.currentTurn;
         var newHappines = 1 * tr.randInt(3);
         var newStress = -1 * tr.randInt(3);
-        this.happiness += newHappines;
-        this.stress += newStress;
+        this.increaseStat('happiness', newHappines);
+        this.increaseStat('stress', newStress);
         return {
           text: "It's so nice that you recognize my work"
         }

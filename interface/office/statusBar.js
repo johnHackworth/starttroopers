@@ -4,7 +4,6 @@ Crafty.c('StatusBar', {
     this.attr({w:1200, h:45, x: 0, y: 0})
     this.company = tr.app.director.company;
     this.color('#333333')
-    this.render();
     this.checks = Crafty.e('WarningChecks');
     this.checks.set({company: this.company});
     this.createNextButton();
@@ -16,6 +15,9 @@ Crafty.c('StatusBar', {
     this.createDateContainer();
     this.createMoneyContainer();
     this.createNotificationCounter();
+    this.render();
+
+
     this.bindNotificationCreated = this.company.on('notificationCreated', this.checkNotificationPopUp.bind(this));
     this.bindNotificationClose = this.company.on('notificationClose', this.updateNotificationCounter.bind(this))
     this.bind('Remove', this.delete.bind(this));
@@ -137,7 +139,7 @@ Crafty.c('StatusBar', {
       h: 30
     })
     this.moneyContainer.render = function() {
-      this.replace('<div class="statusMoney">'+self.company.cash+"$</div>");
+      this.replace('<div class="statusMoney">'+Math.floor(self.company.cash)+"$</div>");
     }
   },
   renderTurn: function() {

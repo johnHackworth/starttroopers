@@ -23,7 +23,7 @@ window.tr.data.userEvents = [
   "notification": 1,
   "conversation": true,
   "effects": function() {
-    this.happiness += 1;
+    this.increaseStat('happiness', 0.5);
     this.increaseStat('frontend', 10);
   }
 },
@@ -36,7 +36,7 @@ window.tr.data.userEvents = [
   "notification": 1,
   "conversation": true,
   "effects": function() {
-    this.happiness += 1;
+    this.increaseStat('happiness', 0.5);
     this.increaseStat('scouting', 10);
   }
 },
@@ -65,6 +65,8 @@ window.tr.data.userEvents = [
   "conversation": false,
   "effects": function() {
     this.followers += tr.randInt(2000) + 50;
+    if(this.company)
+      this.company.hype += tr.randInt(100) / 100;
   }
 },
 {
@@ -142,6 +144,9 @@ window.tr.data.userEvents = [
   "effects": function() {
     var projectId = this.eventProject.id;
     this.projectKnowledge[projectId] += 1;
+
+    this.increaseStat('happiness', -1*(tr.randInt(5)));
+    this.eventPerson.increaseStat('happiness', -1*(tr.randInt(5)));
     this.eventPerson.projectKnowledge[projectId] += 1;
     this.socialCircle[this.eventPerson.id] -= tr.randInt(10);
     this.eventPerson.socialCircle[this.id] -= tr.randInt(10);
@@ -164,6 +169,122 @@ window.tr.data.userEvents = [
     this.projectKnowledge[projectId] += 5;
     this.turnModificator = 0;
     this.happiness -= 1;
+  }
+},
+{
+  "title": "fightAtLunch",
+  "text": function(){ return this.eventPerson.name + " and me had a discussion at lunch. "+this.eventPerson.pronoum() + "'s such a jerk."},
+  "precondition": function() {
+    if(!this.company) {
+      return false;
+    }
+    this.eventPerson = this.company.getRandomPerson(this);
+    return this.conflictive > tr.randInt();
+  },
+  "notification": 1,
+  "conversation": true,
+  "effects": function() {
+
+    this.increaseStat('happiness', -1*(tr.randInt(2)));
+    this.eventPerson.increaseStat('happiness', -1*(tr.randInt(5)));
+    this.socialCircle[this.eventPerson.id] -= tr.randInt(10);
+    this.eventPerson.socialCircle[this.id] -= tr.randInt(10);
+  }
+},
+{
+  "title": "badTweet",
+  "text": function(){ return "Some comments I made on social networks are giving us bad press"},
+  "precondition": function() {
+    return this.conflictive > tr.randInt();
+  },
+  "notification": 1,
+  "conversation": true,
+  "effects": function() {
+    var effect = this.followers / 500;
+    this.increaseStat('hype', -1 * tr.randInt(3));
+    this.increaseStat('followers', -50);
+  }
+},
+{
+  "title": "badBlogPost",
+  "text": function(){ return "A entry in my personal blog has backfired and is giving us bad press"},
+  "precondition": function() {
+    return this.conflictive > tr.randInt();
+  },
+  "notification": 1,
+  "conversation": true,
+  "effects": function() {
+    this.increaseStat('hype', -1 * tr.randInt(5));
+    this.increaseStat('followers', -50);
+  }
+},
+{
+  "title": "greatEngReadPost",
+  "text": function(){ return "I've read a very nice blog post that have teached me a lot about "+ this.eventLearning },
+  "precondition": function() {
+    var posibilities = ['backend', 'frontend', 'architecture', 'devops', 'visualDesign', 'productDesign', 'marketing']
+    this.eventLearning = posibilities[tr.randInt(posibilities.length)]
+    return this.mainInterest === 'engineering'
+  },
+  "notification": 1,
+  "conversation": true,
+  "effects": function() {
+    this.increaseStat(this.eventLearning, 5);
+  }
+},
+{
+  "title": "greatDesReadPost",
+  "text": function(){ return "I've read a very nice blog post that have teached me a lot about "+ this.eventLearning },
+  "precondition": function() {
+    var posibilities = ['frontend', 'visualDesign', 'productDesign', 'marketing']
+    this.eventLearning = posibilities[tr.randInt(posibilities.length)]
+    return this.mainInterest === 'design'
+  },
+  "notification": 1,
+  "conversation": true,
+  "effects": function() {
+    this.increaseStat(this.eventLearning, 5);
+  }
+},
+{
+  "title": "greatBusReadPost",
+  "text": function(){ return "I've read a very nice blog post that have teached me a lot about "+ this.eventLearning },
+  "precondition": function() {
+    var posibilities = ['architecture', 'productDesign', 'marketing', 'scouting']
+    this.eventLearning = posibilities[tr.randInt(posibilities.length)]
+    return this.mainInterest === 'business'
+  },
+  "notification": 1,
+  "conversation": true,
+  "effects": function() {
+    this.increaseStat(this.eventLearning, 5);
+  }
+},
+{
+  "title": "disactualized",
+  "text": function(){ return "I've realized that the industry is changing fast and my knowledge about "+ this.eventLearning + " is not up to state of art at all"},
+  "precondition": function() {
+    var posibilities = ['backend', 'frontend', 'architecture', 'devops', 'visualDesign', 'productDesign', 'marketing']
+    this.eventLearning = posibilities[tr.randInt(posibilities.length)]
+  },
+  "notification": 1,
+  "conversation": true,
+  "effects": function() {
+    this.increaseStat(this.eventLearning, -1 * (tr.randInt(5)));
+  }
+},
+{
+  "title": "failingComputer",
+  "text": function(){ return "My computer is broken!! I need you to buy me a new one"},
+  "notification": 1,
+  "conversation": true,
+  "effects": function() {
+    if(this.company) {
+      this.company.cash -= 800;
+    } else {
+      this.money -= 800;
+    }
+    this.stayAtHome = true;
   }
 },
 ]

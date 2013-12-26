@@ -260,11 +260,9 @@ window.tr.models.Project.prototype = {
     if(!this.phase.completed) {
       return this.phase;
     }
-    if(this.phase.name === 'mvp') {
-      this.bugs += this.phase.bugs;
+    if(this.phase.name === 'prototype') {
       this.phase = this.phases.polish;
     } else if(this.phase.name === 'polish') {
-      this.bugs += this.phase.bugs;
       this.phase = this.phases.test;
     }
     this.company.product.trigger('change')

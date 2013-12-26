@@ -4,9 +4,9 @@ Crafty.c('BusinessBrief', {
   "</div>",
   finantialStatusHTML: '<div class="finantialStatus">'+
   "<div class='title'>Company expenses</div>"+
-  "<div class='finantialLine'>Payroll ...........<span>%PAYROLL%</span></div>"+
-  "<div class='finantialLine'>Advertising .......<span>%ADVERTISING%</span></div>"+
-  "<div class='finantialLine'>Infrastructure ....<span>%INFRASTRUCTURE%</span></div>"+
+  "<div class='finantialLine'>Payroll ...........<span>%PAYROLL%$</span></div>"+
+  "<div class='finantialLine'>Advertising .......<span>%ADVERTISING%$</span></div>"+
+  "<div class='finantialLine'>Infrastructure ....<span>%INFRASTRUCTURE%$</span></div>"+
 
   "</div>",
   init: function() {
@@ -14,7 +14,7 @@ Crafty.c('BusinessBrief', {
     this.attr({w:1190, h:790, x: 5, y: 5});
     this.color('rgb(104,154,104)');
     this.person = tr.app.director.selectedPerson;
-
+    this.company = tr.app.director.company;
     this.statusBar = Crafty.e('StatusBar');
     this.statusBar.createOfficeButton();
     this.renderHeader();
@@ -45,6 +45,9 @@ Crafty.c('BusinessBrief', {
     })
     this.briefing.append(
       this.finantialStatusHTML
+        .replace(/%PAYROLL%/g, this.company.getPayroll())
+        .replace(/%ADVERTISING%/g, this.company.getAdvertisingFunds())
+        .replace(/%INFRASTRUCTURE%/g, this.company.getInfrastructureFunds())
     )
   },
   renderInvestors: function() {

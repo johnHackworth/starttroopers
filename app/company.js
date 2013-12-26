@@ -13,7 +13,9 @@ window.tr.models.Company = function(options) {
 
 window.tr.models.Company.prototype = {
   human:true,
-  cash: 100000,
+  cash: 500000,
+  advertisingBudget: 0,
+  infrastructureBudget: 0,
   currentTurn: 0,
   companyValue: 1000000,
   companyOwnShare: 100,
@@ -109,6 +111,7 @@ window.tr.models.Company.prototype = {
         this.addHype((1+tr.randInt(2))/2 * person.followers / 500);
       }
     }
+    this.trigger('removePerson', person)
   },
   firePerson: function(person) {
     var index = this.people.indexOf(person);
@@ -133,7 +136,7 @@ window.tr.models.Company.prototype = {
         })
         this.addHype(-1 * person.followers / 500);
       }
-      this.trigger('fire', person)
+      this.trigger('removePerson', person)
     }
   },
   addPerson: function(person) {
@@ -333,6 +336,14 @@ window.tr.models.Company.prototype = {
       this.people[n].money += monthlyPay;
     }
   },
+
+  getPayroll: function() {
+    var payroll = 0;
+    for(var n in this.people) {
+      payroll += this.people[n].currentWage / 12;
+    }
+    return payroll;
+  },
   addNotification: function(options) {
     var notif = {
       'text': options.text,
@@ -357,5 +368,11 @@ window.tr.models.Company.prototype = {
   getRandomPerson: function() {
     var n = tr.randInt(this.people.length);
     return this.people[n];
+  },
+  getAdvertisingFunds: function() {
+    return this.advertisingBudget;
+  },
+  getInfrastructureFunds: function() {
+    return this.infrastructureBudget;
   }
 };

@@ -194,6 +194,24 @@ body {
 .mainMenuButton:hover {
   opacity: 1;
 }
+.orderMenuButton {
+  width: 100%;
+  height: 92%;
+  border-radius: 5px;
+  padding: 4% 0;
+  text-align: center;
+  display: inline-block;
+  background-color: #222222;
+  color: #FFFFFF;
+  font-family: 'freight-text-pro';
+  opacity: 0.5;
+  font-weight: bold;
+
+  -webkit-transition: all .3s linear;
+}
+.orderMenuButton:hover {
+  opacity: 1;
+}
 
 .bubble {
   border-radius: 50px;
@@ -252,4 +270,10 @@ body {
   color: #FFFFFF;
   opacity: .6;
   margin-top: 2px;
+}
+
+.teamTitle {
+  font-size: 25px;
+  color: #FFFFFF;
+  font-family:"freight-text-pro";
 }

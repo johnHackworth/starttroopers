@@ -202,6 +202,12 @@ window.tr.models.NPCCompany.prototype = {
         this[propName].push(json[propName][o]);
       }
     }
+  },
+  getRandomPerson: function() {
+    var n = tr.randInt(this.people.length);
+    return this.people[n];
+  },
+  leavingCompany: function() {
 
   }
 };
