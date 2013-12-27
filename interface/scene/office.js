@@ -9,7 +9,6 @@ Crafty.scene('Office', (function() {
   Crafty.background('#333333')
   this.bg = Crafty.e("2D, DOM")
              .attr({x:0, y: 0, w: 1200, h: 800})
-
   this.bgChange = function() {
     self.bg.css({
       "background-image":"url(./assets/backgrounds/full_home_b"+tr.randInt(nOffices)+".jpg)",

@@ -80,7 +80,7 @@ Crafty.c('ProductProfile', {
   createModuleClickResponse: function(module) {
     var localModule = module;
     return (function() {
-      tr.app.director.selectedProject = module.project;
+      tr.app.director.selectedId = module.project;
       Crafty.trigger('ProjectSelected');
     }).bind(this);
   },

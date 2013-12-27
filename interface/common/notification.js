@@ -8,6 +8,7 @@ Crafty.c('Notification', {
   init: function() {
     var self = this;
     this.requires('2D, DOM, HTML, Mouse, Keyboard');
+    this.world = tr.app.director.world;
     this.number[0]++;
     this.id = this.number[0];
     this.x = 300 + 20*this.id;
@@ -85,7 +86,13 @@ Crafty.c('Notification', {
       onClick:function() {
         self.notification.read = true;
         self.notification.company.trigger('notificationClose');
-        Crafty.trigger('PersonSelected', personId)
+        var person = null;
+        for(var n in self.world.people) {
+          if(self.world.people[n].id === personId) {
+            Crafty.trigger('PersonSelected',self.world.people[n]);
+            return;
+          }
+        }
       }
     })
   },

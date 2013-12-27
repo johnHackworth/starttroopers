@@ -7,7 +7,7 @@
     this.requires('2D, DOM, Color, Faces, PersonProfileButtoner');
     this.attr({w:1200, h: 800, x: 0, y: 0});
     this.color('rgb(104,154,104)');
-    this.person = tr.app.director.selectedPerson;
+    this.person = tr.app.director.selectedId;
     this.render();
     this.buttons = [];
     this.otherFaces = [];

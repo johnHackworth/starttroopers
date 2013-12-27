@@ -13,7 +13,7 @@ Crafty.c('ProjectResources', {
     this.product = this.company.product;
     this.statusBar = Crafty.e('StatusBar');
     this.statusBar.createOfficeButton();
-    this.project = tr.app.director.selectedProject;
+    this.project = tr.app.director.selectedId;
     this.renderProject();
     this.renderProjectPeople();
     this.renderCompanyPeople();

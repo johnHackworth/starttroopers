@@ -13,7 +13,7 @@ Crafty.c('BusinessBrief', {
     this.requires('2D, DOM, Color, Faces');
     this.attr({w:1190, h:790, x: 5, y: 5});
     this.color('rgb(104,154,104)');
-    this.person = tr.app.director.selectedPerson;
+    this.person = tr.app.director.selectedId;
     this.company = tr.app.director.company;
     this.statusBar = Crafty.e('StatusBar');
     this.statusBar.createOfficeButton();

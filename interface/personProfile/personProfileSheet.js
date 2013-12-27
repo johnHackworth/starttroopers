@@ -67,7 +67,7 @@ Crafty.c('PersonProfileSheet', {
     this.requires('DOM, Text, Color, PersonProfileButtoner');
     this.attr({w:1200, h: 800, x: 0, y: 0})
     this.color('rgb(104,104,104)');
-    this.person = tr.app.director.selectedPerson;
+    this.person = tr.app.director.selectedId;
     this.render();
     this.buttons = [];
 
