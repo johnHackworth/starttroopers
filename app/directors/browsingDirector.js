@@ -19,6 +19,12 @@ window.tr.directors.BrowsingDirector.prototype = {
     }
     this.addNext = true;
   },
+  isAtTheEnd: function() {
+    return this.current === this.history.length - 1;
+  },
+  isAtTheBegining: function() {
+    return this.current <= 0;
+  },
   removeCurrentInstances: function(tab, id) {
     var currentInstances = [];
     for(var n in this.history) {

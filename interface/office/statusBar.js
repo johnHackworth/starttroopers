@@ -15,8 +15,8 @@ Crafty.c('StatusBar', {
     this.createDateContainer();
     this.createMoneyContainer();
     this.createNotificationCounter();
+    this.createHistoryBrowser();
     this.render();
-
 
     this.bindNotificationCreated = this.company.on('notificationCreated', this.checkNotificationPopUp.bind(this));
     this.bindNotificationClose = this.company.on('notificationClose', this.updateNotificationCounter.bind(this))
@@ -176,5 +176,9 @@ Crafty.c('StatusBar', {
       var pop = Crafty.e('Notification');
       pop.set(notif)
     }
+  },
+  createHistoryBrowser: function() {
+    this.historyBrowser && this.historyBrowser.destroy();
+    this.historyBrowser = Crafty.e('HistoryBrowser');
   }
 })

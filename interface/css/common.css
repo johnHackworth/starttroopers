@@ -277,3 +277,27 @@ body {
   color: #FFFFFF;
   font-family:"freight-text-pro";
 }
+
+.historyButton {
+  background-color: #999999;
+  opacity: 0.6;
+  width: 40px;
+  height: 30px;
+  border-radius: 10px;
+}
+.historyButton {
+  opacity: 0.9;
+}
+
+.historyButton.prevButton.begining,
+.historyButton.prevButton.begining:hover {
+  opacity: 0.2;
+  cursor: default;
+}
+
+
+.historyButton.nextButton.end,
+.historyButton.nextButton.end:hover  {
+  opacity: 0.2;
+  cursor: default;
+}
