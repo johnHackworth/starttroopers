@@ -5,6 +5,7 @@ Crafty.c('NotificationCounter', {
     this.requires('2D, DOM, HTML, Mouse, Hint');
     this.attr({w: 35, h:35})
     this.bind('Click', this.openNotification.bind(this));
+    this.window = null;
   },
   assignCompany: function(company) {
     this.company = company;
@@ -23,9 +24,13 @@ Crafty.c('NotificationCounter', {
         return;
       }
     }
+    var lastNotification = this.company.notifications.length - 1;
+    this.createPopUp(this.company.notifications[lastNotification]);
   },
   createPopUp: function(notif) {
-    var pop = Crafty.e('Notification');
-    pop.set(notif)
+    this.window && this.window.destroy();
+    this.window = Crafty.e('Notification');
+    this.window.setNotifications(this.company.notifications, 0);
+    this.window.set(notif)
   }
 })

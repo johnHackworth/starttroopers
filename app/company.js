@@ -12,6 +12,7 @@ window.tr.models.Company = function(options) {
 }
 
 window.tr.models.Company.prototype = {
+  _MAX_NOTIFICATIONS: 100,
   human:true,
   cash: 500000,
   advertisingBudget: 0,
@@ -354,7 +355,13 @@ window.tr.models.Company.prototype = {
       'autoOpen' : options.open || false
     }
     this.notifications.push(notif);
+    this.trimNotifications();
     this.trigger('notificationCreated', notif);
+  },
+  trimNotifications: function() {
+    while(this._MAX_NOTIFICATIONS > this.notifications.lenght) {
+      this.notifications.shift();
+    }
   },
   getUnreadNotifications: function() {
     var num = 0;

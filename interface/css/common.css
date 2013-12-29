@@ -301,3 +301,8 @@ body {
   opacity: 0.2;
   cursor: default;
 }
+
+.totalNotifications {
+  color: #FFFFFF;
+  text-shadow: 0 0 1px #000000;
+}

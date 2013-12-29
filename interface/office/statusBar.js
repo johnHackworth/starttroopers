@@ -173,8 +173,7 @@ Crafty.c('StatusBar', {
   checkNotificationPopUp: function(notif) {
     this.updateNotificationCounter();
     if(notif.autoOpen) {
-      var pop = Crafty.e('Notification');
-      pop.set(notif)
+      this.notificationCounter.createPopUp(notif);
     }
   },
   createHistoryBrowser: function() {

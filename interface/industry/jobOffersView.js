@@ -61,11 +61,14 @@ Crafty.c("JobOffersView", {
     this.offerCreatorButton.set({
       color: '#007777',
       text: "Post new offer",
-      x: 1000,
-      y: 70,
+      x: 620,
+      y: 85,
       onClick: function() {
         Crafty.trigger('OfferCreatorSelected');
       }
     });
+    this.offerCreatorButton.attr({
+      z: 99999999
+    })
   }
 })
