@@ -7,6 +7,9 @@ window.tr.utils.Stats = function() {
 
 window.tr.utils.Stats.prototype = {
   increaseStat: function(statName, value) {
+    if(isNaN(value)) {
+      return;
+    }
     this[statName] += value;
     if(this[statName] >= 100) {
       this[statName] = 99;
