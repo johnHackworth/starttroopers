@@ -540,86 +540,92 @@ window.tr.models.Person.prototype = {
         foundBugs: found? 1: 0
       }
     }
-    if(position === 'front') {
-      if(this.perks.indexOf('frontender') >= 0) {
-        this.happinessFromWork += 0.01;
-      }
-      this.learn('front');
+    if(project.phase.name === 'test') {
       return {
-        front: detailModificator * 2 * (this.frontend/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        design: 0.5 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        bugs: bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+        debug: 1
       }
-    }
-    if(position === 'back') {
-      if(this.perks.indexOf('backman') >= 0) {
-        this.happinessFromWork += 0.01;
+    } else {
+      if(position === 'front') {
+        if(this.perks.indexOf('frontender') >= 0) {
+          this.happinessFromWork += 0.01;
+        }
+        this.learn('front');
+        return {
+          front: detailModificator * 2 * (this.frontend/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          design: 0.5 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          bugs: bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+        }
       }
-      this.learn('back');
-      return {
-        back:  detailModificator * 2 * (this.backend/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+      if(position === 'back') {
+        if(this.perks.indexOf('backman') >= 0) {
+          this.happinessFromWork += 0.01;
+        }
+        this.learn('back');
+        return {
+          back:  detailModificator * 2 * (this.backend/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+        }
       }
-    }
-    if(position === 'architecture') {
-      this.learn('architecture');
-      return {
-        architecture: 2 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        operations: 0.5 * (this.operations/200  + this.stress/200) * this.projectKnowledge[project.id] / 100
+      if(position === 'architecture') {
+        this.learn('architecture');
+        return {
+          architecture: 2 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          operations: 0.5 * (this.operations/200  + this.stress/200) * this.projectKnowledge[project.id] / 100
+        }
       }
-    }
-    if(position === 'operations') {
-      this.learn('operations');
-      if(this.perks.indexOf('devops') >= 0) {
-        this.happinessFromWork += 0.01;
-      }
-      return {
-        operations: 2 * (this.operations/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        back:  detailModificator *  detailModificator * 0.5 * (this.back/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+      if(position === 'operations') {
+        this.learn('operations');
+        if(this.perks.indexOf('devops') >= 0) {
+          this.happinessFromWork += 0.01;
+        }
+        return {
+          operations: 2 * (this.operations/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          back:  detailModificator *  detailModificator * 0.5 * (this.back/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
 
+        }
       }
-    }
-    if(position === 'visualDesign') {
-      this.learn('visualDesign');
+      if(position === 'visualDesign') {
+        this.learn('visualDesign');
+        return {
+          front: detailModificator *  0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          design: 2 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100
+        }
+      }
+      if(position === 'productDesign') {
+        this.learn('productDesign');
+        if(this.perks.indexOf('ux') >= 0) {
+          this.happinessFromWork += 0.01;
+        }
+        return {
+          design: 1 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          definition: 2 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100
+        }
+      }
+      if(position === 'qa') {
+        this.learn('qa');
+        if(this.perks.indexOf('qa') >= 0) {
+          this.happinessFromWork += 0.01;
+        }
+        return {
+          qa: 1 * (this.qa + this.stress + this.workEthics) / 3 * this.projectKnowledge[project.id] / 100
+        }
+      }
       return {
-        front: detailModificator *  0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        design: 2 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100
+        design: 0.5 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
+        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
+        operations: 0.5 * (this.operations/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
+        back:  detailModificator * 0.5 * (this.backend/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
+        architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
+        front:  detailModificator * 0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
+        bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
       }
-    }
-    if(position === 'productDesign') {
-      this.learn('productDesign');
-      if(this.perks.indexOf('ux') >= 0) {
-        this.happinessFromWork += 0.01;
-      }
-      return {
-        design: 1 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        definition: 2 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100
-      }
-    }
-    if(position === 'qa') {
-      this.learn('qa');
-      if(this.perks.indexOf('qa') >= 0) {
-        this.happinessFromWork += 0.01;
-      }
-      return {
-        qa: 1 * (this.qa + this.stress + this.workEthics) / 3 * this.projectKnowledge[project.id] / 100
-      }
-    }
-    return {
-      design: 0.5 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
-      definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
-      operations: 0.5 * (this.operations/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
-      back:  detailModificator * 0.5 * (this.backend/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
-      architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
-      front:  detailModificator * 0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
-      bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
     }
   },
 
@@ -970,13 +976,18 @@ window.tr.models.Person.prototype = {
       this.companyOpinions[company.id] -= 50;
     }
   },
-  getDebugStat: function() {
+  getDebugStat: function(project) {
     var stats = ['architecture', 'backend', 'frontend', 'operation'];
     var n = tr.randInt(4);
     var stat = this[stats[n]];
     if(this.debugger) {
       stat = stat * 3;
     }
+    var projectKnowledge = this.projectKnowledge[project.id];
+    if(!projectKnowledge) {
+      projectKnowledge = 0;
+    }
+    stat = stat * projectKnowledge / 75
     return stat;
   },
   addFollowers: function(numberF) {

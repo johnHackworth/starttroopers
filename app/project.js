@@ -146,21 +146,20 @@ window.tr.models.Project.prototype = {
         }
       } else {
         person.lastHours[n] = hourWork[n];
-        if(this.name != 'test') {
+        if(this.phase.name != 'test') {
           if(n != 'bugs') {
             this.increasePhaseStat(n, hourWork[n]/10);
+            this.changeQuality(n, hourWork[n] / 10, person);
           } else {
             this.increaseBugs(hourWork[n]);
           }
         } else {
          this.removeBugs(person)
         }
-        this.changeQuality(n, hourWork[n] / 10, person);
       }
     }
   },
   increaseBugs: function(bugs) {
-    console.log('bugs '+bugs);
     this.bugs += bugs;
   },
   getTotalWorkDone: function() {
@@ -209,7 +208,7 @@ window.tr.models.Project.prototype = {
   },
   removeBugs: function(person) {
     if(this.knowBugs > 0) {
-      var debugStat = person.getDebugStat();
+      var debugStat = person.getDebugStat(this);
       if(tr.randInt() < debugStat &&
         tr.randInt() < 20
       ) {
