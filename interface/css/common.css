@@ -306,3 +306,29 @@ body {
   color: #FFFFFF;
   text-shadow: 0 0 1px #000000;
 }
+
+.responseButton {
+  width: 90%;
+  height: 25px;
+  padding: 5px 5% 0 5%;
+  background: #CCDD33;
+  color: #333333;
+  opacity: 0.6;
+  border-radius: 5px;
+}
+
+.responseButton:hover {
+  background: #FFFF33;
+}
+
+.responseButton.selected,
+.responseButton.selected:hover {
+  background-color: #AAFF33;
+  color: #000000;
+}
+
+.responseButton.notSelected,
+.responseButton.notSelected:hover {
+  background-color: #CCCCCC;
+  color: #999999;
+}

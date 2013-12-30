@@ -3,6 +3,67 @@ window.tr.data = window.tr.data || {};
 
 window.tr.data.userEvents = [
 {
+  "title": "wantARaise",
+  "text": function() { return "My work in the company has been great. I think my wages are bellow of what I deserve."},
+  "precondition": function() {
+    return (
+      this.company &&
+      !this.flags.promisedARise &&
+      this.company.human
+    );
+  },
+  "notification": 1,
+  "conversation": true,
+  "effects": function() {
+    this.flags.askedForARise = this.currentTurn;
+    this.increaseStat('happiness', -20);
+  },
+  "options": [
+    {
+      "text": "Yeah, I think you're right",
+      "action": function() {
+        this.entity.increaseStat('happiness', 25);
+        this.entity.flags.promisedARise = this.entity.currentTurn;
+      }
+    },
+    {
+      "text": "You should keep working",
+      "action": function() {
+        this.entity.increaseStat('happiness', 5);
+      }
+    },
+  ]
+},
+{
+  "title": "freeDay",
+  "text": function() { return "I need a free day for some family issues. Can I count with your approval?"},
+  "precondition": function() {
+    return (this.company && this.company.human);
+  },
+  "notification": 1,
+  "conversation": true,
+  "effects": function() {
+    this.increaseStat('happiness', -20);
+  },
+  "options": [
+    {
+      "text": "Yeah, feel free to take one day",
+      "action": function() {
+        this.entity.increaseStat('happiness', 30);
+        this.entity.stress -= 5;
+        this.entity.turnModificator = 0;
+      }
+    },
+    {
+      "text": "No way! Return to work",
+      "action": function() {
+        this.entity.increaseStat('happiness', 5);
+        this.entity.stress += 5;
+      }
+    },
+  ]
+},
+{
   "title": "BadNight",
   "text": function() { return "I didn't sleep at all last night... "},
   "notification": 0,

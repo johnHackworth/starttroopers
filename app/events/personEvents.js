@@ -34,7 +34,9 @@ window.tr.utils.PersonEvent.prototype = {
             text: this.name+": "+ event.text.apply(this),
             type: "person",
             id: this.id,
-            open: event.notification === 2
+            open: event.notification === 2,
+            options: event.options,
+            entity: this
           })
         }
         if(event.conversation) {

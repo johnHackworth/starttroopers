@@ -2,6 +2,7 @@ Crafty.c('Notification', {
   prevButtonHTML: '<div class="historyButton prevButton"><img src="/assets/ui/prev.png"></div>',
   nextButtonHTML: '<div class="historyButton nextButton"><img src="/assets/ui/next.png"></div>',
   totalNotificationsHTML: '<div class="totalNotifications">%POSITION% of %TOTAL%</div>',
+  responseButtonHTML: '<div class="responseButton %CLASS%">%TEXT%</div>',
   number: [0],
   image: './assets/notifications/basic.png',
   notificationHTML: '<div class="notificationInner">'+
@@ -43,20 +44,28 @@ Crafty.c('Notification', {
       z: 9999999,
       onClick: this.close.bind(this)
     })
+    this.setOptions(notification.options);
     this.setNavigationButtons();
+    this.setOptionButtons();
     if(this.notification.type === 'person') {
       this.setPersonButton(this.notification.id);
     } else if (this.notification.type === 'project') {
       this.setProjectButton(this.notification.id);
     }
 
+    this.triggerTimeCounter();
     this.firstPlane();
+
+  },
+  triggerTimeCounter: function() {
+    var self = this;
     this.timeRead = setTimeout(function() {
       if(self.notification) {
         self.notification.read = true;
         self.notification.company.trigger('notificationClose');
       }
     }, 3000)
+
   },
   render: function() {
     this.replace(this.notificationHTML
@@ -204,6 +213,7 @@ Crafty.c('Notification', {
     this.setNotificationByNumber();
   },
   removeButtons: function() {
+    this.responseTitle && this.responseTitle.destroy();
     this.notificationInfo && this.notificationInfo.destroy();
     this.closeButton && this.closeButton.unbind('Click');
     this.closeButton && this.closeButton.destroy();
@@ -213,14 +223,92 @@ Crafty.c('Notification', {
     this.prevButton && this.prevButton.destroy();
     this.nextButton && this.nextButton.unbind('Click');
     this.nextButton && this.nextButton.destroy();
+    for(var i in this.responseButtons) {
+      this.responseButtons[i].unbind('Click');
+      this.responseButtons[i].destroy();
+    }
     clearTimeout(this.timeRead);
+  },
+  getNotificationNumber: function() {
+    for(var i =0, l = this.notifications.length; i < l; i++) {
+      if(this.notifications[i] === this.notification) {
+        return i + 1;
+      }
+    }
+    return 0;
   },
   notificationsInfo: function() {
     if(this.notifications) {
       var totalNotifications = this.notifications.length;
-      var notifNumber = totalNotifications - this.pointer;
+      var notifNumber = this.getNotificationNumber();
       return [totalNotifications, notifNumber]
     }
     return [0, 0]
+  },
+  setOptions: function(options) {
+    this.responseOptions = options;
+    this.response = null;
+  },
+  setOptionButtons: function() {
+    window.not = this;
+    this.responseButtons = [];
+    if(this.responseOptions) {
+      this.attr({
+        h: 440 + this.responseOptions.length * 40
+      })
+      var titleText = 'Choose a response:';
+      if(this.notification.response) {
+        titleText = 'Your response:';
+      }
+      this.responseTitle = Crafty.e('2D, DOM, HTML');
+      this.responseTitle.replace(
+        '<div class="responseTitle">'+titleText+'</div>'
+      ).attr({
+          x: this.x + 30,
+          y: this.y + 415 ,
+          w: 550,
+          h: 30,
+          z: 99999999
+        })
+      for(var i in this.responseOptions) {
+        var responseButton = Crafty.e('2D, DOM, HTML, Mouse');
+        var classOption = '';
+        if(this.notification.response) {
+          classOption = 'notSelected'
+        }
+        if(this.notification.response === this.responseOptions[i]) {
+          classOption = 'selected'
+        }
+        responseButton.replace(
+          this.responseButtonHTML
+            .replace(/%TEXT%/g, this.responseOptions[i].text)
+            .replace(/%CLASS%/g, classOption)
+        )
+        responseButton.attr({
+          x: this.x + 30,
+          y: this.y + 445 + 35 * i,
+          w: 550,
+          h: 30,
+          z: 99999999
+        })
+        if(!this.notification.response) {
+          responseButton.bind('Click', this.createNotificationOptionResponse(this.responseOptions[i]));
+        }
+        this.responseButtons.push(responseButton);
+      }
+    } else {
+      this.attr({
+        h: 400
+      })
+    }
+  },
+  createNotificationOptionResponse: function(opt) {
+    var self = this;
+    var option = opt;
+    return function() {
+      self.notification.response = option;
+      option.action.call(self.notification);
+      self.set(self.notification);
+    }
   }
 })

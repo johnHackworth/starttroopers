@@ -352,7 +352,9 @@ window.tr.models.Company.prototype = {
       'read': false,
       'id': options.id,
       'company': this,
-      'autoOpen' : options.open || false
+      'options': options.options,
+      'autoOpen' : options.open || false,
+      'entity': options.entity
     }
     this.notifications.push(notif);
     this.trimNotifications();

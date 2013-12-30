@@ -77,6 +77,7 @@ window.tr.models.Person.prototype = {
   initialize: function() {
     this.name = this.options.name;
     this.conversationFlags = {};
+    this.flags = {};
     this.culture = tr.utils.getRandomCulture();
 
     this.DNA = new tr.models.DNA(this);
@@ -249,8 +250,52 @@ window.tr.models.Person.prototype = {
       this.hoursLog.push(hourGroup);
     }
   },
+  promisedARiseCheck: function() {
+    if(
+      this.contractSigned &&
+      this.flags.promisedARise &&
+      this.currentTurn - this.flags.promisedARise > 20 &&
+      this.contractSigned < this.flags.promisedARise
+    ) {
+      this.flags.missedARise = true;
+      this.flags.promisedARise = false;
+      this.increaseStat('happiness', -20);
+      if(this.company) {
+        this.company.addNotification({
+          text: this.name+": I was promised a rise. I'm very unhappy with you ignoring that fact",
+          type: "person",
+          id: this.id,
+          open: true
+        })
+        this.trigger('conversation', 'This isn\'t a serious company at all.');
+      }
+    }
+  },
+  missedARiseCheck: function() {
+    if(
+      this.contractSigned &&
+      this.flags.promisedARise &&
+      this.contractSigned < this.flags.promisedARise
+    ) {
+      this.flags.missedARise = false;
+      this.flags.promisedARise = false;
+      this.increaseStat('happiness', 5);
+      if(this.company) {
+        this.trigger('conversation', 'Finally! I was expecting this rise long ago');
+      }
+    }
+  },
+  checkFlags: function() {
+    if(this.flags.promisedARise) {
+      this.promisedARiseCheck();
+    }
+    if(this.flags.missedARise) {
+      this.missedARiseCheck();
+    }
+  },
   turn: function(turnNumber) {
     this.currentTurn = turnNumber;
+    this.checkFlags();
     if(this.isBeingFired) {
       this.company.firePerson(this);
       this.isBeingFired = false;
@@ -758,6 +803,7 @@ window.tr.models.Person.prototype = {
       if(this.acceptingOffer.company.transferOwnShare(this.acceptingOffer.share, this)) {
         this.acceptingOffer.company.addPerson(this);
         this.currentWage = this.acceptingOffer.amount;
+        this.contractSigned = this.currentTurn;
       } else {
         this.rejectOffer(0,0,this.acceptingOffer.company);
       }
