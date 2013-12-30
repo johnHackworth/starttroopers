@@ -26,6 +26,9 @@ Crafty.c('Button', {
       "background-color": options.color || '#666666',
       "color": options.textColor || '#FFFFFF'
     })
+    if(!options.color) {
+      this.addComponent('plain')
+    }
     if(options.onClick) {
       this.bind("Click", options.onClick)
     }

@@ -183,8 +183,8 @@ window.tr.models.Person.prototype = {
     this.increaseStat('productDesign',  tr.randInt(30));
   },
   randomizeInterest:function() {
-    var interests = ['business', 'engineering', 'design']
-    this.mainInterest = interests[Math.floor(Math.random() * interests.length)]
+    var interests = ['business', 'engineering', 'design'];
+    this.mainInterest = interests[Math.floor(Math.random() * interests.length)];
     tr.utils.extend.call(this, tr.decorators[this.mainInterest]);
   },
 
@@ -825,8 +825,11 @@ window.tr.models.Person.prototype = {
       this.rejectingOfferOf = undefined;
     } else if(this.negotiatingWorkOffer) {
       this.negotiatingWorkOffer.company.log(this.name + ' thinks that your offer ('+ this.negotiatingWorkOffer.amount+'$) is too low, but interesting');
+      var desiredWage = this.desiredWageForCompany(this.negotiatingWorkOffer.company);
+      desiredWage = desiredWage + (this.negotiation / 100) * desiredWage / 2
+      desiredWage = Math.floor(desiredWage / 100) * 100;
       this.negotiatingWorkOffer.company.addNotification({
-        text: this.name+" is interested in your offer, but " + this.pronoum() + " thinks that is still too low",
+        text: this.name+" is interested in your offer, but " + this.pronoum() + " thinks that is still too low. " + this.pronoum() + ' wants at least ' + desiredWage + '$',
         type: "person",
         id: this.id,
         open: true
