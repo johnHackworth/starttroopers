@@ -54,8 +54,14 @@ window.tr.models.POP.prototype = {
   whoLikesTheProduct: function(product) {
     var whoDontLikeYet = this.useTheProduct - this.likeTheProduct;
     var maxLikes = Math.floor(product.getAverageQuality() / 100 * whoDontLikeYet);
+    var newLikes = tr.randInt(maxLikes);
+
+    var nBugs = product.getBugs();
+    var peopleWhoGotABug = newLikes * nBugs * (1/10);
+    var peopleBugged = tr.randInt(peopleWhoGotABug);
+
     if(maxLikes) {
-      this.likeTheProduct += tr.randInt(maxLikes);
+      this.likeTheProduct += newLikes;
     }
   },
   trimStats: function() {

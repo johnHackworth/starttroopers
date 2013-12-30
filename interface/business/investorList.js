@@ -53,7 +53,7 @@ Crafty.c('InvestorList', {
   createInvestorClickResponse: function(investor) {
     var localInvestor = investor;
     return (function() {
-      tr.app.director.selectedInvestor = localInvestor;
+      tr.app.director.selectedId = localInvestor;
       Crafty.trigger('InvestorSelected');
     }).bind(this);
   },

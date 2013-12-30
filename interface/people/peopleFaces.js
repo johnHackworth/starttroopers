@@ -52,13 +52,11 @@ Crafty.c('PersonFace', {
       this.size = size;
       this[this.components[n].toLowerCase()].setSize(this.size);
     }
-    this.name.attr({w: size})
+    this.name.attr({w: size, h: 15,
+      x: this.x, y:this.y + 2+ this.size})
   },
   setPosition: function(x, y) {
     this.attr({x: x, y: y});
-    for(var n in this.components) {
-      this[this.components[n].toLowerCase()].attr({x:x, y: y})
-    }
     this.name.attr({x: x, y:y + 2+ this.size})
   },
   assignPerson: function(options) {
@@ -74,8 +72,6 @@ Crafty.c('PersonFace', {
     }
     this.name = Crafty.e('2D, DOM, Color, Text, Tween');
     this.name.text(this.person.name).attr({
-      x: this.x,
-      y: this.y,
       w: this.size,
       h: 15,
       alpha: 0.0
@@ -84,21 +80,32 @@ Crafty.c('PersonFace', {
       "border-radius": "3px"
     }).color('#333333')
     .textColor('#FEFEFE')
+    this.attachLayers();
     this.render();
     this.person.on('conversation', this.addNotification.bind(this));
+
+  },
+  attachLayers: function() {
+    for(var n in this.components) {
+      this.attach(this[this.components[n].toLowerCase()]);
+    }
+    this.attach(this.name);
   },
   render: function() {
     this.ready = true;
     Crafty.trigger("Change");
   },
   selectPerson: function() {
-    tr.app.director.selectedPerson = this.person;
-    Crafty.trigger("PersonSelected");
+    Crafty.trigger("PersonSelected", this.person);
   },
   addNotification: function(notification) {
     for(var i in this.notifications) {
-      if(this.notifications[i] && this.notifications[i].text === notification &&
-        this.notification[i].turn === this.currentTurn) {
+      if(!this.notifications ||
+        (this.notifications[i] &&
+        this.notifications[i].text === notification &&
+        this.notifications[i].turn === this.currentTurn
+        )
+      ) {
         return;
       }
     }
@@ -161,7 +168,6 @@ Crafty.c('PersonFace', {
     var self = this;
     var notif = notifParam;
     return function() {
-      console.log(1);
       self.unbind('newNotif', notif.destroyExt)
       self.shutUp();
       notif.view.destroy();

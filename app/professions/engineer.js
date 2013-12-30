@@ -113,7 +113,7 @@ window.tr.decorators.engineering.prototype = {
     if(tr.randInt(1000) < 15 && this.addPerk('rock star')) {
       this.followers += 1000;
       if(tr.randInt() < 10 && this.addPerk('guru')) {
-        this.followrs += 4000;
+        this.followers += 4000;
       }
     }
   },
@@ -128,17 +128,17 @@ window.tr.decorators.engineering.prototype = {
     if(this.perks.indexOf('frontender') >= 0 &&
       this.positions.indexOf('front') >= 0
     ) {
-      this.happiness += 0.01;
+      this.increaseStat('happiness', 0.01);
     }
     if(this.perks.indexOf('back-man') >= 0 &&
       this.positions.indexOf('back') >= 0
     ) {
-      this.happiness += 0.01;
+      this.increaseStat('happiness', 0.01);
     }
     if(this.perks.indexOf('devops') >= 0 &&
       this.positions.indexOf('operations') >= 0
     ) {
-      this.happiness += 0.01;
+      this.increaseStat('happiness', 0.01);
     }
   }
 }

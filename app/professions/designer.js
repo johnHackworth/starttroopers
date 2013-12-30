@@ -11,7 +11,7 @@ window.tr.decorators.design.prototype = {
     if(this.mainInterest === 'design') {
       if(Math.random() * 100 < 50) {
         this.followers += tr.randInt(200);
-        this.perks.push('design school');
+        this.addPerk('design school');
         this.increaseStat('visualDesign', 25);
         this.increaseStat('frontend', 5);
         this.increaseStat('productDesign', 15);
@@ -22,7 +22,7 @@ window.tr.decorators.design.prototype = {
     }
   },
   selfTaught: function() {
-    this.perks.push('selfTaught');
+    this.addPerk('selfTaught');
     this.increaseStat('business', tr.randInt(20));
     this.increaseStat('architecture',  tr.randInt(10));
     this.increaseStat('backend',  tr.randInt(10));
@@ -82,15 +82,15 @@ window.tr.decorators.design.prototype = {
       }
     }
     if(tr.randInt() < 5) {
-      this.perks.push('scenester');
-      this.followers += 300;
+      this.addPerk('scenester');
+      this.followers += 600;
     }
     if(tr.randInt(1000) < 15) {
-      this.perks.push('rock star');
-      this.followers += 1000;
+      this.addPerk('rock star');
+      this.followers += 3000;
       if(tr.randInt() < 10) {
-        this.perks.push('guru');
-        this.followrs += 4000;
+        this.addPerk('guru');
+        this.followers += 9000;
       }
     }
   },

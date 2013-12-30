@@ -10,7 +10,6 @@ window.tr.models.Product = function(options) {
 }
 
 window.tr.models.Product.prototype = {
-  bugsOnTheWild: 0,
   globalQuality: 0,
   globalDesign: 0,
   marketingPunch: 100,
@@ -30,7 +29,7 @@ window.tr.models.Product.prototype = {
     for(var m in this.modules) {
       if(
         (this.modules[m].released ||
-        this.modules[m].project.phase.name === 'testing') &&
+        this.modules[m].project.phase.name === 'test') &&
         this.modules[m].project.id === id) {
         return true;
       }
@@ -40,7 +39,7 @@ window.tr.models.Product.prototype = {
   isModuleGettingReady: function(id) {
     for(var m in this.modules) {
       if(!this.modules[m].released &&
-        this.modules[m].project.phase.name != 'testing' &&
+        this.modules[m].project.phase.name != 'test' &&
         this.modules[m].project.id === id) {
         return true;
       }
@@ -90,7 +89,20 @@ window.tr.models.Product.prototype = {
     this.currentTurn = currentTurn;
     var turnPunch = Math.floor(this.marketingPunch / 10);
     this.marketingPunch -= turnPunch;
-    this.world.distributeMarketingPunch(turnPunch, [])
+    this.world.distributeMarketingPunch(turnPunch, this.getReleasedInterestGroups());
+  },
+  getReleasedInterestGroups: function() {
+    var adopters = {};
+    for(var n in this.modules) {
+      if(this.modules[n].released) {
+        for(var m in this.modules[n].earlyAdopters) {
+          if(!adopters[m]) {
+            adopters[m] = 0;
+          }
+          adopters[m]++;
+        }
+      }
+    }
   },
   getAverageQuality: function() {
     var quality = 0;
@@ -108,5 +120,14 @@ window.tr.models.Product.prototype = {
   },
   addHype: function(quality) {
     this.company.addHype(quality/50);
+  },
+  getBugs: function() {
+    var nBugs = 0;
+    for(var n in this.modules) {
+      if(this.modules[n].released) {
+        nBugs += this.modules[n].bugsOnTheWild;
+      }
+    }
+    return nBugs;
   }
 };

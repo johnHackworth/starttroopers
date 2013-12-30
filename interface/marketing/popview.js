@@ -50,7 +50,7 @@ Crafty.c('POPsView', {
     this.resourcesButton = Crafty.e('Button')
     this.resourcesButton.set({
       color: '#AAAA55',
-      text: "Allocate Rersources",
+      text: "Rersources",
       y:640,
       x:5,
       onClick: this.marketingResourcesView.bind(this)
@@ -61,8 +61,9 @@ Crafty.c('POPsView', {
     Crafty.trigger('MarketingResourcesSelected');
   },
   renderHype: function() {
-    this.hypeView = Crafty.e('2D, DOM, HTML');
-    this.hypeView.append('<div class="title">Hype</div><div class="value">'+this.company.hype+'</div>');
+    this.hypeView = Crafty.e('2D, DOM, HTML, hypeview');
+    var hype = Math.floor(this.company.hype * 100) / 100;
+    this.hypeView.append('<div class="title">Hype</div><div class="value">'+hype+'</div>');
     this.hypeView.attr({
       x: 1000,
       y: 640,

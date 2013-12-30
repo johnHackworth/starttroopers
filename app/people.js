@@ -5,7 +5,6 @@ window.tr.app.persons = {};
 window.tr.models.Person = function(options) {
   this.options = options;
   tr.utils.extend.call(this, tr.utils.Eventable);
-  // tr.utils.extend.call(this, tr.utils.Loggable);
   tr.utils.extend.call(this, tr.utils.Stats);
   tr.utils.extend.call(this, tr.utils.Conversation);
   tr.utils.extend.call(this, tr.utils.PersonEvent)
@@ -35,6 +34,7 @@ window.tr.models.Person.prototype = {
   learning: 0,
   workEthics: 0,
   attention: 0,
+  conflictive: 0,
 
   happiness: 50,
   stress: 50,
@@ -63,6 +63,8 @@ window.tr.models.Person.prototype = {
   hasBeenFired: false,
   turnModificator: 1,
 
+  bugsRemoved: 0,
+
   workToStats: {
     "design": "visualDesign",
     "definition": "productDesign",
@@ -75,6 +77,7 @@ window.tr.models.Person.prototype = {
   initialize: function() {
     this.name = this.options.name;
     this.conversationFlags = {};
+    this.flags = {};
     this.culture = tr.utils.getRandomCulture();
 
     this.DNA = new tr.models.DNA(this);
@@ -91,6 +94,13 @@ window.tr.models.Person.prototype = {
     this.friends = [];
     this.id = tr.randInt(1000000);
     tr.app.persons[this.id] = this;
+  },
+
+  setCompany: function(company) {
+    this.company = company;
+    if(company.human) {
+      this.hoursLog = [];
+    }
   },
 
   resetStats: function() {
@@ -184,13 +194,14 @@ window.tr.models.Person.prototype = {
   },
 
   randomizePersonalStats: function() {
-    this.negotiation = 1+tr.randInt(100);
-    this.scouting = 1+tr.randInt(100);
-    this.sociability = 1+tr.randInt(100);
+    this.negotiation = 1+tr.randInt(99);
+    this.scouting = 1+tr.randInt(99);
+    this.sociability = 1+tr.randInt(99);
     this.learning = tr.randInt(90) + 10;
-    this.attention = 1+tr.randInt(100);
-    this.workEthics = 1+tr.randInt(100);
-    this.hypeable = 1+tr.randInt(100);
+    this.attention = 1+tr.randInt(99);
+    this.conflictive = 1+tr.randInt(99);
+    this.workEthics = 1+tr.randInt(99);
+    this.hypeable = 1+tr.randInt(99);
     if(tr.randInt() < 10) {
       this.perks.push('nerdy');
       this.increaseStat('learning', 20);
@@ -223,11 +234,75 @@ window.tr.models.Person.prototype = {
   resolveConversations: function() {
 
   },
-
+  setHours: function(hours) {
+    this.hours = hours;
+    if(this.company && this.company.human) {
+      var hourGroup = {}
+      for(var n in hours) {
+        if(!hourGroup[hours[n]]) {
+          hourGroup[hours[n]] = 0;
+        }
+        hourGroup[hours[n]]++;
+      }
+      if(this.hoursLog.length >= 30) {
+        this.hoursLog.shift();
+      }
+      this.hoursLog.push(hourGroup);
+    }
+  },
+  promisedARiseCheck: function() {
+    if(
+      this.contractSigned &&
+      this.flags.promisedARise &&
+      this.currentTurn - this.flags.promisedARise > 20 &&
+      this.contractSigned < this.flags.promisedARise
+    ) {
+      this.flags.missedARise = true;
+      this.flags.promisedARise = false;
+      this.increaseStat('happiness', -20);
+      if(this.company) {
+        this.company.addNotification({
+          text: this.name+": I was promised a rise. I'm very unhappy with you ignoring that fact",
+          type: "person",
+          id: this.id,
+          open: true
+        })
+        this.trigger('conversation', 'This isn\'t a serious company at all.');
+      }
+    }
+  },
+  missedARiseCheck: function() {
+    if(
+      this.contractSigned &&
+      this.flags.promisedARise &&
+      this.contractSigned < this.flags.promisedARise
+    ) {
+      this.flags.missedARise = false;
+      this.flags.promisedARise = false;
+      this.increaseStat('happiness', 5);
+      if(this.company) {
+        this.trigger('conversation', 'Finally! I was expecting this rise long ago');
+      }
+    }
+  },
+  checkFlags: function() {
+    if(this.flags.promisedARise) {
+      this.promisedARiseCheck();
+    }
+    if(this.flags.missedARise) {
+      this.missedARiseCheck();
+    }
+  },
   turn: function(turnNumber) {
     this.currentTurn = turnNumber;
+    this.checkFlags();
     if(this.isBeingFired) {
       this.company.firePerson(this);
+      this.isBeingFired = false;
+    }
+    if(this.isLeavingCompany) {
+      this.company.leavingCompany(this);
+      this.isLeavingCompany = false;
     }
     this.resolveConversations();
     this.stayAtHome = false;
@@ -237,7 +312,7 @@ window.tr.models.Person.prototype = {
     this.scoutStats();
     this.coolRelations();
     if(this.stayAtHome) {
-      this.hours = [];
+      this.setHours([]);
       return;
     }
     if(this.negotiatingOffer) {
@@ -248,6 +323,7 @@ window.tr.models.Person.prototype = {
     this.updateHappiness();
     this.updateOffers();
     this.turnModificator = 1;
+    this.checkHappiness();
   },
   updateHappiness: function() {
     this.happiness -= 0.1;
@@ -257,6 +333,23 @@ window.tr.models.Person.prototype = {
     this.getHappinessFromWork();
     this.getHappinessFromConversations();
   },
+  checkHappiness: function() {
+    if(this.happiness > 80) {
+      if(this.sociability > 60 &&
+        tr.randInt() > 90) {
+        this.trigger('conversation', "I'm delighted with my work");
+      }
+    } else if(this.happiness < 25) {
+      if((this.sociability + this.happiness) > 60 &&
+        tr.randInt() > 90) {
+        this.trigger('conversation', "I'm not happy here");
+      } else if(
+        tr.randInt() > 75 + this.happiness
+      ) {
+        this.leaveCompany();
+      }
+    }
+  },
   getHappinessFromConversations: function() {
     if(!this.talkedToSomeone) {
       if(tr.randInt() < 20) {
@@ -265,6 +358,18 @@ window.tr.models.Person.prototype = {
           this.trigger('conversation', "I don't like to be so isolated, I want to socialize")
         }
       }
+    }
+  },
+  leaveCompany: function() {
+    if(this.company) {
+      this.company.addNotification({
+        text: this.name+": I've had enough. I'm not happy here, so I'm leaving the company.",
+        type: "person",
+        id: this.id,
+        open: true
+      })
+      this.trigger('conversation', 'Fuck off. I\'m leaving');
+      this.isLeavingCompany = true;
     }
   },
   getHappinessFromWork: function() {
@@ -283,12 +388,20 @@ window.tr.models.Person.prototype = {
       if(tr.randInt() < slackingProbability) {
         hours.push('social')
       } else if(this.isRecruiter && tr.randInt() < 20) {
-        if(this.company.beingScouted.length > 0) {
+        hours.push('recruiting');
+        if(this.company && this.company.beingScouted.length > 0) {
           var choosen = tr.randInt(this.company.beingScouted.length);
           var candidate = this.company.beingScouted[choosen];
           if(!candidate.lastInterview || this.company.currentTurn - candidate.lastInterview > 3) {
             candidate.interview(this, this.company.currentTurn);
           }
+        }
+      } else if(this.marketingStaff) {
+        hours.push('marketing');
+        this.marketingPoints = 0;
+        if(tr.randInt() < this.marketing) {
+          this.learn('marketing');
+          this.marketingPoints++;
         }
       } else {
         if(!this.currentProjects.length) {
@@ -307,14 +420,15 @@ window.tr.models.Person.prototype = {
         }
       }
     }
-    this.hours = hours;
+    this.setHours( hours);
     return hours;
   },
   getRaisingFundsHour: function() {
     // console.log(this.business, this.social)
     if(tr.randInt() < this.business &&
       tr.randInt() < this.sociability &&
-      !this.dayBusinessContact) {
+      !this.dayBusinessContact &&
+      this.company) {
       this.dayBusinessContact = true;
       var nInvestors = this.company.availableInvestors.length;
       var objetiveInvestor = this.company.availableInvestors[tr.randInt(nInvestors)];
@@ -411,86 +525,107 @@ window.tr.models.Person.prototype = {
       var p = tr.randInt(this.positions.length);
       position = this.positions[p];
     }
-    if(position === 'front') {
-      if(this.perks.indexOf('frontender') >= 0) {
-        this.happinessFromWork += 0.01;
-      }
-      this.learn('front');
-      return {
-        front: detailModificator * 2 * (this.frontend/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        design: 0.5 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        bugs: bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
-      }
-    }
-    if(position === 'back') {
-      if(this.perks.indexOf('backman') >= 0) {
-        this.happinessFromWork += 0.01;
-      }
-      this.learn('back');
-      return {
-        back:  detailModificator * 2 * (this.backend/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
-      }
-    }
-    if(position === 'architecture') {
-      this.learn('architecture');
-      return {
-        architecture: 2 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        operations: 0.5 * (this.operations/200  + this.stress/200) * this.projectKnowledge[project.id] / 100
-      }
-    }
-    if(position === 'operations') {
-      this.learn('operations');
-      if(this.perks.indexOf('devops') >= 0) {
-        this.happinessFromWork += 0.01;
-      }
-      return {
-        operations: 2 * (this.operations/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        back:  detailModificator *  detailModificator * 0.5 * (this.back/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
-
-      }
-    }
-    if(position === 'visualDesign') {
-      this.learn('visualDesign');
-      return {
-        front: detailModificator *  0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        design: 2 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100
-      }
-    }
-    if(position === 'productDesign') {
-      this.learn('productDesign');
-      if(this.perks.indexOf('ux') >= 0) {
-        this.happinessFromWork += 0.01;
-      }
-      return {
-        design: 1 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
-        definition: 2 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100
-      }
-    }
     if(position === 'qa') {
-      this.learn('qa');
       if(this.perks.indexOf('qa') >= 0) {
         this.happinessFromWork += 0.01;
       }
+      this.learn('qa');
+
+      var unfoundBugs = project.bugs - project.knowBugs;
+      var found = (unfoundBugs > 0 &&
+        tr.randInt() < 40 &&
+        tr.randInt() < this.qa)
+
       return {
-        qa: 1 * (this.qa + this.stress + this.workEthics) / 3 * this.projectKnowledge[project.id] / 100
+        foundBugs: found? 1: 0
       }
     }
-    return {
-      design: 0.5 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
-      definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
-      operations: 0.5 * (this.operations/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
-      back:  detailModificator * 0.5 * (this.backend/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
-      architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
-      front:  detailModificator * 0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
-      bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+    if(project.phase.name === 'test') {
+      return {
+        debug: 1
+      }
+    } else {
+      if(position === 'front') {
+        if(this.perks.indexOf('frontender') >= 0) {
+          this.happinessFromWork += 0.01;
+        }
+        this.learn('front');
+        return {
+          front: detailModificator * 2 * (this.frontend/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          design: 0.5 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          bugs: bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+        }
+      }
+      if(position === 'back') {
+        if(this.perks.indexOf('backman') >= 0) {
+          this.happinessFromWork += 0.01;
+        }
+        this.learn('back');
+        return {
+          back:  detailModificator * 2 * (this.backend/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+        }
+      }
+      if(position === 'architecture') {
+        this.learn('architecture');
+        return {
+          architecture: 2 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          operations: 0.5 * (this.operations/200  + this.stress/200) * this.projectKnowledge[project.id] / 100
+        }
+      }
+      if(position === 'operations') {
+        this.learn('operations');
+        if(this.perks.indexOf('devops') >= 0) {
+          this.happinessFromWork += 0.01;
+        }
+        return {
+          operations: 2 * (this.operations/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          back:  detailModificator *  detailModificator * 0.5 * (this.back/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+
+        }
+      }
+      if(position === 'visualDesign') {
+        this.learn('visualDesign');
+        return {
+          front: detailModificator *  0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          design: 2 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100
+        }
+      }
+      if(position === 'productDesign') {
+        this.learn('productDesign');
+        if(this.perks.indexOf('ux') >= 0) {
+          this.happinessFromWork += 0.01;
+        }
+        return {
+          design: 1 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100,
+          definition: 2 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id] / 100
+        }
+      }
+      if(position === 'qa') {
+        this.learn('qa');
+        if(this.perks.indexOf('qa') >= 0) {
+          this.happinessFromWork += 0.01;
+        }
+        return {
+          qa: 1 * (this.qa + this.stress + this.workEthics) / 3 * this.projectKnowledge[project.id] / 100
+        }
+      }
+      return {
+        design: 0.5 * (this.visualDesign/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
+        definition: 0.5 * (this.productDesign/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
+        operations: 0.5 * (this.operations/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
+        back:  detailModificator * 0.5 * (this.backend/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
+        architecture: 0.5 * (this.architecture/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
+        front:  detailModificator * 0.5 * (this.frontend/200  + this.stress/200) * this.projectKnowledge[project.id]/ 100,
+        bugs:  bugModificator * Math.floor(2 * ((100-this.attention) / 100) * Math.random())
+      }
     }
   },
 
@@ -506,11 +641,11 @@ window.tr.models.Person.prototype = {
     var sharedInterests = this.getSharedInterests(person);
     this.socialCircle[person.id] = this.socialCircle[person.id] || 0;
     var conversationQuality = 0.1 * sharedInterests + 0.1 * person.sociability /100;
-    this.happiness += 0.1 * this.sociability / 100;
+    this.increaseStat('happiness', 0.1 * this.sociability / 100);
     if(conversationQuality > 0.3) {
-      this.happiness += 0.1 * this.sociability / 100;
+      this.increaseStat('happiness', 0.1 * this.sociability / 100);
       if(person.happiness < 25) {
-        this.happines -= 0.2 * this.sociability / 100;
+        this.increaseStat('happiness', -0.2 * this.sociability / 100);
         this.trigger('conversation', 'I had a little depressing conversation with ' + person.name);
       } else {
         this.trigger('conversation', 'I had a great conversation with ' + person.name);
@@ -522,7 +657,7 @@ window.tr.models.Person.prototype = {
     if(this.socialCircle[person.id] > 50 && tr.randInt() < this.socialCircle[person.id]) {
       if(this.friends.indexOf(person.id) < 0) {
         this.friends.push(person.id);
-        this.happiness += 5 * this.sociability / 100;
+        this.increaseStat('happiness', 5 * this.sociability / 100);
         this.increaseStat('sociability', 3);
         this.log(this.name + ' is now friend of ' + person.name);
         this.trigger('conversation', "I'm now friend of "+person.name);
@@ -585,6 +720,9 @@ window.tr.models.Person.prototype = {
     this.marketingStaff = true;
   },
   negotiateOffer: function(offer) {
+    if(!offer) {
+      return;
+    }
     if(offer.negotiator) {
       offer.negotiator.negotiatingOffer = null;
     }
@@ -594,16 +732,20 @@ window.tr.models.Person.prototype = {
   perceptionOfTheCompany: function(company) {
     var perception = 0;
     // hype
-    var hype = (company.hype + this.hypeable) / 2;
+    var hype = (company.hype) * (this.hypeable) / 100;
     // friends opinion
     perception += hype;
 
     if(!this.company) {
       perception += 30;
+    } else {
+      perception += (company.hype - this.company.hype) * this.hypeable / 100;
     }
     if(this.experience == 0) {
-      perception += 30;
-    } else if(this.experience <= 2) {
+      perception += 40;
+    } else if(this.experience == 1) {
+      perception += 35;
+    } else if(this.experience == 2) {
       perception += 15;
     }
 
@@ -616,9 +758,9 @@ window.tr.models.Person.prototype = {
 
     if(this.founder) {
       if(company === this.company) {
-        perception += 50;
+        perception += 100;
       } else {
-        perception -= 50;
+        perception -= 100;
       }
     }
 
@@ -667,6 +809,7 @@ window.tr.models.Person.prototype = {
       if(this.acceptingOffer.company.transferOwnShare(this.acceptingOffer.share, this)) {
         this.acceptingOffer.company.addPerson(this);
         this.currentWage = this.acceptingOffer.amount;
+        this.contractSigned = this.currentTurn;
       } else {
         this.rejectOffer(0,0,this.acceptingOffer.company);
       }
@@ -793,17 +936,17 @@ window.tr.models.Person.prototype = {
     }
     this.DNA.import(json.DNA)
   },
-  reactToFiring: function(person) {
+  reactToLeaving: function(person) {
     for(var n in this.socialCircle) {
       if(person.id === n) {
         var change = tr.randInt(this.socialCircle[n]);
         this.happiness -= change;
         if(change > 5) {
-          this.trigger('conversation', "I'm upset for the firing of "+person.name);
+          this.trigger('conversation', "I'm upset for the leaving of "+person.name);
         }
         if(change > 15) {
           this.company.addNotification({
-            text: this.name+" is very upset because the firing of "+person.name,
+            text: this.name+" is very upset because the leaving of "+person.name,
             type: "person",
             id: this.id,
             open: false
@@ -831,6 +974,36 @@ window.tr.models.Person.prototype = {
       this.companyOpinions[company.id] = -50;
     } else {
       this.companyOpinions[company.id] -= 50;
+    }
+  },
+  getDebugStat: function(project) {
+    var stats = ['architecture', 'backend', 'frontend', 'operation'];
+    var n = tr.randInt(4);
+    var stat = this[stats[n]];
+    if(this.debugger) {
+      stat = stat * 3;
+    }
+    var projectKnowledge = this.projectKnowledge[project.id];
+    if(!projectKnowledge) {
+      projectKnowledge = 0;
+    }
+    stat = stat * projectKnowledge / 75
+    return stat;
+  },
+  addFollowers: function(numberF) {
+    this.followers += numberF;
+    if(this.followers > 1000 &&
+      this.perks.indexOf('TweetStar') < 0 &&
+      tr.randInt() < 20
+      ) {
+      this.addPerson('TweetStar');
+      this.followers += tr.randInt(1000);
+      this.company.addNotification({
+        text: this.name + ' is now a star on the social media networks!',
+        type: "people",
+        id: this.id,
+        open: 1
+      })
     }
   }
 }

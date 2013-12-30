@@ -8,6 +8,7 @@ window.tr.products.SocialNetwork.prototype = {
   availableModules: {
     "basicSite": {
       name: "Basic structure",
+      color: "#55BB55",
       goals: {
         definitionGoal: 100,
         designGoal: 100,

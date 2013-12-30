@@ -194,6 +194,24 @@ body {
 .mainMenuButton:hover {
   opacity: 1;
 }
+.orderMenuButton {
+  width: 100%;
+  height: 92%;
+  border-radius: 5px;
+  padding: 4% 0;
+  text-align: center;
+  display: inline-block;
+  background-color: #222222;
+  color: #FFFFFF;
+  font-family: 'freight-text-pro';
+  opacity: 0.5;
+  font-weight: bold;
+
+  -webkit-transition: all .3s linear;
+}
+.orderMenuButton:hover {
+  opacity: 1;
+}
 
 .bubble {
   border-radius: 50px;
@@ -235,4 +253,82 @@ body {
   font-size: 10px;
   width: 96%;
   padding: 2%;
+}
+
+.legendNode {
+  width: 100%;
+  height: 80%;
+  padding-top: 20%;
+  color: #FFFFFF;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 10px;
+}
+
+.progressBarText {
+  text-align: center;
+  color: #FFFFFF;
+  opacity: .6;
+  margin-top: 2px;
+}
+
+.teamTitle {
+  font-size: 25px;
+  color: #FFFFFF;
+  font-family:"freight-text-pro";
+}
+
+.historyButton {
+  background-color: #999999;
+  opacity: 0.6;
+  width: 40px;
+  height: 30px;
+  border-radius: 10px;
+}
+.historyButton {
+  opacity: 0.9;
+}
+
+.historyButton.prevButton.begining,
+.historyButton.prevButton.begining:hover {
+  opacity: 0.2;
+  cursor: default;
+}
+
+
+.historyButton.nextButton.end,
+.historyButton.nextButton.end:hover  {
+  opacity: 0.2;
+  cursor: default;
+}
+
+.totalNotifications {
+  color: #FFFFFF;
+  text-shadow: 0 0 1px #000000;
+}
+
+.responseButton {
+  width: 90%;
+  height: 25px;
+  padding: 5px 5% 0 5%;
+  background: #CCDD33;
+  color: #333333;
+  opacity: 0.6;
+  border-radius: 5px;
+}
+
+.responseButton:hover {
+  background: #FFFF33;
+}
+
+.responseButton.selected,
+.responseButton.selected:hover {
+  background-color: #AAFF33;
+  color: #000000;
+}
+
+.responseButton.notSelected,
+.responseButton.notSelected:hover {
+  background-color: #CCCCCC;
+  color: #999999;
 }

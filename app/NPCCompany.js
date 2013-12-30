@@ -37,7 +37,6 @@ window.tr.models.NPCCompany.prototype = {
     this.checkPersonal();
     this.trigger('newTurn')
   },
-
   socialize: function() {
     var hourly = [];
     for(var i = 0; i < 12; i++) {
@@ -203,6 +202,12 @@ window.tr.models.NPCCompany.prototype = {
         this[propName].push(json[propName][o]);
       }
     }
+  },
+  getRandomPerson: function() {
+    var n = tr.randInt(this.people.length);
+    return this.people[n];
+  },
+  leavingCompany: function() {
 
   }
 };

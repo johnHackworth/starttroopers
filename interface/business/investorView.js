@@ -13,7 +13,7 @@ Crafty.c('InvestorView', {
     this.attr({w:1190, h:790, x: 5, y: 5});
     this.color('rgb(154,104,104)');
     this.company = tr.app.director.company;
-    this.investor = tr.app.director.selectedInvestor
+    this.investor = tr.app.director.selectedId
     this.offer = this.investor.offer;
     this.statusBar = Crafty.e('StatusBar');
     this.statusBar.createOfficeButton();

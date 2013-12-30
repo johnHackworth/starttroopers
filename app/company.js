@@ -6,13 +6,17 @@ window.tr.models.Company = function(options) {
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Loggable);
   tr.utils.extend.call(this, tr.utils.Stats);
+  tr.utils.extend.call(this, tr.utils.MarketingEvents)
 
   this.initialize();
 }
 
 window.tr.models.Company.prototype = {
+  _MAX_NOTIFICATIONS: 100,
   human:true,
-  cash: 100000,
+  cash: 500000,
+  advertisingBudget: 0,
+  infrastructureBudget: 0,
   currentTurn: 0,
   companyValue: 1000000,
   companyOwnShare: 100,
@@ -49,6 +53,7 @@ window.tr.models.Company.prototype = {
       this.projects[p].turn(this.currentTurn);
     };
     this.product.turn(this.currentTurn);
+    this.marketingActions();
     this.actualizeHype();
     this.actualizeFinantial();
     this.trigger('newTurn')
@@ -83,6 +88,32 @@ window.tr.models.Company.prototype = {
     project.setCompany(this);
     this.projects.push(project);
   },
+  leavingCompany: function(person) {
+    var index = this.people.indexOf(person);
+    if(index >= 0) {
+      this.removePerson(person);
+      this.reactionToLeaving(person);
+      person.company = null;
+      this.log('The company has lost '+person.name+' as worker')
+      this.addNotification({
+        text: person.name + ' has left the company',
+        type: 'person',
+        id: person.id,
+        open: true
+      })
+      if(person.followers > 500 && tr.randInt() < 20) {
+        this.addNotification({
+          text: 'the leaving of ' + person.name + ' has created some flame against us on the net.',
+          type: 'person',
+          id: person.id,
+          open: true,
+          hint: '-- hype'
+        })
+        this.addHype((1+tr.randInt(2))/2 * person.followers / 500);
+      }
+    }
+    this.trigger('removePerson', person)
+  },
   firePerson: function(person) {
     var index = this.people.indexOf(person);
     if(index >= 0) {
@@ -106,7 +137,7 @@ window.tr.models.Company.prototype = {
         })
         this.addHype(-1 * person.followers / 500);
       }
-      this.trigger('fire', person)
+      this.trigger('removePerson', person)
     }
   },
   addPerson: function(person) {
@@ -117,7 +148,7 @@ window.tr.models.Company.prototype = {
         person.company.hiredByOther(person, this);
       }
       this.people.push(person);
-      person.company = this;
+      person.setCompany(this);
       this.log('The company has signed '+person.name)
       this.addNotification({
         text: person.name + ' has accepted your offer and ' + person.pronoum()+ ' will inmediately begin to work with you',
@@ -160,7 +191,12 @@ window.tr.models.Company.prototype = {
   reactionToFiring: function(person) {
     person.beingFired(this);
     for(var n in this.people) {
-      this.people[n].reactToFiring(person);
+      this.people[n].reactToLeaving(person);
+    }
+  },
+  reactionToLeaving: function(person) {
+    for(var n in this.people) {
+      this.people[n].reactToLeaving(person);
     }
   },
   removePerson: function(person) {
@@ -236,6 +272,39 @@ window.tr.models.Company.prototype = {
     var hypeVariation = -1 * this.hype * 0.01;
     this.increaseStat('hype', hypeVariation);
   },
+  marketingActions: function() {
+    var marketingPoints = this.getMarketingPoints();
+    var marketingEvent = null;
+    for(var i = 0; i < marketingPoints; i++) {
+      marketingEvent = this.getMarketingEvent();
+      if(marketingEvent) {
+        return;
+      }
+    }
+  },
+  getMarketingEvent: function() {
+    this.getMarketingChance(this.marketingLead)
+  },
+  getMarketingPoints: function() {
+    var marketingPoints = 0;
+    var sumMarketing = 0;
+
+    for(var n in this.people) {
+      if(this.people[n].marketingPoints) {
+        this.marketingLead = this.people[n];
+        marketingPoints += this.people[n].marketingPoints;
+        sumMarketing += this.people[n].marketing;
+      }
+    }
+    var maxPoints = Math.floor(sumMarketing / 50)
+    if(maxPoints < 1) {
+      maxPoints = 1;
+    }
+    if(marketingPoints > maxPoints) {
+      marketingPoints = maxPoints;
+    }
+    return marketingPoints;
+  },
   transferOwnShare: function(share, person) {
     if(!share) {
       return true;
@@ -268,6 +337,14 @@ window.tr.models.Company.prototype = {
       this.people[n].money += monthlyPay;
     }
   },
+
+  getPayroll: function() {
+    var payroll = 0;
+    for(var n in this.people) {
+      payroll += this.people[n].currentWage / 12;
+    }
+    return payroll;
+  },
   addNotification: function(options) {
     var notif = {
       'text': options.text,
@@ -275,10 +352,18 @@ window.tr.models.Company.prototype = {
       'read': false,
       'id': options.id,
       'company': this,
-      'autoOpen' : options.open || false
+      'options': options.options,
+      'autoOpen' : options.open || false,
+      'entity': options.entity
     }
     this.notifications.push(notif);
+    this.trimNotifications();
     this.trigger('notificationCreated', notif);
+  },
+  trimNotifications: function() {
+    while(this._MAX_NOTIFICATIONS > this.notifications.lenght) {
+      this.notifications.shift();
+    }
   },
   getUnreadNotifications: function() {
     var num = 0;
@@ -288,5 +373,15 @@ window.tr.models.Company.prototype = {
       }
     })
     return num;
+  },
+  getRandomPerson: function() {
+    var n = tr.randInt(this.people.length);
+    return this.people[n];
+  },
+  getAdvertisingFunds: function() {
+    return this.advertisingBudget;
+  },
+  getInfrastructureFunds: function() {
+    return this.infrastructureBudget;
   }
 };

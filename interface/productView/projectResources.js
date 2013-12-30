@@ -13,7 +13,7 @@ Crafty.c('ProjectResources', {
     this.product = this.company.product;
     this.statusBar = Crafty.e('StatusBar');
     this.statusBar.createOfficeButton();
-    this.project = tr.app.director.selectedProject;
+    this.project = tr.app.director.selectedId;
     this.renderProject();
     this.renderProjectPeople();
     this.renderCompanyPeople();
@@ -41,7 +41,6 @@ Crafty.c('ProjectResources', {
       .replace(/%NAME%/g, this.project.name)
       .replace(/%DESCRIPTION%/g, this.project.module.description)
       .replace(/%QUALITY%/g, this.project.quality)
-
     )
   },
   render: function() {
@@ -185,6 +184,9 @@ Crafty.c('ProjectResources', {
       x: x + 100
     });
     progressBar.setValue(this.project.quality);
+    var bugText = Crafty.e('2D, DOM, HTML');
+    bugText.append('<div class="knowBugs">Known bugs: <span>'+this.project.knowBugs+'</span></div>')
+    bugText.attr({x:x + 300, y:y, w:200, h:30})
   },
   renderAutoAdd: function() {
     this.autoAddCheck = Crafty.e('PropertyCheckbox')

@@ -2,7 +2,7 @@ Crafty.c('ProductProfile', {
   productHTML: '<div class="productInfo">'+
   '<div class="title">%NAME%</div>'+
   '</div><div class="productModules"><div class="title">Modules:</div><div class="Modules"></div></div>',
-  moduleHTML: '<div class="module released_%RELEASED%"><div class="title">%NAME%</div> <div class="currentPhase">%PHASENAME%</div></div>',
+  moduleHTML: '<div class="module released_%RELEASED%"><div class="title">%NAME%</div> <div class="currentPhase">%PHASENAME%</div><div class="knowBugsSection">%KNOWBUGS% bugs</div></div>',
   availableModuleHTML: '<div class="module available"><div class="title">%NAME%</div> <div class="description">%DESCRIPTION%</div></div>',
   init: function() {
     this.requires('2D, DOM, Color');
@@ -58,17 +58,21 @@ Crafty.c('ProductProfile', {
         .replace(/%NAME%/g, this.product.modules[n].name)
         .replace(/%RELEASED%/g, this.product.modules[n].released)
         .replace(/%PHASENAME%/g, this.product.modules[n].project.phase.name)
+        .replace(/%KNOWBUGS%/g, this.product.modules[n].project.knowBugs)
+
       );
       var name = this.product.modules[n].name
       module.bind('Click', this.createModuleClickResponse(this.product.modules[n]));
-      var progressBar = Crafty.e('ProgressBar');
-      progressBar.setOptions({
-        w: 50,
-        h: 12,
-        x: 300 + (i%2)*600,
-        y: 212 + Math.floor(i/2) * 60,
-      });
-      progressBar.setValue(this.product.modules[n].project.phaseCompletedness());
+      if(this.product.modules[n].project.phase.name != 'test') {
+        var progressBar = Crafty.e('ProgressBar');
+        progressBar.setOptions({
+          w: 50,
+          h: 12,
+          x: 300 + (i%2)*600,
+          y: 210 + Math.floor(i/2) * 60,
+        });
+        progressBar.setValue(this.product.modules[n].project.phaseCompletedness());
+      }
       this.createModuleButtons(this.product.modules[n], i)
       i++;
     }
@@ -76,21 +80,22 @@ Crafty.c('ProductProfile', {
   createModuleClickResponse: function(module) {
     var localModule = module;
     return (function() {
-      tr.app.director.selectedProject = module.project;
+      tr.app.director.selectedId = module.project;
       Crafty.trigger('ProjectSelected');
     }).bind(this);
   },
   createModuleButtons: function(module, i) {
     var launchButton = '';
-    if(module.released) {
+    if(module.released && !module.project.isRefactor) {
       launchButton = Crafty.e('2D, DOM, HTML');
       launchButton.append('<div class="launched">Shipped</div>')
       launchButton.attr({
-        x: 500 + (i%2)*500,
+        x: 300 + (i%2)*500,
         y: 200 + Math.floor(i/2)* 50,
         color: '#FCFCFC',
         textColor: '#008833'
       })
+      this.createRefactorButton(module.project, i);
     } else {
       this.createOnGoingProjectButtons(module, i)
     }
@@ -100,44 +105,65 @@ Crafty.c('ProductProfile', {
     var project = module.project;
     var launchButton = null;
     var nextPhaseButton = null;
-    var x = 930;
+    var refactorButton = null;
     if(project.phase.name == 'test') {
       launchButton = Crafty.e('Button');
       launchButton.set({
         color: '#CCAA00',
         text: "Ship it",
-        x: 500 + (i%2)*500,
-        y: 205 + Math.floor(i/2)* 50,
+        x: 254 + (i%2)*500,
+        y: 203 + Math.floor(i/2)* 50,
         hintText: "Open to public! Remember, if you don't test it enough you won't find all the possible bugs and the product will fail on the wild!",
         onClick: function() {
           module.project.launchProduct();
           module.trigger('change')
         }
       });
-      x += 100;
     }
     if(project.phase.name != 'test') {
-      var color = '#999999';
-      var textColor = '#666666'
-      var click = function() {}
-      if(project.phaseCompletedness() >=99) {
-        color = '#DDDD66';
-        textColor = '#333333';
-        click = function() {
-          module.project.nextPhase();
-        }
-      }
-      nextPhaseButton = Crafty.e('Button');
-      nextPhaseButton.set({
-        color: color,
-        textColor:  textColor,
-        hintText: 'Proceed to the next phase of the project. Only avaible when all the areas are completed.',
-        text: "Next phase",
-        x: 490 + (i%2)* 600,
-        y: 202 + Math.floor(i/2)* 50,
-        onClick: click
-      });
+      this.createNextPhaseButton(project, i);
+    } else {
+
     }
+  },
+  createNextPhaseButton: function(project, i) {
+    var color = '#999999';
+    var textColor = '#666666'
+    var click = function() {}
+    if(project.phaseCompletedness() >=99) {
+      color = '#DDDD66';
+      textColor = '#333333';
+      click = function() {
+        project.nextPhase();
+      }
+    }
+    var nextPhaseButton = Crafty.e('Button');
+    nextPhaseButton.set({
+      color: color,
+      textColor:  textColor,
+      hintText: 'Proceed to the next phase of the project. Only avaible when all the areas are completed.',
+      text: "Next phase",
+      x: 490 + (i%2)* 600,
+      y: 202 + Math.floor(i/2)* 50,
+      onClick: click
+    });
+  },
+  createRefactorButton: function(project, i) {
+    var color = '#FF9999';
+    var textColor = '#222222'
+    var click = function() {
+      project.beginRefactor();
+    }
+    var refactorButton = Crafty.e('Button');
+    refactorButton.set({
+      color: color,
+      textColor:  textColor,
+      hintText: 'Redo the project from scratch. Best way to improve quality overall',
+      text: "Begin refactor",
+      x: 490 + (i%2)* 600,
+      y: 202 + Math.floor(i/2)* 50,
+      onClick: click
+    });
   },
   renderAvailableModules: function() {
     var self = this;
