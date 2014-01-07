@@ -1,6 +1,6 @@
 Crafty.c('Notification', {
-  prevButtonHTML: '<div class="historyButton prevButton"><img src="/assets/ui/prev.png"></div>',
-  nextButtonHTML: '<div class="historyButton nextButton"><img src="/assets/ui/next.png"></div>',
+  prevButtonHTML: '<div class="historyButton prevButton"><img src="./assets/ui/prev.png"></div>',
+  nextButtonHTML: '<div class="historyButton nextButton"><img src="./assets/ui/next.png"></div>',
   totalNotificationsHTML: '<div class="totalNotifications">%POSITION% of %TOTAL%</div>',
   responseButtonHTML: '<div class="responseButton %CLASS%">%TEXT%</div>',
   number: [0],
