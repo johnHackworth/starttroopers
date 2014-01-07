@@ -7,7 +7,7 @@ Crafty.c('ProductProfile', {
   init: function() {
     this.requires('2D, DOM, Color');
     this.attr({w:1190, h:790, x: 5, y: 5});
-    this.color('rgba(104,154,104,0.8)');
+    this.color('rgba(170, 196, 138, 0.8)');
     this.company = tr.app.director.company;
     this.product = this.company.product;
     this.statusBar = Crafty.e('StatusBar');
@@ -47,8 +47,8 @@ Crafty.c('ProductProfile', {
       module.attr({
         x:20 + (i%2)*600,
         y:200 + Math.floor(i/2) * 60,
-        w:450,
-        h:40
+        w:600,
+        h:50
       });
       module.hintWidth = 400;
       module.hintMargin = 5;
