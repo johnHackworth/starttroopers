@@ -1,6 +1,6 @@
 Crafty.c('HistoryBrowser', {
-  prevButtonHTML: '<div class="historyButton prevButton %POSITION%"><img src="/assets/ui/prev.png"></div>',
-  nextButtonHTML: '<div class="historyButton nextButton %POSITION%"><img src="/assets/ui/next.png"></div>',
+  prevButtonHTML: '<div class="historyButton prevButton %POSITION%"><img src="./assets/ui/prev.png"></div>',
+  nextButtonHTML: '<div class="historyButton nextButton %POSITION%"><img src="./assets/ui/next.png"></div>',
   init: function() {
     this.director = tr.app.director;
     //.historyBack()
