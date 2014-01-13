@@ -10,10 +10,14 @@ Crafty.scene('Office', (function() {
   this.bg = Crafty.e("2D, DOM")
              .attr({x:0, y: 0, w: 1200, h: 800})
   this.bgChange = function() {
-    self.bg.css({
-      "background-image":"url(./assets/backgrounds/full_home_b"+tr.randInt(nOffices)+".jpg)",
-      "background-position": "center"
-    })
+    // self.bg.css({
+    //   "background-image":"url(./assets/backgrounds/full_home_b"+tr.randInt(nOffices)+".jpg)",
+    //   "background-position": "center"
+    // })
+      self.bg.css({
+        "background-image":"url(./assets/backgrounds/texture1.jpg)",
+        "background-position": "center"
+      })
   }
   this.bgChange();
 

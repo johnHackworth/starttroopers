@@ -10,14 +10,10 @@ window.tr.decorators.business.prototype = {
     this.resetStats();
     if(this.mainInterest === 'business') {
       if(Math.random() * 100 < 33) {
-        this.addPerk('MBA');
-        this.increaseStat('business', 30);
-        this.increaseStat('marketing', 10);
+        this.newPerk('mba');
         this.desiredWage += 20000;
       } else if(Math.random() * 100 < 33) {
-        this.addPerk('Marketing');
-        this.increaseStat('marketing', 30);
-        this.increaseStat('business', 10);
+        this.newPerk('marketing');
         this.desiredWage += 15000;
       } else {
         this.selfTaught()
@@ -25,16 +21,7 @@ window.tr.decorators.business.prototype = {
     }
   },
   selfTaught: function() {
-    this.addPerk('selfTaught');
-    this.increaseStat('business', tr.randInt(30));
-    this.increaseStat('marketing', tr.randInt(30));
-    this.increaseStat('architecture',  tr.randInt(5));
-    this.increaseStat('backend',  tr.randInt(5));
-    this.increaseStat('frontend',  tr.randInt(10));
-    this.increaseStat('operations',  tr.randInt(10));
-    this.increaseStat('visualDesign',  tr.randInt(20));
-    this.increaseStat('productDesign',  tr.randInt(30));
-    this.increaseStat('qa',  tr.randInt(30));
+    this.newPerk('businessSelfTaught');
   },
 
   randomizeExperience: function() {
@@ -74,46 +61,28 @@ window.tr.decorators.business.prototype = {
     if(tr.randInt() < 5 ) {
       if(this.mainInterest === 'business') {
         var chooseInt = tr.randInt(8);
-        if(chooseInt == 0 && this.addPerk('negotiator')) {
-          this.increaseStat('negotiation', 20);
+        if(chooseInt == 0 && this.newPerk('negotiator')) {
         }
-        if(chooseInt == 1 && this.addPerk('leader')) {
-          this.increaseStat('sociability', 30);
+        if(chooseInt == 1 && this.newPerk('leader')) {
         }
-        if(chooseInt == 2 && this.addPerk('enterpreneur')) {
-          this.increaseStat('sociability', 5);
-          this.increaseStat('marketing', 10);
-          this.increaseStat('business', 5);
+        if(chooseInt == 2 && this.newPerk('enterpreneur')) {
         }
-        if(chooseInt == 3 && this.addPerk('publicist')) {
-          this.increaseStat('marketing', 40);
-          this.increaseStat('productDesign', 15);
+        if(chooseInt == 3 && this.newPerk('publicist')) {
         }
-        if(chooseInt == 4 && this.addPerk('account executive')){
-          this.increaseStat('sociability', 25);
-          this.increaseStat('marketing', 5);
+        if(chooseInt == 4 && this.newPerk('accountExecutive')){
         }
-        if(chooseInt == 5 && this.addPerk('creative')) {
-          this.increaseStat('marketing', 25);
-          this.increaseStat('visualDesign', 15);
+        if(chooseInt == 5 && this.newPerk('creative')) {
         }
-        if(chooseInt == 6 && this.addPerk('social media')) {
-          this.increaseStat('marketing', 15);
-          this.increaseStat('sociability', 15);
-          this.followers += 700;
+        if(chooseInt == 6 && this.newPerk('socialMedia')) {
         }
-        if(chooseInt == 7 && this.addPerk('head hunter')) {
-          this.increaseStat('scouting', 40);
-          this.followers += 200;
+        if(chooseInt == 7 && this.newPerk('headHunter')) {
         }
       }
     }
     if(tr.randInt(1000) < 15) {
-      this.addPerk('media savvy');
-      this.followers += 2000;
+      this.newPerk('mediaSavvy');
       if(tr.randInt() < 10) {
-        this.addPerk('guru');
-        this.followers += 5000;
+        this.newPerk('guruBusiness');
       }
     }
   }

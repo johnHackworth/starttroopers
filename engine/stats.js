@@ -11,6 +11,9 @@ window.tr.utils.Stats.prototype = {
       return;
     }
     this[statName] += value;
+    this.trimStat(statName);
+  },
+  trimStat: function(statName) {
     if(this[statName] >= 100) {
       this[statName] = 99;
     }

@@ -47,7 +47,7 @@ Crafty.c('InteractionView', {
   },
   createFireButton: function() {
     var self = this;
-    if(this.person.company.human) {
+    if(this.person.company && this.person.company.human) {
       this.fireButton = Crafty.e('Button');
       this.fireButton.set({
         color: '#ff6655',

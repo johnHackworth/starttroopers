@@ -66,7 +66,7 @@ Crafty.c('PersonProfileSheet', {
   init: function() {
     this.requires('DOM, Text, Color, PersonProfileButtoner');
     this.attr({w:1200, h: 800, x: 0, y: 0})
-    this.color('rgb(104,104,104)');
+    this.color('rgba(55,85,105, 0.90)');
     this.person = tr.app.director.selectedId;
     this.render();
     this.buttons = [];
@@ -126,16 +126,12 @@ Crafty.c('PersonProfileSheet', {
     this.perkViews = [];
     var i = 0;
     for(var n in this.person.perks) {
-      var perkView = Crafty.e('2D, DOM, HTML');
-      perkView.attr({
-        x: 250 + (i * 110),
+      var perkView = Crafty.e('PerkView');
+      perkView.set({
+        x: 250 + (i * 55),
         y: 180,
-        w: 90,
-        h: 40
-      }).append(
-        this.perkHTML
-        .replace(/%PERK%/g, this.person.perks[n])
-      )
+        perk: this.person.perks[n]
+      });
       i++;
       this.perkViews.push(perkView);
     }

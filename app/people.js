@@ -65,6 +65,28 @@ window.tr.models.Person.prototype = {
 
   bugsRemoved: 0,
 
+  percentualStats: [
+    'productDesign',
+    'visualDesign',
+    'architecture',
+    'backend',
+    'frontend',
+    'operations',
+    'qa',
+    'business',
+    'marketing',
+    'scouting',
+    'negotiation',
+    'sociability',
+    'learning',
+    'workEthics',
+    'attention',
+    'conflictive',
+    'happiness',
+    'stress',
+    'hypeable',
+    'companyShare',
+  ],
   workToStats: {
     "design": "visualDesign",
     "definition": "productDesign",
@@ -118,18 +140,24 @@ window.tr.models.Person.prototype = {
     this.marketing = 1;
   },
 
-  addPerk: function(perkName) {
-    if(this.perks.indexOf(perkName) >= 0) {
-      return false;
+  newPerk: function(perkName) {
+    if(!this.hasPerk(perkName)) {
+      var perk = new tr.models.Perk(perkName);
+      perk.applyEffects(this);
+      this.perks.push(perk);
     }
-    this.perks.push(perkName);
-    return true;
   },
-
+  hasPerk: function(perkName) {
+    for(var n in this.perks) {
+      if(perkName === this.perks[n].id) {
+        return true
+      }
+    }
+  },
   randomize: function() {
     this.randomizeInterest();
-    this.randomizePersonalStats();
     this.randomizeStudies();
+    this.randomizePersonalStats();
     this.randomizeExperience();
     this.randomizeHobbies();
   },
@@ -173,14 +201,7 @@ window.tr.models.Person.prototype = {
   randomizeStudies: function() {
   },
   selfTaught: function() {
-    this.perks.push('selfTaught');
-    this.increaseStat('business', tr.randInt(30));
-    this.increaseStat('architecture',  tr.randInt(30));
-    this.increaseStat('backend',  tr.randInt(30));
-    this.increaseStat('frontend',  tr.randInt(30));
-    this.increaseStat('operations',  tr.randInt(30));
-    this.increaseStat('visualDesign',  tr.randInt(30));
-    this.increaseStat('productDesign',  tr.randInt(30));
+    this.newPerk('selfTaught');
   },
   randomizeInterest:function() {
     var interests = ['business', 'engineering', 'design'];
@@ -202,28 +223,27 @@ window.tr.models.Person.prototype = {
     this.conflictive = 1+tr.randInt(99);
     this.workEthics = 1+tr.randInt(99);
     this.hypeable = 1+tr.randInt(99);
-    if(tr.randInt() < 10) {
-      this.perks.push('nerdy');
-      this.increaseStat('learning', 20);
-      this.increaseStat('sociability', -20);
-    }
-    if(tr.randInt() < 10) {
-      this.perks.push('elocuent');
-      this.increaseStat('negotiation', 10);
-      this.increaseStat('sociability', 5);
-    }
-    if(tr.randInt() < 10) {
-      this.perks.push('shy');
-      this.increaseStat('negotiation', -5);
-      this.increaseStat('sociability', -10);
-    }
-    if(tr.randInt() < 10) {
-      this.perks.push('elocuent');
-      this.increaseStat('negotiation', 10);
-      this.increaseStat('sociability', 10);
-      this.increaseStat('learning', -5);
-    }
+    this.getCharacterPerks();
+  },
 
+  getCharacterPerks: function() {
+    var nPerks = 3;
+    var posibilities = 100 / (nPerks * 2);
+    if(tr.randInt() < posibilities) {
+      this.newPerk('nerdy');
+    }
+    if(tr.randInt() < posibilities ) {
+      this.newPerk('elocuent');
+    }
+    if(tr.randInt() < posibilities) {
+      this.newPerk('shy');
+    }
+  },
+
+  trimStats: function() {
+    for(var n in this.percentualStats) {
+      this.trimStat(this.percentualStats[n])
+    }
   },
 
   randomizeExperience: function() {

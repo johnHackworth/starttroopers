@@ -7,7 +7,7 @@ Crafty.c('OfficeFloor', {
     }
     this.requires('DOM, Text, Color');
     this.attr({w:1200, h: 800, x: 0, y: 0})
-    this.color('rgba(64,64,84,.90)');
+    this.color('rgba(34,34,34,.95)');
     this.company = tr.app.director.company;
     this.render();
 
