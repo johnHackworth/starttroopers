@@ -163,7 +163,7 @@ Crafty.c('PersonProfileSheet', {
     this.statsView = Crafty.e('2D, DOM, HTML');
     this.statsView.attr({
       x: 50,
-      y: 310,
+      y: 350,
       h: 400,
       w: 1000
     }).append(
@@ -174,7 +174,7 @@ Crafty.c('PersonProfileSheet', {
     this.personalStatsView = Crafty.e('2D, DOM, HTML');
     this.personalStatsView.attr({
       x: 750,
-      y: 310,
+      y: 350,
       h: 400,
       w: 500
     }).append(

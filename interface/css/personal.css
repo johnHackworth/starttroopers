@@ -87,7 +87,7 @@
 }
 
 .hobbiesTitle {
-  color: #336633;
+  color: #779977;
   font-weight: bold;
   font-size: 18px;
   text-shadow: 0 0 1px #666666;
@@ -140,7 +140,14 @@
 }
 
 .PositionButton, .raiseFunds {
-  border: 1px solid #efefef;
+  border: 0px solid #efefef;
+  border-radius: 3px;
+}
+
+.PerkView img {
+  margin-top: 5px;
+  width: 35px;
+  height: 35px;
 }
 
 .otherRelation {

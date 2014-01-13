@@ -25,7 +25,7 @@ Crafty.c('RecruitingButton', {
         color: recruitingColor,
         textColor: recruitingColorText,
         x: 10,
-        y: 600,
+        y: 700,
         w: 120
       })
   },
