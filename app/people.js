@@ -7,9 +7,9 @@ window.tr.models.Person = function(options) {
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Stats);
   tr.utils.extend.call(this, tr.utils.Conversation);
-  tr.utils.extend.call(this, tr.utils.PersonEvent)
+  tr.utils.extend.call(this, tr.utils.PersonEvent);
   this.initialize();
-}
+};
 
 window.tr.models.Person.prototype = {
   money: 1000,
@@ -227,8 +227,8 @@ window.tr.models.Person.prototype = {
   },
 
   getCharacterPerks: function() {
-    var nPerks = 3;
-    var posibilities = 100 / (nPerks * 2);
+    var nPerks = 7;
+    var posibilities = 100 / (nPerks);
     if(tr.randInt() < posibilities) {
       this.newPerk('nerdy');
     }
@@ -238,11 +238,27 @@ window.tr.models.Person.prototype = {
     if(tr.randInt() < posibilities) {
       this.newPerk('shy');
     }
+    if(tr.randInt() < posibilities) {
+      this.newPerk('aggresive');
+    }
+    if(tr.randInt() < posibilities) {
+      this.newPerk('hardWorker');
+    }
+    if(tr.randInt() < posibilities) {
+      this.newPerk('libraryMouse');
+    }
+    if(tr.randInt() < posibilities) {
+      if(tr.randInt() > 50) {
+        this.newPerk('introvert');
+      } else {
+        this.newPerk('extrovert');
+      }
+    }
   },
 
   trimStats: function() {
     for(var n in this.percentualStats) {
-      this.trimStat(this.percentualStats[n])
+      this.trimStat(this.percentualStats[n]);
     }
   },
 

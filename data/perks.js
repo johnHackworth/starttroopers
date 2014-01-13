@@ -200,7 +200,7 @@ window.tr.data.perks = {
   },
   "nerdy": {
     "name": "Nerdy",
-    "icon": "nerdy",
+    "icon": "nerd",
     "required": {},
     "description": "Nerdy personality and interests",
     "randEffects": false,
@@ -218,6 +218,56 @@ window.tr.data.perks = {
     "effects": {
       "negotiation": 10,
       "sociability": 5
+    }
+  },
+  "extrovert": {
+    "name": "Extrovert",
+    "icon": "extrovert",
+    "required": {},
+    "description": "Needs other people around to be happy",
+    "randEffects": false,
+    "effects": {
+      "sociability": 35
+    }
+  },
+  "introvert": {
+    "name": "Introvert",
+    "icon": "introvert",
+    "required": {},
+    "description": "Rather preffer to be alone",
+    "randEffects": false,
+    "effects": {
+      "sociability": -35
+    }
+  },
+  "libraryMouse": {
+    "name": "Library Mouse",
+    "icon": "library_mouse",
+    "required": {},
+    "description": "Love to read and learn new things",
+    "randEffects": false,
+    "effects": {
+      "learning": 30
+    }
+  },
+  "hardWorker": {
+    "name": "Workaholic",
+    "icon": "hard_worker",
+    "required": {},
+    "description": "Lives to work",
+    "randEffects": false,
+    "effects": {
+      "workEthics": 30
+    }
+  },
+  "aggresive": {
+    "name": "Aggresive",
+    "icon": "aggresive",
+    "required": {},
+    "description": "Tends to have an aggresive actitude",
+    "randEffects": false,
+    "effects": {
+      "conflictive": 40
     }
   },
   "shy": {
@@ -255,7 +305,7 @@ window.tr.data.perks = {
   },
   "businessSelfTaught": {
     "name": "Self Taught",
-    "icon": "self_taught_business",
+    "icon": "selfTaught_business",
     "required": {},
     "description": "Learned everything by reading and studying",
     "randEffects": true,
@@ -362,7 +412,7 @@ window.tr.data.perks = {
   },
   "mediaSavvy": {
     "name": "Media savvy",
-    "icon": "mediaSavvy",
+    "icon": "media_savvy",
     "required": {mainInterest: "business"},
     "description": "Knows how to deal with media",
     "randEffects": false,
@@ -373,7 +423,7 @@ window.tr.data.perks = {
   },
   "guruBusiness": {
     "name": "guru",
-    "icon": "guruBusiness",
+    "icon": "guru_business",
     "required": {mainInterest: "business"},
     "description": "Is a star on the net",
     "randEffects": false,
@@ -383,7 +433,7 @@ window.tr.data.perks = {
   },
   "designSchool": {
     "name": "Design School",
-    "icon": "designSchool",
+    "icon": "design_school",
     "required": {mainInterest: "design"},
     "description": "Graduated on a design school",
     "randEffects": false,
@@ -395,7 +445,7 @@ window.tr.data.perks = {
   },
   "selfTaughtDesign": {
     "name": "Self Taught",
-    "icon": "selfTaughtDesign",
+    "icon": "selfTaught_design",
     "required": {mainInterest: "design"},
     "description": "Learned everything by reading and experimenting",
     "randEffects": true,
