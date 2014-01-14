@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   inkscape:export-filename="/home/javi/non-work/starttroopers/assets/perks/mba.png"
+   inkscape:export-xdpi="11.85"
+   inkscape:export-ydpi="11.85"
+   sodipodi:docname="bus-template.svg">
+  <defs
+     id="defs4">
+    <filter
+       inkscape:collect="always"
+       id="filter3899">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.80600015"
+         id="feGaussianBlur3901" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter3903">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.80600015"
+         id="feGaussianBlur3905" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.5"
+     inkscape:cx="-364.23569"
+     inkscape:cy="970.62455"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1861"
+     inkscape:window-height="1056"
+     inkscape:window-x="59"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1">
+    <sodipodi:guide
+       orientation="0,1"
+       position="462.85714,560"
+       id="guide3847" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       transform="translate(5.7475812,8.0299478)"
+       sodipodi:type="arc"
+       style="opacity:0.84877864;fill:#86878d;fill-opacity:0.56302526;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:12, 12;stroke-dashoffset:0"
+       id="path2991-1"
+       sodipodi:cx="252.53813"
+       sodipodi:cy="239.18938"
+       sodipodi:rx="189.90868"
+       sodipodi:ry="189.90868"
+       d="m 442.44681,239.18938 a 189.90868,189.90868 0 1 1 -379.817354,0 189.90868,189.90868 0 1 1 379.817354,0 z" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#a3d195;fill-opacity:1;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:12, 12;stroke-dashoffset:0"
+       id="path2991"
+       sodipodi:cx="252.53813"
+       sodipodi:cy="239.18938"
+       sodipodi:rx="189.90868"
+       sodipodi:ry="189.90868"
+       d="m 442.44681,239.18938 a 189.90868,189.90868 0 1 1 -379.817354,0 189.90868,189.90868 0 1 1 379.817354,0 z"
+       transform="translate(2.2857185,0.5714289)"
+       inkscape:export-filename="/home/javi/non-work/starttroopers/assets/perks/app_developer.png"
+       inkscape:export-xdpi="11"
+       inkscape:export-ydpi="11" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4364"
+       style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:Sans;font-style:normal;font-weight:normal;font-size:40px;line-height:125%;letter-spacing:0px;word-spacing:0px"><flowRegion
+         id="flowRegion4366"><rect
+           id="rect4368"
+           width="298.57144"
+           height="201.42857"
+           x="117.14286"
+           y="140.93361" /></flowRegion><flowPara
+         id="flowPara4370" /></flowRoot>    <path
+       style="fill:#eecbaf;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="m 141.42136,271.00919 28.28427,0 c 6.59966,6.36396 8.6451,12.22189 19.79899,19.09188 17.17365,12.5471 33.47301,7.60827 50.20458,11.31371 28.49706,-1.97753 40.88717,-4.88329 63.28606,-12.02081 13.38376,-17.56704 32.45983,-44.58163 -14.67247,-59.2202 -29.12121,3.10895 -31.93316,7.96129 -63.99316,1.41421 l -13.43503,-5.3033 c 14.76699,-2.9874 21.52573,-11.92347 34.47145,-14.67246 l 8.83884,0.53033 c 5.21145,-5.31495 3.10691,-8.20792 0.35355,-13.96536 -7.90783,-3.62995 -15.14647,-1.90642 -22.62742,-2.12132 -16.53856,4.37016 -32.94387,9.48142 -46.13871,18.03123 -6.21967,6.99181 -8.8948,13.62918 -10.42983,20.15253 l -39.59798,4.94975 c 0,0 1.41422,37.47666 5.65686,31.81981 z"
+       id="path3927"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 295.04031,221.15816 -22.45064,-15.55635 -35.53212,2.65165 -25.98618,29.34493 15.37958,8.48528 16.79378,-8.66206 c 0,0 10.60661,-12.90469 11.49049,-12.55114 0.88388,0.35355 4.41942,6.89429 4.41942,6.89429 l -3.00521,8.83884 5.65686,33.05724 76.54431,2.82842 -0.70711,-43.31029 -13.61181,-1.41421 z"
+       id="path3951"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
