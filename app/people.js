@@ -108,7 +108,7 @@ window.tr.models.Person.prototype = {
     }
     this.perks = [];
     this.currentProjects = [];
-    this.projectKnowledge = {}
+    this.projectKnowledge = {};
     this.positions = [];
     this.hobbies = [];
     this.socialCircle = {};
@@ -150,7 +150,7 @@ window.tr.models.Person.prototype = {
   hasPerk: function(perkName) {
     for(var n in this.perks) {
       if(perkName === this.perks[n].id) {
-        return true
+        return true;
       }
     }
   },
@@ -163,18 +163,26 @@ window.tr.models.Person.prototype = {
   },
   pronoum: function() {
     if(this.DNA.get('sex')) {
-      return 'she'
+      return 'she';
     } else {
-      return 'he'
+      return 'he';
     }
   },
   randomizeHobbies: function() {
     this.hobbies = [];
     var amount = 3 + tr.randInt(3);
     for(var i = 0; i < amount; i++) {
-      var hobbie = tr.hobbies[tr.randInt(tr.hobbies.length)];
-      if(this.hobbies.indexOf(hobbie) < 0) {
-        this.hobbies.push(hobbie)
+      var hobbie = new tr.models.Hobbie();
+      if(!this.hasHobbie(hobbie.name)) {
+        hobbie.applyEffects(this);
+        this.hobbies.push(hobbie);
+      }
+    }
+  },
+  hasHobbie: function(hobbieName) {
+    for(var n in this.hobbies) {
+      if(hobbieName === this.hobbies[n].name) {
+        return true;
       }
     }
   },
@@ -710,7 +718,7 @@ window.tr.models.Person.prototype = {
       }
     }
     for(var h in this.hobbies) {
-      if(other.hobbies.indexOf(this.hobbies[h]) >= 0) {
+      if(other.hasHobbie(this.hobbies[n].name)) {
         sharedInterests++;
       }
     }

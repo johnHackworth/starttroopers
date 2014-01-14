@@ -11,7 +11,7 @@ Crafty.c('Notification', {
   '</div>',
   init: function() {
     var self = this;
-    this.requires('2D, DOM, HTML, Mouse, Keyboard');
+    this.requires('2D, DOM, HTML, Mouse, Keyboard, Draggable');
     this.world = tr.app.director.world;
     this.number[0]++;
     this.id = this.number[0];
@@ -28,6 +28,7 @@ Crafty.c('Notification', {
         self.close();
       }
     })
+    this.enableDrag();
 
   },
   set: function(notification) {

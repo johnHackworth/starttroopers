@@ -183,7 +183,7 @@ Crafty.c('CharCreatorView', {
         x: 550,
         z: 99999999999,
         onClick: this.randomizePeople.bind(this)
-    })
+    });
   },
   renderHobbieViews: function() {
     if(!this.hobbiesTitle) this.hobbiesTitle = Crafty.e('2D, DOM, HTML');
@@ -191,11 +191,12 @@ Crafty.c('CharCreatorView', {
       x: 300,
       y: 710
     }).replace("<div class='hobbiesTitle'>Hobbies</div>");
+    if(!this.hobbieViews) this.hobbieViews = [];
     var i = 0;
     for(var n in this.hobbieViews) {
       this.hobbieViews[n].replace('').destroy();
     }
-    for(var n in this.person.hobbies) {
+    for(var m in this.person.hobbies) {
       var hobbieView = Crafty.e('2D, DOM, HTML');
       hobbieView.attr({
         x: 400 + (i * 110),
@@ -204,7 +205,7 @@ Crafty.c('CharCreatorView', {
         h: 25
       }).append(
         this.hobbieHTML
-        .replace(/%HOBBIE%/g, this.person.hobbies[n])
+        .replace(/%PERK%/g, this.person.hobbies[m])
       )
       i++;
       this.hobbieViews.push(hobbieView);

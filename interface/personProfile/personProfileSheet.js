@@ -145,16 +145,12 @@ Crafty.c('PersonProfileSheet', {
     this.hobbieViews = [];
     var i = 0;
     for(var n in this.person.hobbies) {
-      var hobbieView = Crafty.e('2D, DOM, HTML');
-      hobbieView.attr({
-        x: 250 + (i * 110),
+      var hobbieView = Crafty.e('HobbieView');
+      hobbieView.set({
+        x: 250 + (i * 55),
         y: 255,
-        w: 90,
-        h: 25
-      }).append(
-        this.hobbieHTML
-        .replace(/%HOBBIE%/g, this.person.hobbies[n])
-      )
+        hobbie: this.person.hobbies[n]
+      });
       i++;
       this.hobbieViews.push(hobbieView);
     }

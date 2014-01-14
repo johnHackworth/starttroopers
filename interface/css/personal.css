@@ -144,7 +144,8 @@
   border-radius: 3px;
 }
 
-.PerkView img {
+.PerkView img,
+.hobbieView img {
   margin-top: 5px;
   width: 35px;
   height: 35px;
