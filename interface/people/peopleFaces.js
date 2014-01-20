@@ -96,7 +96,9 @@ Crafty.c('PersonFace', {
     Crafty.trigger("Change");
   },
   selectPerson: function() {
-    Crafty.trigger("PersonSelected", this.person);
+    if(!this.dragging) {
+      Crafty.trigger("PersonSelected", this.person);
+    }
   },
   addNotification: function(notification) {
     for(var i in this.notifications) {

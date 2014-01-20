@@ -718,7 +718,7 @@ window.tr.models.Person.prototype = {
       }
     }
     for(var h in this.hobbies) {
-      if(other.hasHobbie(this.hobbies[n].name)) {
+      if(other.hasHobbie(this.hobbies[h].name)) {
         sharedInterests++;
       }
     }

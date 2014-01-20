@@ -155,7 +155,7 @@ Crafty.c('OfficeFloor', {
   createPersons: function() {
     if(!this.ordered) {
       this[this.orderMethod](this.i);
-      this.ordered;
+      this.ordered = true;
     }
     this.paintTeamTitles();
     for(var n in this.company.people) {

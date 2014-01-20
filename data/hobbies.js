@@ -34,7 +34,7 @@ window.tr.data.hobbies = [
   },
   {
     "name": "Cinema",
-    "icon": "Cinema",
+    "icon": "cinema",
     "effects": {
       "scouting": 2,
       "marketing": 2,
@@ -119,8 +119,8 @@ window.tr.data.hobbies = [
     }
   },
   {
-    "name": "Tecnology",
-    "icon": "tecnology",
+    "name": "Technology",
+    "icon": "technology",
     "effects": {
       "backend": 3,
       "frontend": 3,

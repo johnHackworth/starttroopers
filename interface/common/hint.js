@@ -16,8 +16,8 @@ Crafty.c('Hint', {
     var self = this;
     if(!this.hintObj) {
       this.hintObj = Crafty.e('2D, DOM, HTML, Tween, Delay')
-      .attr({alpha: 0, x: this.attr('x'), y: this.hintMargin + this.y + this.h, w: this.hintWidth, h: 30})
-      .replace(this.hintHTML
+      this.hintObj.attr({z: 9999999999999, alpha: 0, x: this.attr('x'), y: this.hintMargin + this.y + this.h, w: this.hintWidth, h: 30})
+      this.hintObj.replace(this.hintHTML
         .replace(/%TEXT%/g, this.hintText)
       )
     }
