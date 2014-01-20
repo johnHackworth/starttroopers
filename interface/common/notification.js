@@ -75,11 +75,17 @@ Crafty.c('Notification', {
 
   },
   render: function() {
+    var subject = '';
+    var from = '';
+    if(this.notification.getSubject) {
+      subject = this.notification.getSubject();
+      from = this.notification.getFrom();
+    }
     this.replace(this.notificationHTML
       .replace(/%TEXT%/g, this.notification.text)
-      .replace(/%SUBJECT%/g, this.notification.getSubject())
-      .replace(/%FROM%/g, this.notification.getFrom())
-      .replace(/%CODEDFROM%/g, ('&lt;' + this.notification.getFrom().split(' ').join('.')).toLowerCase() + '@&pi;mail.com&gt;')
+      .replace(/%SUBJECT%/g, subject)
+      .replace(/%FROM%/g, from)
+      .replace(/%CODEDFROM%/g, ('&lt;' + from.split(' ').join('.')).toLowerCase() + '@&pi;mail.com&gt;')
       .replace(/%IMAGE%/g, this.image)
     );
   },
@@ -133,7 +139,7 @@ Crafty.c('Notification', {
         }
         var person = self.world.getPersonById(personId);
         if(person) {
-          Crafty.trigger('PersonSelected',self.world.people[n]);
+          Crafty.trigger('PersonSelected',person);
         }
       }
     });

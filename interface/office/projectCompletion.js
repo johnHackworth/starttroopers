@@ -7,12 +7,7 @@ Crafty.c('ProjectCompletion', {
       y: 5,
       x: 300,
       values: [
-        '#BD0026',
-        '#E31A1C',
-        '#FC4E2A',
-        '#FD8D3C',
-        '#FEB24C',
-        '#FED976'
+        'colorDevops','colorArchitecture','colorFrontend','colorBackend','colorVisual','colorProduct'
       ]
     });
     this.title = Crafty.e('2D, DOM, Text');

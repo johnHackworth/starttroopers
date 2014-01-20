@@ -3,7 +3,6 @@ Crafty.c('ProgressBubble', {
      this.requires('2D, DOM, HTML, Tween, Delay');
   },
   set: function(options) {
-  console.log('bbbbbbbbbbb')
     this
       .replace('<div class="bubble '+options.workType+'"></div>')
       .attr({
@@ -21,4 +20,4 @@ Crafty.c('ProgressBubble', {
     .bind('TweenEnd', this.destroy.bind(this));
   }
 
-})
+});

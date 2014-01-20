@@ -286,28 +286,6 @@ body {
   display: inline-block;
 }
 
-.bubble.design{
-  background-color: #BD0026;
-}
-.bubble.definition{
-  background-color: #E31A1C;
-}
-.bubble.front{
-  background-color: #FC4E2A;
-}
-.bubble.back{
-  background-color: #FD8D3C;
-}
-.bubble.architecture{
-  background-color: #FEB24C;
-}
-.bubble.operations{
-  background-color: #FED976;
-}
-.bubble.bugs {
-  background-color: #FF0000;
-}
-
 .conversationText {
   color: #FFFFFF;
   display: inline-block;
@@ -367,7 +345,7 @@ body {
 }
 
 .totalNotifications {
-  color: #FFFFFF;
+  color: #FFD500;
   text-shadow: 0 0 1px #000000;
 }
 
@@ -395,4 +373,35 @@ body {
 .responseButton.notSelected:hover {
   background-color: #CCCCCC;
   color: #999999;
+}
+
+
+
+.bubble.bugs {
+  background-color: #FF0000;
+}
+
+.bubble.operations,
+.colorDevops {
+  background-color: #1a9850;
+}
+.bubble.architecture,
+.colorArchitecture {
+  background-color: #8cce8a;
+}
+.bubble.front,
+.colorFrontend {
+  background-color:#d2ecb4;
+}
+.bubble.back,
+.colorBackend {
+  background-color:#d73027;
+}
+.bubble.design,
+.colorVisual {
+  background-color:#fff2cc;
+}
+.bubble.definition,
+.colorProduct {
+  background-color:#fed6b0;
 }

@@ -28,9 +28,10 @@ Crafty.c('NotificationCounter', {
     this.createPopUp(this.company.notifications[lastNotification]);
   },
   createPopUp: function(notif) {
+
     this.window && this.window.destroy();
     this.window = Crafty.e('Notification');
     this.window.setNotifications(this.company.notifications, 0);
-    this.window.set(notif)
+    this.window.set(new tr.models.Message(notif));
   }
 })

@@ -27,7 +27,13 @@ Crafty.c('ProgressBar', {
           z: 9991000
         })
         xPos += 10;
-        val.color(options.values[n] || '#66FF66')
+        console.log(n,options.values[n]);
+        if(options.values[n] && options.values[n] && options.values[n][0] !== '#') {
+          console.log(options.values[n])
+          val.addComponent(options.values[n]);
+        } else {
+          val.color(options.values[n] || '#66FF66')
+        }
         this.progresses.push(val);
       }
     } else {
