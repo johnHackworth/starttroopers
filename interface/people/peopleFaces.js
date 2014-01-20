@@ -55,6 +55,21 @@ Crafty.c('PersonFace', {
     this.name.attr({w: size, h: 15,
       x: this.x, y:this.y + 2+ this.size})
   },
+  setZ: function(z) {
+    this.attr({z: z})
+    for(var n in this.components) {
+      this[this.components[n].toLowerCase()].setZ(z);
+    }
+  },
+  setSquareBackground: function() {
+    this.background.type = 'sq0';
+    this.background.isSquare = true;
+  },
+  setBlackAndWhite: function() {
+    for(var n in this.components) {
+      this[this.components[n].toLowerCase()].setBlackAndWhite();
+    }
+  },
   setPosition: function(x, y) {
     this.attr({x: x, y: y});
     this.name.attr({x: x, y:y + 2+ this.size})

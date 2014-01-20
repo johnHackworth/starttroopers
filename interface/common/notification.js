@@ -4,14 +4,19 @@ Crafty.c('Notification', {
   totalNotificationsHTML: '<div class="totalNotifications">%POSITION% of %TOTAL%</div>',
   responseButtonHTML: '<div class="responseButton %CLASS%">%TEXT%</div>',
   number: [0],
-  image: './assets/notifications/basic.png',
+  image: './assets/ui/no_photo.png',
   notificationHTML: '<div class="notificationInner">'+
+  '<div class="subject">%SUBJECT%</div>' +
   '<div class="image"><img src="%IMAGE%"></img></div>' +
+  '<div class="textContainer">' +
+  '<div class="from"><strong>%FROM%</strong> %CODEDFROM% </div>' +
+  '<div class="to">to me</div>' +
   '<div class="text">%TEXT%</div>' +
+  '</div>' +
   '</div>',
   init: function() {
     var self = this;
-    this.requires('2D, DOM, HTML, Mouse, Keyboard, Draggable');
+    this.requires('2D, DOM, HTML, Mouse, Faces, Keyboard, Draggable');
     this.world = tr.app.director.world;
     this.number[0]++;
     this.id = this.number[0];
@@ -50,6 +55,7 @@ Crafty.c('Notification', {
     this.setOptionButtons();
     if(this.notification.type === 'person') {
       this.setPersonButton(this.notification.id);
+      this.setPersonFace(this.notification.person);
     } else if (this.notification.type === 'project') {
       this.setProjectButton(this.notification.id);
     }
@@ -65,12 +71,15 @@ Crafty.c('Notification', {
         self.notification.read = true;
         self.notification.company.trigger('notificationClose');
       }
-    }, 3000)
+    }, 3000);
 
   },
   render: function() {
     this.replace(this.notificationHTML
       .replace(/%TEXT%/g, this.notification.text)
+      .replace(/%SUBJECT%/g, this.notification.getSubject())
+      .replace(/%FROM%/g, this.notification.getFrom())
+      .replace(/%CODEDFROM%/g, ('&lt;' + this.notification.getFrom().split(' ').join('.')).toLowerCase() + '@&pi;mail.com&gt;')
       .replace(/%IMAGE%/g, this.image)
     );
   },
@@ -97,8 +106,16 @@ Crafty.c('Notification', {
   },
   firstPlane: function() {
     this.attr({'z': 9999999});
-    this.closeButton && this.closeButton.attr({'z': 9999999})
+    this.closeButton && this.closeButton.attr({'z': 9999999});
+    this.closeButton && this.attach(this.closeButton);
     this.actionButton && this.actionButton.attr({'z': 9999999});
+    this.actionButton && this.attach(this.actionButton)
+    this.personFace && this.personFace.setZ(9999999999)
+    this.prevButton && this.attach(this.prevButton);
+    this.nextButton && this.attach(this.nextButton);
+    this.personFace && this.attach(this.personFace)
+    this.notificationInfo && this.attach(this.notificationInfo);
+        window.aaa = this.personFace
   },
   setPersonButton: function(personId) {
     var self = this;
@@ -114,15 +131,21 @@ Crafty.c('Notification', {
           self.notification.read = true;
           self.notification.company.trigger('notificationClose');
         }
-        var person = null;
-        for(var n in self.world.people) {
-          if(self.world.people[n].id === personId) {
-            Crafty.trigger('PersonSelected',self.world.people[n]);
-            return;
-          }
+        var person = self.world.getPersonById(personId);
+        if(person) {
+          Crafty.trigger('PersonSelected',self.world.people[n]);
         }
       }
-    })
+    });
+  },
+  setPersonFace: function(person) {
+    this.personFace && this.personFace.destroy();
+    this.personFace = this.createOtherFace(person, 348, 248);
+    this.personFace.setSquareBackground();
+    this.personFace.setBlackAndWhite();
+    this.personFace.setSize(55)
+    this.personFace._attr({z:9999999999})
+    this.personFace.overrideClick(function(){})
   },
   setProjectButton: function(project) {
     var self = this;
@@ -224,6 +247,7 @@ Crafty.c('Notification', {
     this.prevButton && this.prevButton.destroy();
     this.nextButton && this.nextButton.unbind('Click');
     this.nextButton && this.nextButton.destroy();
+    this.personFace && this.personFace.destroy();
     for(var i in this.responseButtons) {
       this.responseButtons[i].unbind('Click');
       this.responseButtons[i].destroy();

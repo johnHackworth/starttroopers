@@ -51,12 +51,12 @@ window.tr.models.Company.prototype = {
     this.socialize();
     for(var p in this.projects) {
       this.projects[p].turn(this.currentTurn);
-    };
+    }
     this.product.turn(this.currentTurn);
     this.marketingActions();
     this.actualizeHype();
     this.actualizeFinantial();
-    this.trigger('newTurn')
+    this.trigger('newTurn');
   },
 
   socialize: function() {
@@ -82,7 +82,7 @@ window.tr.models.Company.prototype = {
   },
 
   initProject: function(name) {
-    var module = this.product.availableModules[name]
+    var module = this.product.availableModules[name];
     module.id = name;
     var project = new tr.models.Project(module);
     project.setCompany(this);
@@ -94,13 +94,13 @@ window.tr.models.Company.prototype = {
       this.removePerson(person);
       this.reactionToLeaving(person);
       person.company = null;
-      this.log('The company has lost '+person.name+' as worker')
+      this.log('The company has lost '+person.name+' as worker');
       this.addNotification({
         text: person.name + ' has left the company',
         type: 'person',
         id: person.id,
         open: true
-      })
+      });
       if(person.followers > 500 && tr.randInt() < 20) {
         this.addNotification({
           text: 'the leaving of ' + person.name + ' has created some flame against us on the net.',
@@ -108,11 +108,11 @@ window.tr.models.Company.prototype = {
           id: person.id,
           open: true,
           hint: '-- hype'
-        })
+        });
         this.addHype((1+tr.randInt(2))/2 * person.followers / 500);
       }
     }
-    this.trigger('removePerson', person)
+    this.trigger('removePerson', person);
   },
   firePerson: function(person) {
     var index = this.people.indexOf(person);
@@ -120,13 +120,13 @@ window.tr.models.Company.prototype = {
       this.removePerson(person);
       this.reactionToFiring(person);
       person.company = null;
-      this.log('The company has fired '+person.name)
+      this.log('The company has fired '+person.name);
       this.addNotification({
         text: person.name + ' has been fired from the company',
         type: 'person',
         id: person.id,
         open: true
-      })
+      });
       if(person.followers > 500 && tr.randInt() < 20) {
         this.addNotification({
           text: 'the firing of ' + person.name + ' has created some flame against us on the net.',
@@ -134,10 +134,10 @@ window.tr.models.Company.prototype = {
           id: person.id,
           open: true,
           hint: '-- hype'
-        })
+        });
         this.addHype(-1 * person.followers / 500);
       }
-      this.trigger('removePerson', person)
+      this.trigger('removePerson', person);
     }
   },
   addPerson: function(person) {
@@ -151,7 +151,7 @@ window.tr.models.Company.prototype = {
       person.setCompany(this);
       this.log('The company has signed '+person.name)
       this.addNotification({
-        text: person.name + ' has accepted your offer and ' + person.pronoum()+ ' will inmediately begin to work with you',
+        text: 'I\'m glad to accept your offer and I\m looking forward to begin to work with you!',
         type: 'person',
         id: person.id,
         open: true
@@ -354,9 +354,11 @@ window.tr.models.Company.prototype = {
       'company': this,
       'options': options.options,
       'autoOpen' : options.open || false,
-      'entity': options.entity
-    }
-    this.notifications.push(notif);
+      'entity': options.entity,
+      'world': this.world
+    };
+    var notification = new tr.models.Message(notif);
+    this.notifications.push(notification);
     this.trimNotifications();
     this.trigger('notificationCreated', notif);
   },

@@ -198,7 +198,7 @@ window.tr.models.World.prototype = {
     this.companies = [];
 
     for(var n in tr.data.companies) {
-      var comp = new tr.models.NPCCompany(tr.data.companies[n])
+      var comp = new tr.models.NPCCompany(tr.data.companies[n]);
       comp.world = this;
       this.companies.push(comp);
 
@@ -206,6 +206,13 @@ window.tr.models.World.prototype = {
         setTimeout(companyTurn(comp, lastTurn === (i+1)),1);
       }
 
+    }
+  },
+  getPersonById: function(id) {
+    for(var n in this.people) {
+      if(this.people[n].id === id) {
+        return this.people[n];
+      }
     }
   }
 }
