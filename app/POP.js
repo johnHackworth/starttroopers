@@ -32,13 +32,13 @@ window.tr.models.POP.prototype = {
     this.size = tr.randInt(500000);
   },
   randomizeSize: function(n) {
-    this.size = tr.randInt(n)
+    this.size = tr.randInt(n);
   },
   randomizeHobbies: function() {
     this.hobbies = [];
     var amount = 3 + tr.randInt(3);
     for(var i = 0; i < amount; i++) {
-      var hobbie = tr.hobbies[tr.randInt(tr.hobbies.length)];
+      var hobbie = tr.data.hobbies[tr.randInt(tr.data.hobbies.length)];
       if(this.hobbies.indexOf(hobbie) < 0) {
         this.hobbies.push(hobbie)
       }

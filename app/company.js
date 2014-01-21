@@ -6,6 +6,7 @@ window.tr.models.Company = function(options) {
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Loggable);
   tr.utils.extend.call(this, tr.utils.Stats);
+  tr.utils.extend.call(this, tr.utils.Exportable);
   tr.utils.extend.call(this, tr.utils.MarketingEvents)
 
   this.initialize();
@@ -373,7 +374,7 @@ window.tr.models.Company.prototype = {
       if(!notif.read) {
         num++;
       }
-    })
+    });
     return num;
   },
   getRandomPerson: function() {
@@ -385,5 +386,17 @@ window.tr.models.Company.prototype = {
   },
   getInfrastructureFunds: function() {
     return this.infrastructureBudget;
+  },
+  export: function() {
+    var json = this.exportToObject(true);
+    json.people = this.exportArray('people');
+    json.notifications = this.exportArray('notifications');
+    json.offers = this.exportArray('offers');
+    json.projects = [];
+    json.product = this.product.export();
+    for(var n in this.projects) {
+      json.projects.push(this.projects[n].export())
+    }
+    return json;
   }
 };

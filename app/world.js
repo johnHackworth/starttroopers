@@ -24,6 +24,11 @@ window.tr.models.World = function(options) {
 
 window.tr.models.World.prototype = {
   TOTAL_PEOPLE: 1500,
+  POPs: [],
+  workOffers: [],
+  investors: [],
+  people: [],
+  companies: [],
   currentTurn: 0,
   initialize: function() {
     this.workOffers = [];
@@ -118,7 +123,7 @@ window.tr.models.World.prototype = {
     }
   },
   createPeople: function() {
-    this.people = []
+    this.people = [];
     for(var i = 0; i < this.TOTAL_PEOPLE; i++) {
       var p = new window.tr.models.Person({});
       p.randomize();
@@ -214,5 +219,46 @@ window.tr.models.World.prototype = {
         return this.people[n];
       }
     }
+  },
+  export: function(callback) {
+    var self = this;
+    var json = {};
+    json.finished = false;
+    json.POPs = [];
+    for(var n in this.POPs) {
+      json.POPs.push(this.POPs[n].export());
+    }
+    json.workOffers = [];
+    for(var m in this.workOffers) {
+      json.workOffers.push(this.workOffers[m].export());
+    }
+    json.investors = [];
+    for(var o in this.investors) {
+      json.investors.push(this.investors[o].export());
+    }
+    json.people = [];
+    var i = 0;
+    var peopleLeft = this.people.length;
+    for(var p in this.people) {
+      i++;
+      setTimeout(
+        (function(par) {
+          var param = par;
+          return function() {
+            json.people.push(self.people[param].export());
+            peopleLeft--;
+            if(!peopleLeft && callback) {
+              callback(json)
+            }
+          };
+        })(p)
+      ,2*i);
+    }
+    json.companies = [];
+    for(var q in this.companies) {
+      json.companies.push(this.companies[q].export());
+    }
+    json.company = this.company.export();
+    return json;
   }
 }
