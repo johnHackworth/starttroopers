@@ -20,18 +20,18 @@ Crafty.c('NotificationCounter', {
   openNotification: function() {
     for(var n in this.company.notifications) {
       if(this.company.notifications[n].read === false) {
-        this.createPopUp(this.company.notifications[n]);
+        this.createPopUp(n);
         return;
       }
     }
     var lastNotification = this.company.notifications.length - 1;
-    this.createPopUp(this.company.notifications[lastNotification]);
+    this.createPopUp(lastNotification);
   },
-  createPopUp: function(notif) {
+  createPopUp: function(n) {
 
     this.window && this.window.destroy();
     this.window = Crafty.e('Notification');
-    this.window.setNotifications(this.company.notifications, 0);
-    this.window.set(new tr.models.Message(notif));
+    this.window.setNotifications(this.company.notifications, n);
+    this.window.set(this.company.notifications[n]);
   }
 })

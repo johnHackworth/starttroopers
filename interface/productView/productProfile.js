@@ -1,13 +1,13 @@
 Crafty.c('ProductProfile', {
   productHTML: '<div class="productInfo">'+
   '<div class="title">%NAME%</div>'+
-  '</div><div class="productModules"><div class="title">Modules:</div><div class="Modules"></div></div>',
+  '</div>',
   moduleHTML: '<div class="module released_%RELEASED%"><div class="title">%NAME%</div> <div class="currentPhase">%PHASENAME%</div><div class="knowBugsSection">%KNOWBUGS% bugs</div></div>',
   availableModuleHTML: '<div class="module available"><div class="title">%NAME%</div> <div class="description">%DESCRIPTION%</div></div>',
   init: function() {
     this.requires('2D, DOM, Color');
     this.attr({w:1190, h:790, x: 5, y: 5});
-    this.color('rgba(170, 196, 138, 0.8)');
+    this.color('rgba(35, 113, 159, 0.9)');
     this.company = tr.app.director.company;
     this.product = this.company.product;
     this.statusBar = Crafty.e('StatusBar');
@@ -45,10 +45,10 @@ Crafty.c('ProductProfile', {
     for(var n in this.product.modules) {
       var module = Crafty.e('2D, DOM, HTML, Mouse, Hint')
       module.attr({
-        x:20 + (i%2)*600,
+        x:800,
         y:200 + Math.floor(i/2) * 60,
-        w:600,
-        h:50
+        w:200,
+        h:110
       });
       module.hintWidth = 400;
       module.hintMargin = 5;
@@ -66,10 +66,10 @@ Crafty.c('ProductProfile', {
       if(this.product.modules[n].project.phase.name != 'test') {
         var progressBar = Crafty.e('ProgressBar');
         progressBar.setOptions({
-          w: 50,
+          w: 180,
           h: 12,
-          x: 300 + (i%2)*600,
-          y: 210 + Math.floor(i/2) * 60,
+          x: 808,
+          y: 240 + Math.floor(i/2) * 60,
         });
         progressBar.setValue(this.product.modules[n].project.phaseCompletedness());
       }

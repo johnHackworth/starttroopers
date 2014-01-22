@@ -9,7 +9,7 @@ Crafty.c('Eyes', {
   },
   turn: function() {
     this.turnNumber++;
-    if(this.turnNumber - this.lastBlink > 100) {
+    if(!this.dontBlink && this.turnNumber - this.lastBlink > 100) {
       if(tr.randInt(1000) >995) {
         this.basicType = this.type;
         this.type = 'blink';

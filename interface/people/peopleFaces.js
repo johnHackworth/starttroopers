@@ -38,6 +38,9 @@ Crafty.c('PersonFace', {
       this.name.tween({alpha: 0.9}, 30);
     }
   },
+  dontBlink: function() {
+    this.eyes.dontBlink = true;
+  },
   hideName: function() {
     if(this.showNameFlag) {
       this.name.tween({alpha: 0.0}, 30);

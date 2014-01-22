@@ -150,8 +150,8 @@ Crafty.c('Notification', {
     this.personFace.setSquareBackground();
     this.personFace.setBlackAndWhite();
     this.personFace.setSize(55)
+    this.personFace.dontBlink();
     this.personFace._attr({z:9999999999})
-    this.personFace.overrideClick(function(){})
   },
   setProjectButton: function(project) {
     var self = this;

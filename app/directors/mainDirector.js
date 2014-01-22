@@ -34,8 +34,9 @@ window.tr.directors.MainDirector.prototype = {
     Crafty.init();
     Crafty.bind('SceneChange', function() {
       var width = tr.config.width * tr.getScale();
-
       Crafty.viewport.scale(tr.getScale());
+      var margin = tr.getScale() * (window.innerWidth - Crafty.viewport.width * tr.getScale() ) / 2
+      Crafty.viewport.x = margin;
     })
     Crafty.scene('MainMenu')
     Crafty.bind("PersonSelected", this.personProfile.bind(this));

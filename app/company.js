@@ -360,7 +360,7 @@ window.tr.models.Company.prototype = {
     var notification = new tr.models.Message(notif);
     this.notifications.push(notification);
     this.trimNotifications();
-    this.trigger('notificationCreated', notif);
+    this.trigger('notificationCreated', this.notifications.length - 1);
   },
   trimNotifications: function() {
     while(this._MAX_NOTIFICATIONS > this.notifications.lenght) {
