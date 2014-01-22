@@ -51,12 +51,15 @@ window.tr.models.Product.prototype = {
     var available = [];
     for(var m in this.availableModules) {
       var mod = this.availableModules[m];
-      mod.id = m;
-      if(!mod.required) {
-        available.push(mod)
-      } else {
-        if(this.isModuleReady(mod.required)) {
-          available.push(mod);
+      mod.id = m
+      if(!mod.started) {
+
+        if(!mod.required) {
+          available.push(mod)
+        } else {
+          if(this.isModuleReady(mod.required)) {
+            available.push(mod);
+          }
         }
       }
     }
@@ -69,6 +72,21 @@ window.tr.models.Product.prototype = {
         var mod = this.availableModules[m]
         mod.id = m;
         available.push(mod);
+      }
+    }
+    return available;
+  },
+  getBacklog: function() {
+    var available = [];
+    for(var m in this.availableModules) {
+      var mod = this.availableModules[m];
+      mod.id = m;
+      if(!mod.started) {
+        if(mod.required) {
+          if(!this.isModuleReady(mod.required)) {
+            available.push(mod);
+          }
+        }
       }
     }
     return available;

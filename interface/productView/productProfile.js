@@ -1,4 +1,15 @@
 Crafty.c('ProductProfile', {
+  _MODULE_HEIGHT: 110,
+  _DEVELOPING_X: 775,
+  _SOON_AVAILABLE_X: 275,
+  _BACKLOG_X: 25,
+  _AVAILABLE_X: 525,
+  _MODULE_LIST_SIZE: 4,
+  _PAGINATION_Y: 715,
+  availablePage: 0,
+  soonAvailablePage: 0,
+  developingPage: 0,
+  backlogPage: 0,
   productHTML: '<div class="productInfo">'+
   '<div class="title">%NAME%</div>'+
   '</div>',
@@ -16,7 +27,7 @@ Crafty.c('ProductProfile', {
     this.render();
     this.buttons = [];
     this.createButtoner();
-    this.bindProductChange = this.product.on('change', function() {Crafty.scene('Product')})
+    this.bindProductChange = this.product.on('change', function() {Crafty.scene('Product');});
     this.bind('Remove', this.delete.bind(this));
   },
   delete: function() {
@@ -39,16 +50,23 @@ Crafty.c('ProductProfile', {
     this.renderModules();
     this.renderAvailableModules();
     this.renderSoonAvailableModules();
+    this.renderBacklog();
   },
   renderModules: function() {
+    this.clearModules('developingModules')
     var i = 0;
-    for(var n in this.product.modules) {
-      var module = Crafty.e('2D, DOM, HTML, Mouse, Hint')
+    var nAvailable = this.product.modules.length;
+    var n = this.developingPage * this._MODULE_LIST_SIZE;
+    var limit = n + this._MODULE_LIST_SIZE;
+    limit = limit > nAvailable? nAvailable: limit;
+    while(n < limit) {
+      var module = Crafty.e('2D, DOM, HTML, Mouse, Hint');
       module.attr({
-        x:800,
+        x: this._DEVELOPING_X,
         y:200 + Math.floor(i/2) * 60,
         w:200,
-        h:110
+        h: this._MODULE_HEIGHT,
+        z: 11
       });
       module.hintWidth = 400;
       module.hintMargin = 5;
@@ -68,14 +86,30 @@ Crafty.c('ProductProfile', {
         progressBar.setOptions({
           w: 180,
           h: 12,
-          x: 808,
+          x: this._DEVELOPING_X + 8,
           y: 240 + Math.floor(i/2) * 60,
+          z: 12
         });
         progressBar.setValue(this.product.modules[n].project.phaseCompletedness());
       }
       this.createModuleButtons(this.product.modules[n], i)
+      this['developingModules'].push(module);
       i++;
+      n++;
     }
+    this.createModulesContainer('modulesBackground', this._DEVELOPING_X - 10, this.product.modules.length, 'Developing');
+    this.pagination('developingPage', nAvailable, this._DEVELOPING_X - 10, this.renderModules.bind(this));
+  },
+  createModulesContainer: function(name, x, nModules, text) {
+    var containerHeight = this._MODULE_HEIGHT * this._MODULE_LIST_SIZE + 80;
+    this['name'] = Crafty.e('2D, DOM, HTML, moduleContainer');
+    this['name'].attr({
+      h: containerHeight,
+      w: 220,
+      x: x,
+      y: 165,
+      z: 10
+    }).replace(text)
   },
   createModuleClickResponse: function(module) {
     var localModule = module;
@@ -139,12 +173,12 @@ Crafty.c('ProductProfile', {
     }
     var nextPhaseButton = Crafty.e('Button');
     nextPhaseButton.set({
-      color: color,
+      color: 'transparent',
       textColor:  textColor,
       hintText: 'Proceed to the next phase of the project. Only avaible when all the areas are completed.',
       text: "Next phase",
-      x: 490 + (i%2)* 600,
-      y: 202 + Math.floor(i/2)* 50,
+      x: this._DEVELOPING_X,
+      y: 270 + Math.floor(i/2)* 110,
       onClick: click
     });
   },
@@ -166,22 +200,23 @@ Crafty.c('ProductProfile', {
     });
   },
   renderAvailableModules: function() {
+    this.clearModules('availableModules');
     var self = this;
-    var i = this.product.modules.length;
     var available = this.product.getAvailableModules();
-
-    this.availableTitle = Crafty.e('2D, DOM, HTML');
-    this.availableTitle.attr({y: 270 + Math.floor(i/2) * 50, x: 20, w: 300, h: 30})
-      .append('<div class="projectModules"><div class="title">Available projects</div></div>');
-    i += 2;
-    for(var n in available) {
+    var i = 0;
+    var nAvailable = available.length;
+    var n = this.availablePage * this._MODULE_LIST_SIZE;
+    var limit = n + this._MODULE_LIST_SIZE;
+    limit = limit > nAvailable? nAvailable: limit;
+    while(n < limit) {
       if(!available[n].started) {
         var module = Crafty.e('2D, DOM, HTML, Mouse, Hint')
           module.attr({
-          x:20 + ((i+1)%2)*600,
-          y:260 + Math.floor(i/2) * 50,
-          w:450,
-          h:50
+          x: this._AVAILABLE_X,
+          y:200 + i * 115,
+          w:200,
+          h: this._MODULE_HEIGHT,
+          z: 11
         })
         module.hintWidth = 400;
         module.hintMargin = 2;
@@ -193,9 +228,14 @@ Crafty.c('ProductProfile', {
         )
         module.bind('Click', this.createAvailableClickResponse(this.product.availableModules[n]))
         this.createAvailableModuleButtons(available[n].id, i);
+        this['availableModules'].push(module);
         i++;
       }
+      n++;
     }
+    this.createModulesContainer('availableModulesBackground', this._AVAILABLE_X - 10, available.length, 'Available')
+    this.pagination('availablePage', nAvailable, this._AVAILABLE_X - 10, this.renderAvailableModules.bind(this));
+
   },
   createAvailableClickResponse: function(module) {
     var localModule = module;
@@ -219,24 +259,24 @@ Crafty.c('ProductProfile', {
     });
 
   },
-  renderSoonAvailableModules: function() {
+  renderBacklog: function() {
+    this.clearModules('backlog');
     var self = this;
-    var i = this.product.modules.length;
-    i += this.product.getAvailableModules().length ;
-    i += 2;
-    this.soonAvailableTitle = Crafty.e('2D, DOM, HTML');
-    this.soonAvailableTitle.attr({y: 270 + Math.floor(i/2) * 50, x: 20, w: 1000, h: 30})
-      .append('<div class="projectModules"><div class="title">Next modules (dependant of the available ones)</div></div>');
-    i += 2;
-    var available = this.product.getSoonAvailableModules();
-    for(var n in available) {
+    var i = 0;
+    var available = this.product.getBacklog();
+    var nAvailable = available.length;
+    var n = this.backlogPage * this._MODULE_LIST_SIZE;
+    var limit = n + this._MODULE_LIST_SIZE;
+    limit = limit > nAvailable? nAvailable: limit;
+    while(n < limit) {
       if(!available[n].started) {
         var module = Crafty.e('2D, DOM, HTML, Mouse, Hint')
           module.attr({
-          x:20 + ((i+1)%2)*600,
-          y:260 + Math.floor(i/2) * 50,
-          w:450,
-          h:50
+          x: this._BACKLOG_X,
+          y:200 + i * 115,
+          w:200,
+          h: this._MODULE_HEIGHT,
+          z: 11
         })
         module.hintWidth = 400;
         module.hintMargin = 2;
@@ -247,13 +287,86 @@ Crafty.c('ProductProfile', {
           .replace(/%DESCRIPTION%/g, available[n].description)
         )
         i++;
+        this['backlog'].push(module);
       }
+      n++;
     }
+    this.createModulesContainer('backlogPage', this._BACKLOG_X - 10, available.length, 'Backlog')
+    this.pagination('backlogPage', nAvailable, this._BACKLOG_X - 10, this.renderBacklog.bind(this));
+  },
+  renderSoonAvailableModules: function() {
+    this.clearModules('soonAvailable');
+    var self = this;
+    var i = 0;
+    var available = this.product.getSoonAvailableModules();
+    var nAvailable = available.length;
+    var n = this.soonAvailablePage * this._MODULE_LIST_SIZE;
+    var limit = n + this._MODULE_LIST_SIZE;
+    limit = limit > nAvailable? nAvailable: limit;
+    while(n < limit) {
+      if(!available[n].started) {
+        var module = Crafty.e('2D, DOM, HTML, Mouse, Hint')
+          module.attr({
+          x: this._SOON_AVAILABLE_X,
+          y:200 + i * 115,
+          w:200,
+          h: this._MODULE_HEIGHT,
+          z: 11
+        })
+        module.hintWidth = 400;
+        module.hintMargin = 2;
+        module.hintText = available[n].description;
+        module.append(
+          this.availableModuleHTML
+          .replace(/%NAME%/g, available[n].name)
+          .replace(/%DESCRIPTION%/g, available[n].description)
+        )
+        i++;
+        this['soonAvailable'].push(module);
+      }
+      n++;
+    }
+    this.createModulesContainer('soonModulesBackground', this._SOON_AVAILABLE_X - 10, available.length, 'Soon Available')
+    this.pagination('soonAvailablePage', nAvailable, this._SOON_AVAILABLE_X - 10, this.renderSoonAvailableModules.bind(this));
   },
   render: function() {
     for(var n in this.buttons) {
       this.buttons[n].render();
     }
+  },
+  pagination: function(pageName, total, baseX, refreshMethod) {
+    var page = this[pageName];
+    var pages = [];
+    var nPages = Math.ceil(total % this._MODULE_LIST_SIZE);
+    for(var i = 0; i < nPages; i++) {
+      var pageButton = Crafty.e('2D, DOM, HTML, Mouse, paginationButton');
+      if(i == page) {
+        pageButton.addComponent('actualPage')
+      }
+      pageButton.attr({
+        x: baseX + 35 *i,
+        y: this._PAGINATION_Y,
+        h: 30,
+        w: 30,
+        z: 12
+      }).replace('<span>'+i+'</span>');
+      pageButton.bind('Click', this.generatePaginationResponse(i, pageName, refreshMethod))
+    }
+  },
+  generatePaginationResponse: function(n, name, refreshMethod) {
+    var pageNumber = n;
+    var pageName = name;
+    var self = this;
+    return function() {
+      self[pageName] = pageNumber;
+      refreshMethod();
+    }
+  },
+  clearModules: function(modulesName) {
+    for(var i in this[modulesName]) {
+      this[modulesName][i].destroy();
+    }
+    this[modulesName] = [];
   }
 
 })

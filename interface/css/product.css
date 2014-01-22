@@ -23,7 +23,7 @@
   border: 0px solid #666666;
   border-radius: 5px;
   padding: 6px 8px 4px;
-  background-color: #EEE;
+  background-color: #FFF;
   font-size: 12px;
   color: #393939;
   opacity: 1;
@@ -38,9 +38,6 @@
 }
 
 .module.available {
-  opacity: 0.7;
-  background-color: #6666FF;
-  color: #FFFFFF;
 }
 
 .module .title {
@@ -48,7 +45,7 @@
   vertical-align: top;
 }
 .module.available .title {
-  width: 450px;
+  width: 100%;
 }
 
 
@@ -61,8 +58,32 @@
 
 .module .description {
   display: inline-block;
-  width: 650px;
-  height: 40px;
+  width: 100%;
   overflow: hidden;
   vertical-align: top;
+}
+
+.moduleContainer {
+  background-color: #dbdbdb;
+  border-radius: 5px;
+  padding: 10px;
+  display: inline;
+  font-size: 15px;
+  line-height: 18px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.paginationButton span {
+  background-color: #FFF;
+  border-radius: 3px;
+  padding: 5px 10px;
+  width: 10px;
+  display: inline-block;
+}
+
+.paginationButton.actualPage span{
+  background-color: #999;
+  color: #FFF;
 }
