@@ -5,6 +5,7 @@ window.tr.models.Project = function(options) {
   this.module = options;
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Loggable);
+  tr.utils.extend.call(this, tr.utils.Exportable);
   this.initialize();
 }
 
@@ -297,5 +298,11 @@ window.tr.models.Project.prototype = {
   beginRefactor: function() {
     this.isRefactor = true;
     this.initPhases();
+  },
+  export: function() {
+    var json = this.exportToObject(true);
+    json.people = this.exportArray('people');
+    json.phases = this.exportArray('phases');
+    return json;
   }
 };

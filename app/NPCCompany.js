@@ -5,6 +5,7 @@ window.tr.models.NPCCompany = function(options) {
   this.options = options;
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Loggable);
+  tr.utils.extend.call(this, tr.utils.Exportable);
   tr.utils.extend.call(this, tr.utils.Stats);
 
   this.initialize();
@@ -162,29 +163,11 @@ window.tr.models.NPCCompany.prototype = {
     }
   },
   export: function() {
-    var json = {}
-    for(var n in this) {
-      if(this[n].export) {
-
-        json[n] = this[n].export();
-      } else if(typeof this[n] !== 'object' && typeof this[n] !== 'function') {
-        json[n] = this[n]
-      }
-    }
-
-    var arrays = ['wages', 'level', 'size']
-    for(var m in arrays) {
-      var propName = arrays[m];
-      json[propName] = [];
-      for(var o in this[propName]) {
-        json[propName].push(this[propName][o]);
-      }
-    }
-    json.people = [];
-    for(var n in this.people) {
-      json.people.push(this.people[n].id)
-    }
-
+    var json = this.exportToObject(true);
+    json.wages = this.exportArray('wages');
+    json.level = this.exportArray('level');
+    json.size = this.exportArray('size');
+    json.people = this.exportArray('people');
     return json;
   },
   import: function(json) {

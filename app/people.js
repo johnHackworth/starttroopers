@@ -8,6 +8,7 @@ window.tr.models.Person = function(options) {
   tr.utils.extend.call(this, tr.utils.Stats);
   tr.utils.extend.call(this, tr.utils.Conversation);
   tr.utils.extend.call(this, tr.utils.PersonEvent);
+  tr.utils.extend.call(this, tr.utils.Exportable);
   this.initialize();
 };
 
@@ -113,6 +114,7 @@ window.tr.models.Person.prototype = {
     this.hobbies = [];
     this.socialCircle = {};
     this.companyOpinions = {};
+    this.hoursLog = [];
     this.friends = [];
     this.id = tr.randInt(1000000);
     tr.app.persons[this.id] = this;
@@ -945,24 +947,17 @@ window.tr.models.Person.prototype = {
 
   },
   export: function() {
-    var json = {}
-    for(var n in this) {
-      if(this[n].export) {
-
-        json[n] = this[n].export();
-      } else if(typeof this[n] !== 'object' && typeof this[n] !== 'function') {
-        json[n] = this[n]
-      }
-    }
-    var arrays = ['proyectKnowledge', 'perks', 'positions', 'hobbies', 'socialCircle', 'friends']
-    for(var m in arrays) {
-      var propName = arrays[m];
-      json[propName] = [];
-      for(var o in this[propName]) {
-        json[propName].push(this[propName][o]);
-      }
-    }
+    var json = this.exportToObject(true);
     json.DNA = this.DNA.export();
+    json.perks = this.exportArray('perks');
+    json.currentProjects = this.exportArray('currentProjects');
+    json.projectKnowledge = this.exportArray('projectKnowledge');
+    json.positions = this.exportArray('positions');
+    json.hobbies = this.exportArray('hobbies');
+    json.socialCircle = this.exportArray('socialCircle');
+    json.companyOpinions = this.exportArray('companyOpinions');
+    json.hoursLog = this.exportArray('hoursLog');
+    json.friends = this.exportArray('friends');
 
     return json;
   },

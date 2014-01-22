@@ -5,6 +5,7 @@ window.tr.models.Product = function(options) {
   this.options = options;
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Loggable);
+  tr.utils.extend.call(this, tr.utils.Exportable);
   this.world = this.options.world;
   this.initialize();
 }
@@ -129,5 +130,13 @@ window.tr.models.Product.prototype = {
       }
     }
     return nBugs;
+  },
+  export: function() {
+    var json = this.exportToObject(true);
+    json.availableModules = this.exportArray('availableModules');
+    json.visits = this.exportArray('visits');
+    json.modules = this.exportArray('modules');
+    json.newUsers = this.exportArray('newUsers');
+    return json;
   }
 };
