@@ -129,6 +129,21 @@ window.tr.models.World.prototype = {
       p.randomize();
       this.people.push(p);
     }
+    this.randomizeSocial();
+  },
+  randomizeSocial: function() {
+    for(var i = 0; i < this.TOTAL_PEOPLE; i++) {
+      var p = this.people[i];
+      var randomSocialNumber = tr.randInt(6);
+      for(var j = 0; j < randomSocialNumber; j++) {
+        var randomPerson = this.people[tr.randInt(this.TOTAL_PEOPLE)];
+        if(randomPerson.id != p.id) {
+          var seed = tr.randInt(80);
+          p.socialCircle[randomPerson.id] = seed - 10 + tr.randInt(20);
+          randomPerson.socialCircle[p.id] = seed - 10 + tr.randInt(20);
+        }
+      }
+    }
   },
   publishWorkOffer: function(options, company) {
     var offer = {

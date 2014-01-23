@@ -83,7 +83,8 @@ window.tr.models.Product.prototype = {
       mod.id = m;
       if(!mod.started) {
         if(mod.required) {
-          if(!this.isModuleReady(mod.required)) {
+          if(!this.isModuleReady(mod.required) &&
+            !this.isModuleGettingReady(mod.required)) {
             available.push(mod);
           }
         }

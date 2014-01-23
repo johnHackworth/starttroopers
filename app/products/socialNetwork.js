@@ -25,7 +25,7 @@ window.tr.products.SocialNetwork.prototype = {
     },
     "basicPrivacy": {
       name: "Basic privacy settings",
-      required: "basicSite",
+      // required: "basicSite",
       goals: {
         definitionGoal: 30,
         designGoal: 20,
@@ -42,7 +42,7 @@ window.tr.products.SocialNetwork.prototype = {
     },
     "webscale": {
       name: "Webscale",
-      required: "basicSite",
+      // required: "basicSite",
       goals: {
         definitionGoal: 10,
         designGoal: 30,

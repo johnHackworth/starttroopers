@@ -1,17 +1,20 @@
 Crafty.c('ProductProfile', {
   _MODULE_HEIGHT: 110,
-  _DEVELOPING_X: 775,
-  _SOON_AVAILABLE_X: 275,
+  _MODULE_WIDTH: 185,
+  _DEVELOPING_X: 715,
+  _SOON_AVAILABLE_X: 255,
+  _COMPLETED_X: 945,
   _BACKLOG_X: 25,
-  _AVAILABLE_X: 525,
+  _AVAILABLE_X: 485,
   _MODULE_LIST_SIZE: 4,
   _PAGINATION_Y: 715,
   availablePage: 0,
   soonAvailablePage: 0,
   developingPage: 0,
   backlogPage: 0,
+  completedPage: 0,
   productHTML: '<div class="productInfo">'+
-  '<div class="title">%NAME%</div>'+
+  '<div class="title">%NAME%\'s project management</div>'+
   '</div>',
   moduleHTML: '<div class="module released_%RELEASED%"><div class="title">%NAME%</div> <div class="currentPhase">%PHASENAME%</div><div class="knowBugsSection">%KNOWBUGS% bugs</div></div>',
   availableModuleHTML: '<div class="module available"><div class="title">%NAME%</div> <div class="description">%DESCRIPTION%</div></div>',
@@ -51,6 +54,7 @@ Crafty.c('ProductProfile', {
     this.renderAvailableModules();
     this.renderSoonAvailableModules();
     this.renderBacklog();
+    this.renderComplete();
   },
   renderModules: function() {
     this.clearModules('developingModules')
@@ -63,8 +67,8 @@ Crafty.c('ProductProfile', {
       var module = Crafty.e('2D, DOM, HTML, Mouse, Hint');
       module.attr({
         x: this._DEVELOPING_X,
-        y:200 + Math.floor(i/2) * 60,
-        w:200,
+        y: 200 + i * 115,
+        w: this._MODULE_WIDTH,
         h: this._MODULE_HEIGHT,
         z: 11
       });
@@ -87,7 +91,7 @@ Crafty.c('ProductProfile', {
           w: 180,
           h: 12,
           x: this._DEVELOPING_X + 8,
-          y: 240 + Math.floor(i/2) * 60,
+          y: 240 + i*115,
           z: 12
         });
         progressBar.setValue(this.product.modules[n].project.phaseCompletedness());
@@ -97,19 +101,22 @@ Crafty.c('ProductProfile', {
       i++;
       n++;
     }
-    this.createModulesContainer('modulesBackground', this._DEVELOPING_X - 10, this.product.modules.length, 'Developing');
+    this.createModulesContainer('modulesBackground', this._DEVELOPING_X - 10, this.product.modules.length, 'Developing', 'Current projects');
     this.pagination('developingPage', nAvailable, this._DEVELOPING_X - 10, this.renderModules.bind(this));
   },
-  createModulesContainer: function(name, x, nModules, text) {
+  createModulesContainer: function(name, x, nModules, text, description) {
+    if(!description) {
+      description = '';
+    }
     var containerHeight = this._MODULE_HEIGHT * this._MODULE_LIST_SIZE + 80;
     this['name'] = Crafty.e('2D, DOM, HTML, moduleContainer');
     this['name'].attr({
       h: containerHeight,
-      w: 220,
+      w: this._MODULE_WIDTH+20,
       x: x,
-      y: 165,
+      y: 150,
       z: 10
-    }).replace(text)
+    }).replace('<div>'+text+'</div><div class="description">'+description+'</div>')
   },
   createModuleClickResponse: function(module) {
     var localModule = module;
@@ -178,7 +185,7 @@ Crafty.c('ProductProfile', {
       hintText: 'Proceed to the next phase of the project. Only avaible when all the areas are completed.',
       text: "Next phase",
       x: this._DEVELOPING_X,
-      y: 270 + Math.floor(i/2)* 110,
+      y: 270 + i * 115,
       onClick: click
     });
   },
@@ -214,7 +221,7 @@ Crafty.c('ProductProfile', {
           module.attr({
           x: this._AVAILABLE_X,
           y:200 + i * 115,
-          w:200,
+          w:this._MODULE_WIDTH,
           h: this._MODULE_HEIGHT,
           z: 11
         })
@@ -233,7 +240,7 @@ Crafty.c('ProductProfile', {
       }
       n++;
     }
-    this.createModulesContainer('availableModulesBackground', this._AVAILABLE_X - 10, available.length, 'Available')
+    this.createModulesContainer('availableModulesBackground', this._AVAILABLE_X - 10, available.length, 'Available', 'Ready to start projects')
     this.pagination('availablePage', nAvailable, this._AVAILABLE_X - 10, this.renderAvailableModules.bind(this));
 
   },
@@ -248,16 +255,15 @@ Crafty.c('ProductProfile', {
     var self = this;
     initButton = Crafty.e('Button');
     initButton.set({
-      color: '#00CC66',
+      color: '#FFFFFF',
       text: "Init Project",
-      x:500 + ((i+1)%2) * 600,
+      x: this._AVAILABLE_X + 5,
       h:20,
-      y:260 + Math.floor(i/2) * 50,
+      y: 270 + i * 115,
       onClick: function() {
         self.company.initProject(moduleName);
       }
     });
-
   },
   renderBacklog: function() {
     this.clearModules('backlog');
@@ -265,6 +271,7 @@ Crafty.c('ProductProfile', {
     var i = 0;
     var available = this.product.getBacklog();
     var nAvailable = available.length;
+
     var n = this.backlogPage * this._MODULE_LIST_SIZE;
     var limit = n + this._MODULE_LIST_SIZE;
     limit = limit > nAvailable? nAvailable: limit;
@@ -274,7 +281,7 @@ Crafty.c('ProductProfile', {
           module.attr({
           x: this._BACKLOG_X,
           y:200 + i * 115,
-          w:200,
+          w:this._MODULE_WIDTH,
           h: this._MODULE_HEIGHT,
           z: 11
         })
@@ -291,8 +298,44 @@ Crafty.c('ProductProfile', {
       }
       n++;
     }
-    this.createModulesContainer('backlogPage', this._BACKLOG_X - 10, available.length, 'Backlog')
+    this.createModulesContainer('backlogPage', this._BACKLOG_X - 10, available.length, 'Backlog', 'Features for the future')
     this.pagination('backlogPage', nAvailable, this._BACKLOG_X - 10, this.renderBacklog.bind(this));
+  },
+  renderComplete: function() {
+    this.clearModules('completedModules');
+    var self = this;
+    var i = 0;
+    var available = this.product.getBacklog();
+    var nAvailable = available.length;
+
+    var n = this.backlogPage * this._MODULE_LIST_SIZE;
+    var limit = n + this._MODULE_LIST_SIZE;
+    limit = limit > nAvailable? nAvailable: limit;
+    while(n < limit) {
+      if(!available[n].started) {
+        var module = Crafty.e('2D, DOM, HTML, Mouse, Hint')
+          module.attr({
+          x: this._COMPLETED_X,
+          y:200 + i * 115,
+          w:this._MODULE_WIDTH,
+          h: this._MODULE_HEIGHT,
+          z: 11
+        })
+        module.hintWidth = 400;
+        module.hintMargin = 2;
+        module.hintText = available[n].description;
+        module.append(
+          this.availableModuleHTML
+          .replace(/%NAME%/g, available[n].name)
+          .replace(/%DESCRIPTION%/g, available[n].description)
+        )
+        i++;
+        this['completedModules'].push(module);
+      }
+      n++;
+    }
+    this.createModulesContainer('completedModulesPage', this._COMPLETED_X - 10, available.length, 'Completed')
+    this.pagination('completedModulesPage', nAvailable, this._COMPLETED_X - 10, this.renderComplete.bind(this));
   },
   renderSoonAvailableModules: function() {
     this.clearModules('soonAvailable');
@@ -309,7 +352,7 @@ Crafty.c('ProductProfile', {
           module.attr({
           x: this._SOON_AVAILABLE_X,
           y:200 + i * 115,
-          w:200,
+          w:this._MODULE_WIDTH,
           h: this._MODULE_HEIGHT,
           z: 11
         })
@@ -326,7 +369,7 @@ Crafty.c('ProductProfile', {
       }
       n++;
     }
-    this.createModulesContainer('soonModulesBackground', this._SOON_AVAILABLE_X - 10, available.length, 'Soon Available')
+    this.createModulesContainer('soonModulesBackground', this._SOON_AVAILABLE_X - 10, available.length, 'Soon Available', 'Feats. that will be unlocked soon')
     this.pagination('soonAvailablePage', nAvailable, this._SOON_AVAILABLE_X - 10, this.renderSoonAvailableModules.bind(this));
   },
   render: function() {
@@ -337,7 +380,7 @@ Crafty.c('ProductProfile', {
   pagination: function(pageName, total, baseX, refreshMethod) {
     var page = this[pageName];
     var pages = [];
-    var nPages = Math.ceil(total % this._MODULE_LIST_SIZE);
+    var nPages = Math.ceil(total / this._MODULE_LIST_SIZE);
     for(var i = 0; i < nPages; i++) {
       var pageButton = Crafty.e('2D, DOM, HTML, Mouse, paginationButton');
       if(i == page) {

@@ -75,6 +75,11 @@
   text-overflow: ellipsis;
 }
 
+.moduleContainer .description {
+  font-weight: lighter;
+  font-size: 12px;
+}
+
 .paginationButton span {
   background-color: #FFF;
   border-radius: 3px;
