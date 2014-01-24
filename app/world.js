@@ -134,7 +134,7 @@ window.tr.models.World.prototype = {
   randomizeSocial: function() {
     for(var i = 0; i < this.TOTAL_PEOPLE; i++) {
       var p = this.people[i];
-      var randomSocialNumber = tr.randInt(6);
+      var randomSocialNumber = tr.randInt(10 * p.sociability / 100) +tr.randInt(5);
       for(var j = 0; j < randomSocialNumber; j++) {
         var randomPerson = this.people[tr.randInt(this.TOTAL_PEOPLE)];
         if(randomPerson.id != p.id) {

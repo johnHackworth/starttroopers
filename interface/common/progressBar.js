@@ -3,6 +3,16 @@ Crafty.c('ProgressBar', {
     this.requires('2D, DOM, Color');
     this.progress = Crafty.e('2D, DOM, Color, Tween');
     this.progresses = [];
+
+    this.bind('Remove', this.clear.bind(this));
+  },
+  clear: function() {
+    for(var i in this.progresses) {
+      this.progresses[i].destroy();
+    }
+    if(this.progress && this.progress.destroy) {
+      this.progress.destroy();
+    }
   },
   setOptions: function(options) {
     this.options = options;
@@ -27,9 +37,7 @@ Crafty.c('ProgressBar', {
           z: 9991000
         })
         xPos += 10;
-        console.log(n,options.values[n]);
         if(options.values[n] && options.values[n] && options.values[n][0] !== '#') {
-          console.log(options.values[n])
           val.addComponent(options.values[n]);
         } else {
           val.color(options.values[n] || '#66FF66')
