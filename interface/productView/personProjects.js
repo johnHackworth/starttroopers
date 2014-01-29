@@ -5,8 +5,8 @@
   moduleHTML: '<div class="module released_%RELEASED%"><div class="title">%NAME%</div> <div class="currentPhase">%PHASENAME%</div></div>',
   init: function() {
     this.requires('2D, DOM, Color, Faces, PersonProfileButtoner');
-    this.attr({w:1200, h: 800, x: 0, y: 0});
-    this.color('rgb(104,154,104)');
+    this.attr({w:1200, h: 800, x: 0, y: 0})
+    this.color('rgba(55,85,105, 0.90)');  ;
     this.person = tr.app.director.selectedId;
     this.render();
     this.buttons = [];
@@ -37,21 +37,21 @@
   },
   renderPersonProjects: function() {
     var i = 0;
-    for(var n in this.person.currentProjects) {
+    for(var n in this.person.projectKnowledge) {
+      var project = this.person.company.getProjectById(n)
       var module = Crafty.e('2D, DOM, HTML')
         module.attr({
         x:240,
         y:150 + i * 60,
-        w:1000,
+        w:200,
         h:200,
         z: 999999
       })
       module.append(
         this.moduleHTML
-        .replace(/%NAME%/g, this.person.currentProjects[n].name)
-        .replace(/%PHASENAME%/g, this.person.currentProjects[n].phase.name)
+        .replace(/%NAME%/g, project.name)
+        .replace(/%PHASENAME%/g, project.phase.name)
       );
-      var project = this.person.currentProjects[n];
       var name = project.name
       var progressBar = Crafty.e('ProgressBar');
       var knowledge = this.person.projectKnowledge[project.id];
@@ -59,17 +59,22 @@
         knowledge = 0;
       }
       progressBar.setOptions({
-        w: 150,
+        w: 200,
         h: 12,
-        y: 162 + 60*i,
-        x: 515,
+        y: 202 + 60*i,
+        x: 250,
         color: '#000000',
         progressColor: "rgb(70, "+(100+Math.floor(155 * knowledge / 100))+", 20)",
         text: 'knowledge'
       });
 
       progressBar.setValue(knowledge);
+      this.createProjectButtons(i, project)
       i++;
+    }
+  },
+  createProjectButtons: function(i, project) {
+    if(this.person.currentProjects.indexOf(project) >= 0) {
     }
   },
 

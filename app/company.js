@@ -338,7 +338,14 @@ window.tr.models.Company.prototype = {
       this.people[n].money += monthlyPay;
     }
   },
-
+  getProjectById: function(id) {
+    for(var n in this.projects) {
+      if(this.projects[n].id === id) {
+        return this.projects[n];
+      }
+    }
+    return null;
+  },
   getPayroll: function() {
     var payroll = 0;
     for(var n in this.people) {
