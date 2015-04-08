@@ -5,7 +5,7 @@ window.tr.utils = window.tr.utils || {};
   var cultures = {
     "spanish": {
       mnames:["Jose", "Juan", "Carlos", "Amadeo", "Javier", "Alejandro", "Hector", "Ignacio", "Sergio", "Valerio", "Gerardo", "Rafa", "Marcos", "Julio"],
-      fnames: ["Sheila", "María", "Ana", "Marta", "Isabel", "Virginia", "Sofia", "Elena", "Ruth", "Alicia", "Sara", "Irene", "Carmen", "Sandra"],
+      fnames: ["Sheila", "Maria", "Ana", "Marta", "Isabel", "Virginia", "Sofia", "Elena", "Ruth", "Alicia", "Sara", "Irene", "Carmen", "Sandra"],
       surnames:["Garcia", "Perez", "Lopez", "Jimenez", "Alvarez", "Aristegui", "Valdes", "Hita", "Herrera", "Martin", "Arias", "Martin", "Hortaleza", "Esteban"]
     },
     "anglosaxon": {
@@ -24,9 +24,9 @@ window.tr.utils = window.tr.utils || {};
       surnames:["Ga", "Gyeon", "Bok", "Sang", "Song", "Momoi", "Chang", "Young", "Soo", "Hanzo", "Wong", "Lee", "Wong", "Sato", "Suzuki", "Takahasi", "Tanaka", "Watanabe", "Ito", "Yamamoto", "Nakamura", "Kato"]
     },
     "generic": {
-      mnames:["Xabier", "Moses", "Kit", "Ariel", "Gianlucca", "Mario", "Ivan", "Boris", "Marcus", "Tony", "Marc", "Michael", "Luiggi", "Pierre", "Tom", "Boris", "Ivan", "Abraham", "Alexei", "Albert", "Vlad", "David", "Igor", "Leo", "Leon", "Nestor", "Paul", "Erik"],
+      mnames:["Xabier", "Moses", "Kit", "Ariel", "Gianlucca", "Mario", "Ivan", "Boris", "Marcus", "Tony", "Marc", "Michael", "Luiggi", "Gael", "Pierre", "Tom", "Boris", "Ivan", "Abraham", "Alexei", "Albert", "Vlad", "David", "Igor", "Leo", "Leon", "Nestor", "Paul", "Erik"],
       fnames: ["Sarah", "Mary", "Olivia", "Isabella", "Sheila", "Catia", "Alina", "Veronica", "Diana", "Irina", "Clara", "Cristina", "Marina", "Olga" ],
-      surnames:["Northman", "Gruber", "Mayer", "Jensen", "Nielsen", "Ivanov", "Bernard", "Martin", "Leroy", "Murphy", "Rossi", "Peeters", "Vidal", "Muller", "Cambridge", "Crownwell", ""]
+      surnames:["Northman", "Gruber", "Mayer", "Jensen", "Nielsen", "Ivanov", "Bernard", "Martin", "Leroy", "Murphy", "Rossi", "Peeters", "Bernal", "Valdes", "Muller", "Cambridge", "Crownwell", ""]
     }
 
   }

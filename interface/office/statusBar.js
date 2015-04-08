@@ -4,14 +4,27 @@ Crafty.c('StatusBar', {
     this.attr({w:1200, h:45, x: 0, y: 0})
     this.company = tr.app.director.company;
     this.color('#333333')
-    this.render();
+    this.checks = Crafty.e('WarningChecks');
+    this.checks.set({company: this.company});
     this.createNextButton();
     this.createProductButton();
     this.createProjectCompletion();
     this.createBusinessButton();
+    this.createIndustryButton();
     this.createMarketingButton();
     this.createDateContainer();
     this.createMoneyContainer();
+    this.createNotificationCounter();
+    this.createHistoryBrowser();
+    this.render();
+
+    this.bindNotificationCreated = this.company.on('notificationCreated', this.checkNotificationPopUp.bind(this));
+    this.bindNotificationClose = this.company.on('notificationClose', this.updateNotificationCounter.bind(this))
+    this.bind('Remove', this.delete.bind(this));
+  },
+  delete: function() {
+    this.company.off('notificationCreated', this.bindNotificationCreated)
+    this.company.off('notificationClose', this.bindNotificationClose)
   },
   render: function() {
     this.ready = true;
@@ -24,10 +37,11 @@ Crafty.c('StatusBar', {
   createNextButton: function() {
     this.firstButton = Crafty.e('Button');
     this.firstButton.set({
-      color: '#CCAA00',
+      color: 'rgb(26, 152, 80)',
       text: "Next Turn",
       y: 5,
       x: 5,
+      hintText: 'Finish the current turn',
       onClick: this.nextTurn.bind(this)
     })
   },
@@ -38,14 +52,16 @@ Crafty.c('StatusBar', {
       text: "Main Office",
       y: 5,
       x: 5,
+      hintText: 'Back to the office screen',
       onClick: this.backToOffice.bind(this)
     })
   },
   createProductButton: function() {
     this.productButton = Crafty.e('Button');
     this.productButton.set({
-      color: '#CC00AA',
+      color: 'rgb(170, 196, 138)',
       text: "Product View",
+      hintText: 'Product and projects screen',
       y: 5,
       x:420,
       onClick: this.productView.bind(this)
@@ -54,8 +70,9 @@ Crafty.c('StatusBar', {
   createBusinessButton: function() {
     this.businessButton = Crafty.e('Button');
     this.businessButton.set({
-      color: '#00AA55',
+      color: 'rgb(230, 220, 185)',
       text: "Business View",
+      hintText: 'Money related issues',
       y: 5,
       x:530,
       onClick: this.businessView.bind(this)
@@ -64,12 +81,27 @@ Crafty.c('StatusBar', {
   createMarketingButton: function() {
     this.marketingButton = Crafty.e('Button');
     this.marketingButton.set({
-      color: '#AAAA55',
+      color: 'rgb(232, 160, 125)',
       text: "Marketing View",
+      hintText: 'Promote your product!',
       y: 5,
       x:640,
       onClick: this.marketingView.bind(this)
     })
+  },
+  createIndustryButton: function() {
+    this.industryButton = Crafty.e('Button');
+    this.industryButton.set({
+      color: 'rgb(195, 98, 89)',
+      text: "Industry View",
+      hintText: 'Companies and people building the net!',
+      y: 5,
+      x:750,
+      onClick: this.industryView.bind(this)
+    })
+  },
+  industryView: function() {
+    Crafty.trigger('JobOffersSelected')
   },
   productView: function() {
     Crafty.trigger('ProductSelected');
@@ -107,7 +139,7 @@ Crafty.c('StatusBar', {
       h: 30
     })
     this.moneyContainer.render = function() {
-      this.replace('<div class="statusMoney">'+self.company.cash+"$</div>");
+      this.replace('<div class="statusMoney">'+Math.floor(self.company.cash)+"$</div>");
     }
   },
   renderTurn: function() {
@@ -121,6 +153,31 @@ Crafty.c('StatusBar', {
   },
   nextTurn: function() {
     this.company.turn();
+    this.checks.checkOngoingProjectsPeople();
+    this.checks.checkOngoingProjectsPeopleActive();
     this.render();
+    this.trigger('newTurn')
+  },
+  createNotificationCounter: function() {
+    this.notificationCounter = Crafty.e('NotificationCounter');
+    this.notificationCounter.attr({
+      x: 120,
+      y: 5
+    })
+    this.notificationCounter.assignCompany(this.company);
+    this.notificationCounter.render();
+  },
+  updateNotificationCounter: function() {
+    this.notificationCounter.render();
+  },
+  checkNotificationPopUp: function(notif) {
+    this.updateNotificationCounter();
+    if(notif.autoOpen) {
+      this.notificationCounter.createPopUp(notif);
+    }
+  },
+  createHistoryBrowser: function() {
+    this.historyBrowser && this.historyBrowser.destroy();
+    this.historyBrowser = Crafty.e('HistoryBrowser');
   }
 })

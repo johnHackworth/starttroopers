@@ -1,9 +1,13 @@
 Crafty.c('FaceLayer', {
   size: 250,
   layerClass: '',
+  filter: '',
   init: function() {
     this.requires('2D, DOM, Mouse');
-    this.attr({w:this.size, h:this.size, x: 5, y: 5})
+    this.attr({w:this.size, h:this.size});
+  },
+  setBlackAndWhite: function() {
+    this.filter = "grayscale(80%)";
   },
   assignPerson: function(person) {
     this.person = person;
@@ -16,6 +20,9 @@ Crafty.c('FaceLayer', {
       this.props();
     }
   },
+  setZ: function(z) {
+    this.attr({z: z});
+  },
   setLayer: function(name) {
     this.layerClass = name;
     if(this.person) {
@@ -24,7 +31,10 @@ Crafty.c('FaceLayer', {
   },
   props: function() {
     if(this.person) {
-      var type = this.person.DNA.get(this.layerClass);
+      var type = this.type;
+      if(!type) {
+        type = this.person.DNA.get(this.layerClass);
+      }
       if(!type) {
         type = 0;
       }
@@ -35,7 +45,8 @@ Crafty.c('FaceLayer', {
         "height": this.size + "px",
         "background-image": 'url(assets/people/'+this.layerClass+'/'+type+'.png) ',
         "background-size": this.size+'px',
-        "background-repeat": "no-repeat"
+        "background-repeat": "no-repeat",
+        "-webkit-filter": this.filter
       })
     }
   },
@@ -45,7 +56,8 @@ Crafty.c('FaceLayer', {
         "height": this.size + "px",
         "background-image": 'url(assets/people/'+this.layerClass+'/'+this.type+'.png) ',
         "background-size": this.size+'px',
-        "background-repeat": "no-repeat"
+        "background-repeat": "no-repeat",
+        "-webkit-filter": this.filter
       })
   },
   render: function() {

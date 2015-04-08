@@ -18,7 +18,7 @@ window.tr.utils.Loggable.prototype = {
     this.logFile.unshift({turn: currentTurn, text: text, level: level});
     window.tr.log.unshift({turn: currentTurn, text: text, level: level});
     if(!silent) {
-      console.log(text);
+      // console.log(text);
     }
     for(var n in this.attachedLogs) {
       this.attachedLogs[n].log(text, level, true);

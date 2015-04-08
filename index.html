@@ -6,19 +6,29 @@
     <link rel="stylesheet" type="text/css" href="./interface/css/product.css" media="all">
     <link rel="stylesheet" type="text/css" href="./interface/css/project.css" media="all">
     <link rel="stylesheet" type="text/css" href="./interface/css/business.css" media="all">
+    <link rel="stylesheet" type="text/css" href="./interface/css/marketing.css" media="all">
+    <link rel="stylesheet" type="text/css" href="./interface/css/industry.css" media="all">
+    <link rel="stylesheet" type="text/css" href="./interface/css/creator.css" media="all">
+    <link rel="stylesheet" type="text/css" href="./interface/css/menu.css" media="all">
   </head>
   <body>
-
     <script src="./interface/crafty.js"></script>
     <script src="./engine/utils.js"></script>
     <script src="./engine/eventable.js"></script>
     <script src="./engine/loggable.js"></script>
     <script src="./engine/extendable.js"></script>
+    <script src="./engine/exportable.js"></script>
     <script src="./engine/nameGenerator.js"></script>
     <script src="./engine/stats.js"></script>
+    <script src="./app/events/personEvents.js"></script>
+    <script src="./app/events/marketingEvents.js"></script>
+    <script src="./app/conversations.js"></script>
     <script src="./app/player.js"></script>
     <script src="./app/investor.js"></script>
     <script src="./app/world.js"></script>
+    <script src="./app/perks.js"></script>
+    <script src="./app/hobbies.js"></script>
+    <script src="./app/message.js"></script>
     <script src="./app/POP.js"></script>
     <script src="./app/company.js"></script>
     <script src="./app/project.js"></script>
@@ -31,6 +41,7 @@
     <script src="./app/professions/designer.js"></script>
     <script src="./app/people.js"></script>
     <script src="./app/gameController.js"></script>
+    <script src="./app/directors/browsingDirector.js"></script>
     <script src="./app/directors/mainDirector.js"></script>
     <script src="./interface/scene/personSocial.js"></script>
     <script src="./interface/scene/project.js"></script>
@@ -45,11 +56,31 @@
     <script src="./interface/scene/personProjects.js"></script>
     <script src="./interface/productView/personProjects.js"></script>
 
+    <script src="./interface/scene/personInteraction.js"></script>
+    <script src="./interface/personProfile/interactionView.js"></script>
+
     <script src="./interface/scene/personProfile.js"></script>
+    <script src="./interface/personProfile/personProfileButtoner.js"></script>
     <script src="./interface/personProfile/personProfileSheet.js"></script>
+
+    <script src="./interface/scene/personWorkLog.js"></script>
+    <script src="./interface/personProfile/personWorkLogView.js"></script>
     <script src="./interface/personProfile/positionButton.js"></script>
     <script src="./interface/personProfile/personBusinessButton.js"></script>
+    <script src="./interface/personProfile/personScoutingButton.js"></script>
+    <script src="./interface/personProfile/personRecruiterButton.js"></script>
+    <script src="./interface/personProfile/personMarketingButton.js"></script>
 
+
+    <script src="./interface/scene/personContract.js"></script>
+    <script src="./interface/personProfile/personContractSheet.js"></script>
+
+    <script src="./interface/scene/marketing.js"></script>
+    <script src="./interface/marketing/popview.js"></script>
+    <script src="./interface/common/barGraph.js"></script>
+
+    <script src="./interface/scene/marketingResources.js"></script>
+    <script src="./interface/marketing/resources.js"></script>
 
     <script src="./interface/scene/investor.js"></script>
     <script src="./interface/business/investorView.js"></script>
@@ -58,6 +89,7 @@
 
     <script src="./interface/common/button.js"></script>
     <script src="./interface/common/faces.js"></script>
+    <script src="./interface/common/notification.js"></script>
     <script src="./interface/common/officeButton.js"></script>
     <script src="./interface/common/log.js"></script>
     <script src="./interface/common/progressBar.js"></script>
@@ -65,11 +97,21 @@
     <script src="./interface/common/htmlStructure.js"></script>
     <script src="./interface/common/headerText.js"></script>
     <script src="./interface/common/checkbox.js"></script>
+    <script src="./interface/common/slider.js"></script>
+    <script src="./interface/common/peopleList.js"></script>
+    <script src="./interface/common/hint.js"></script>
+    <script src="./interface/common/warningChecks.js"></script>
+    <script src="./interface/common/perkView.js"></script>
+    <script src="./interface/common/hobbieView.js"></script>
+
     <script src="./interface/scene/office.js"></script>
     <script src="./interface/office/office.js"></script>
     <script src="./interface/office/people.js"></script>
     <script src="./interface/office/statusBar.js"></script>
+    <script src="./interface/office/historyBrowser.js"></script>
+    <script src="./interface/office/notificationCounter.js"></script>
     <script src="./interface/office/projectCompletion.js"></script>
+    <script src="./interface/office/progressBubble.js"></script>
     <script src="./interface/people/faceLayer.js"></script>
     <script src="./interface/people/background.js"></script>
     <script src="./interface/people/face.js"></script>
@@ -82,6 +124,41 @@
     <script src="./interface/people/beard.js"></script>
     <script src="./interface/people/clothes.js"></script>
     <script src="./interface/people/peopleFaces.js"></script>
+
+    <script src="./interface/scene/industryHub.js"></script>
+    <script src="./interface/industry/industryButtoner.js"></script>
+    <script src="./interface/industry/industryHubView.js"></script>
+
+    <script src="./interface/scene/jobOffers.js"></script>
+    <script src="./interface/industry/jobOffersView.js"></script>
+
+    <script src="./interface/scene/offerCreator.js"></script>
+    <script src="./interface/industry/offerCreatorView.js"></script>
+
+    <script src="./interface/scene/employeeSearch.js"></script>
+    <script src="./interface/industry/employeeSearchView.js"></script>
+
+    <script src="./interface/scene/companyList.js"></script>
+    <script src="./interface/industry/companyListView.js"></script>
+
+    <script src="./interface/scene/companyView.js"></script>
+    <script src="./interface/industry/companyView.js"></script>
+
+    <script src="./interface/scene/mainMenu.js"></script>
+    <script src="./interface/menus/mainMenuView.js"></script>
+
+
+
+    <script src="./interface/scene/charCreator.js"></script>
+    <script src="./interface/charCreator/charCreatorView.js"></script>
+
+    <script src="./data/companies.js"></script>
+    <script src="./data/userEvents.js"></script>
+    <script src="./data/marketingEvents.js"></script>
+    <script src="./app/NPCCompany.js"></script>
+
+    <script src="./data/perks.js"></script>
+    <script src="./data/hobbies.js"></script>
 
 
     <script src="./app/main.js"></script>

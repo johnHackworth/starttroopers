@@ -1,0 +1,79 @@
+.menuLink {
+  background-color: #333333;
+  color: #FFFFFF;
+  opacity: 0.8;
+  font-size: 24px;
+  width: 90%;
+  height: 98%;
+  display: inline-block;
+  padding: 2% 5% 0;
+  text-shadow: 0 0 1px #000000;
+  text-align: center;
+  font-family: 'freight-text-pro';
+  -webkit-transition: all .3s linear;
+}
+
+.menuLink.quickstart {
+  background-color: #1a9850;
+}
+
+.menuLink.createCompany {
+  background-color: #8cce8a;
+}
+
+.menuLink.resume,
+.menuLink.resume.disabled:hover {
+  background-color: #fff2cc;
+  color: #1a9850;
+
+  text-shadow: 0 0 0px #000000;
+}
+
+.menuLink.resume.disabled,
+.menuLink.resume.disabled:hover {
+  color: #999999;
+  opacity: 0.8;
+}
+
+.menuLink.config {
+  background-color:#f79272;
+}
+
+.menuLink.exit {
+  background-color: #d73027;
+}
+.menuLink:hover {
+  background-color: #FEFEFE;
+  color: #666666;
+  opacity: 1;
+  text-shadow: 0 0 0px #000000;
+}
+
+.mainMenuTitle {
+  width: 100%;
+  height: 85%;
+  border-bottom: 1px solid #FFFFFF;
+  padding-top: 15%;
+  display: inline-block;
+  text-align: center;
+  /*background-color: #333333;*/
+  color: #FFFFFF;
+  /*opacity: 0.8;*/
+}
+
+.mainMenuTitle .title {
+  font-size: 60px;
+  font-weight: bold;
+}
+
+.mainMenuTitle .subtitle {
+  font-family: 'freight-text-pro';
+  font-size: 35px;
+  color: #FAFAFA;
+}
+
+.footer {
+  text-align: center;
+  color: #666666;
+  font-family: 'freight-text-pro';
+}

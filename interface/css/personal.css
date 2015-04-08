@@ -5,17 +5,25 @@
 }
 
 .personalData .name {
-
+  display: inline-block;
+  width: 70%;
   text-shadow: 0 0 2px #000;
 }
-
+.personalData .company {
+  display: inline-block;
+  color: #333399;
+  font-size: 32px;
+  width: 30%;
+  text-align: right;
+  text-shadow: 0 0 2px #000;
+}
 .mainInterest {
   color: #333;
   font-size: 30px;
   display: inline-block;
   padding-right: 20px;
   text-transform: capitalize;
-  text-shadow: 0 0 2px #000;
+  /*text-shadow: 0 0 2px #000;*/
 }
 .mainInterest[data-interest="engineering"] {
   color: #559;
@@ -36,6 +44,12 @@
   font-size: 14px;
   margin-left: 15px;
   color: #333333;
+}
+.followers {
+  display: inline-block;
+  font-size: 14px;
+  margin-left: 15px;
+  color: #9999FF;
 }
 .happiness[data-happiness="Very unhappy"] {
   color: #F66;
@@ -69,11 +83,11 @@
   width: 90px;
   box-shadow: 0px 3px 0px #777;
   text-transform: capitalize;
-  text-shadow: 0 0 1px #335 ;
+  /*text-shadow: 0 0 1px #335 ;*/
 }
 
 .hobbiesTitle {
-  color: #336633;
+  color: #779977;
   font-weight: bold;
   font-size: 18px;
   text-shadow: 0 0 1px #666666;
@@ -89,7 +103,7 @@
   width: 90px;
   box-shadow: 0px 3px 0px #777;
   text-transform: capitalize;
-  text-shadow: 0 0 1px #335 ;
+  /*text-shadow: 0 0 1px #335 ;*/
 }
 
 .stats {
@@ -99,7 +113,7 @@
 .statCol {
   display: inline-block;
   vertical-align: top;
-  width: 250px;
+  width: 350px;
 }
 
 .stats .stat{
@@ -107,7 +121,7 @@
   margin-bottom: 10px;
   padding-right: 10px;
   text-align: right;
-  width: 230px;
+  width: 330px;
 }
 
 .stat span {
@@ -122,11 +136,19 @@
   margin-bottom: 10px;
   padding-right: 10px;
   text-align: right;
-  width: 140px;
+  width: 300px;
 }
 
 .PositionButton, .raiseFunds {
-  border: 1px solid #efefef;
+  border: 0px solid #efefef;
+  border-radius: 3px;
+}
+
+.PerkView img,
+.hobbieView img {
+  margin-top: 5px;
+  width: 35px;
+  height: 35px;
 }
 
 .otherRelation {
@@ -143,4 +165,67 @@
   font-size: 25px;
   text-shadow: 0 0 2px #333333;
   color: #FFFFDD;
+}
+
+.personalOfferData {
+  color: #FFFFFF;
+}
+
+.personalOfferData .interest {
+  display: block;
+  width: 100%;
+  margin: 10px 0 15px;
+}
+.personalOfferData .wage {
+  display: block;
+  width: 100%;
+  margin: 15px 0;
+}
+.personalOfferData .share {
+  display: block;
+  width: 100%;
+  margin: 15px 0 50px;
+}
+.personalOfferData .offerMoney {
+  display: block;
+  width: 100%;
+  font-size: 25px;
+  margin: 40px 0;
+}
+.personalOfferData .equity {
+  display: block;
+  width: 100%;
+  font-size: 25px;
+  margin: 40px 0;
+}
+
+.conversationOption:hover {
+  color: #FFFFFF;
+  text-shadow: 0 0 1px #000000;
+}
+
+.conversationTitle {
+  color: #FFFFAA;
+  text-shadow: 0 0 1px #333333;
+  font-size: 20px;
+}
+
+.responseInteractionView {
+  color: #AA3333;
+  text-shadow: 0 0 1px #000000;
+}
+.responseInteractionView span {
+  text-transform: capitalize;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+.responseView {
+  color: #3333FF;
+  text-shadow: 0 0 1px #000000;
+}
+.responseView span {
+  text-transform: capitalize;
+  margin-right: 15px;
+  font-weight: bold;
 }

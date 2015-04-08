@@ -18,7 +18,6 @@ Crafty.c('HeaderText', {
   setName: function(name, description) {
     this.name = name;
     this.description = description;
-    console.log(this.name, this.description)
   },
   render: function() {
     this.renderData({name: this.name, description: this.description})

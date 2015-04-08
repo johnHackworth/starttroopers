@@ -5,7 +5,10 @@ Crafty.c('ProjectCompletion', {
       w: 100,
       h: 25,
       y: 5,
-      x: 300
+      x: 300,
+      values: [
+        'colorDevops','colorArchitecture','colorFrontend','colorBackend','colorVisual','colorProduct'
+      ]
     });
     this.title = Crafty.e('2D, DOM, Text');
     this.title.attr({
@@ -23,6 +26,8 @@ Crafty.c('ProjectCompletion', {
       y: 20,
       x: 150
     }).css({textAlign: "center"})
+
+
   },
   setCompany: function(options) {
     this.company = options.company;
@@ -32,7 +37,7 @@ Crafty.c('ProjectCompletion', {
     this.render();
   },
   render: function() {
-    var completedness = this.company.projects[0].phaseCompletedness()
-    this.progressBar.setValue(completedness)
+    var completedness = this.company.projects[0].phaseCompletednessArray()
+    this.progressBar.setValues(completedness)
   }
 })

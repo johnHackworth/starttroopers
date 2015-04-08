@@ -9,7 +9,7 @@ window.tr.models.DNA = function(options) {
 
 window.tr.models.DNA.prototype = {
   maxs: [
-    2,4,4,8,15,9,7,9,7,12,2,7,1
+    2,4,4,8,18,9,7,12,7,12,2,7,1
   ],
   hairColors: 4,
   map: {
@@ -39,7 +39,7 @@ window.tr.models.DNA.prototype = {
       "2": [2,3],
       "4": [0,1,2,5,12,13],
       "9": [8,9,10,11],
-      "7": [2]
+      "7": [2,9]
     },
     "spanish": {
       "3": [4, 5, 7],
@@ -136,5 +136,19 @@ window.tr.models.DNA.prototype = {
 
     }
     return true;
+  },
+  export: function() {
+    var json = {};
+    json.chromosomes = [];
+    for(var i in this.chromosomes) {
+      json.chromosomes.push(this.chromosomes[i]);
+    }
+    return json;
+  },
+  import: function(json) {
+    this.chromosomes = [];
+    for(var i in json.chromosomes) {
+      this.chromosomes[i] = json.chromosomes[i];
+    }
   }
 }

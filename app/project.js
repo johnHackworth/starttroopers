@@ -5,6 +5,7 @@ window.tr.models.Project = function(options) {
   this.module = options;
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Loggable);
+  tr.utils.extend.call(this, tr.utils.Exportable);
   this.initialize();
 }
 
@@ -12,10 +13,15 @@ window.tr.models.Project.prototype = {
   bugs: 0,
   launched: false,
   knowBugs: 0,
-  projectPhases: ['mvp', 'polish', 'test'],
+  isRefactor: false,
+  projectPhases: ['prototype', 'polish', 'test'],
+  autoAdd: false,
+  quality: 0,
   initialize: function() {
     this.module.started = true;
     this.name = this.module.name;
+    this.id = this.module.id;
+    this.color = this.module.color;
     this.phases = []
     this.people = [];
     this.initPhases();
@@ -66,10 +72,30 @@ window.tr.models.Project.prototype = {
     }
     return 100 * done / toGo;
   },
+  phaseCompletednessArray: function() {
+    var toGo = 0;
+    var done = 0;
+    var areas = ['design', 'definition', 'front', 'back', 'architecture', 'operations']
+    var res = [];
+    for(var n in areas) {
+      // console.log(areas[n])
+      var value = 100 * this.phase[areas[n]] / this.phase[areas[n]+'Goal'];
+      if(! this.phase[areas[n]]) {
+        value = 0;
+      }
+      res.push( value);
+
+    }
+    return res;
+  },
   initPhases: function() {
+    var prefix= '';
+    if(this.isRefactor) {
+      prefix = '(rftr) '
+    }
     this.phases = {
-      mvp: this.createPhase('mvp', this.module.goals),
-      polish: this.createPhase('polish',this.module.goals),
+      mvp: this.createPhase(prefix + 'prototype', this.module.goals),
+      polish: this.createPhase(prefix + 'polish',this.module.goals),
       test: this.createPhase('test',this.module.goals)
     }
     this.phase = this.phases.mvp;
@@ -113,20 +139,99 @@ window.tr.models.Project.prototype = {
   },
   addWork: function(person) {
     var hourWork = person.getHourlyWork(this);
+    person.lastHours = {};
     for(var n in hourWork) {
-      this.increasePhaseStat(n, hourWork[n]/10);
+      if(n === 'foundBugs') {
+        if(this.bugs > this.knowBugs) {
+          this.knowBugs += hourWork[n];
+        }
+      } else {
+        person.lastHours[n] = hourWork[n];
+        if(this.phase.name != 'test') {
+          if(n != 'bugs') {
+            this.increasePhaseStat(n, hourWork[n]/10);
+            this.changeQuality(n, hourWork[n] / 10, person);
+          } else {
+            this.increaseBugs(hourWork[n]);
+          }
+        } else {
+         this.removeBugs(person)
+        }
+      }
     }
   },
+  increaseBugs: function(bugs) {
+    this.bugs += bugs;
+  },
+  getTotalWorkDone: function() {
+    var total = 0;
+    total += this.phase.definition;
+    total += this.phase.design;
+    total += this.phase.back;
+    total += this.phase.front;
+    total += this.phase.architecture;
+    total += this.phase.operations;
+    return total;
+  },
+  changeQuality: function(stat, hours, person) {
+    if(isNaN(hours) || hours === 0) {
+      return;
+    }
+    var attr = person.workToStats[stat];
+    if(!attr || person[attr] === 0) {
+      return;
+    }
+    var total = this.getTotalWorkDone() - hours;
+    if(isNaN(total)) {
+      return;
+    }
+
+    var quality = (this.quality * (total - hours) + hours * person[attr]) / (total + hours)
+    if(isNaN(quality)) {
+      return;
+    }
+    if(this.name === 'polish') {
+      quality = quality * 1.25;
+    }
+    this.quality = quality;
+  },
   increasePhaseStat: function(stat, increase) {
+    if(!stat || isNaN(increase) ||
+      this.phase[stat] === this.phase[stat + 'Goal']
+    ) {
+      return;
+    }
     this.phase[stat] += increase;
     if(this.phase[stat] > this.phase[stat + 'Goal']) {
       this.phase[stat] = this.phase[stat + 'Goal'];
       this.phaseStatCompleted(stat);
     }
   },
+  removeBugs: function(person) {
+    if(this.knowBugs > 0) {
+      var debugStat = person.getDebugStat(this);
+      if(tr.randInt() < debugStat &&
+        tr.randInt() < 20
+      ) {
+        this.knowBugs--;
+        this.bugs--;
+        person.bugsRemoved++;
+        if(this.productModule.released && !this.isRefactor) {
+          this.productModule.removeBugs()
+        }
+        person.trigger('conversation', 'SUCCESS!! I have removed a bug')
+      }
+    }
+  },
   phaseStatCompleted: function(stat) {
     this.trigger('completedStat', stat);
-    this.log(stat + ' of ' + this.name + ' completed',2);
+    this.company.log(stat + ' of ' + this.name + ' completed',2);
+    this.company.addNotification({
+      text:"This phase of "+stat+" of "+this.name+" is complete",
+      type:"project",
+      id: this,
+      open: false
+    })
     var completed = true;
     if(this.phase.definition < this.phase.definitionGoal) completed = false;
     if(this.phase.design < this.phase.designGoal) completed = false;
@@ -139,17 +244,25 @@ window.tr.models.Project.prototype = {
   phaseCompleted: function() {
     this.phase.completed = true;
     this.trigger('completedPhase');
+    var subtext = ' We are ready for the next phase!'
+    if(this.phase.name == 'test') {
+      subtext = ' We are ready to release the product!'
+    }
     this.log(this.name + ' completed', 2);
+    this.company.addNotification({
+      text:"We have completed the development of "+this.name+". "+subtext,
+      type:"project",
+      id: this,
+      open: true
+    })
   },
   nextPhase: function() {
     if(!this.phase.completed) {
       return this.phase;
     }
-    if(this.phase.name === 'mvp') {
-      this.bugs += this.phase.bugs;
+    if(this.phase.name === 'prototype') {
       this.phase = this.phases.polish;
     } else if(this.phase.name === 'polish') {
-      this.bugs += this.phase.bugs;
       this.phase = this.phases.test;
     }
     this.company.product.trigger('change')
@@ -159,5 +272,37 @@ window.tr.models.Project.prototype = {
     this.productModule.releaseModule();
     this.trigger('change')
     this.company.product.trigger('change')
+  },
+  test_completePhase: function() {
+    this.phase.definition = this.phase.definitionGoal - 0.00001;
+    this.phase.design = this.phase.designGoal - 0.00001;
+    this.phase.back = this.phase.backGoal - 0.00001;
+    this.phase.front  = this.phase.frontGoal - 0.00001;
+    this.phase.architecture = this.phase.architectureGoal - 0.00001;
+    this.phase.operations = this.phase.operationsGoal - 0.00001;
+    this.quality = tr.randInt();
+  },
+  getRandomPerson: function(isNotPerson) {
+    if(!this.people.length || (this.people.length === 1 && isNotPerson && this.people[0] === isNotPerson)) {
+      return null;
+    } else {
+      var nPerson = tr.randInt(this.people.length);
+      var person = this.people[nPerson];
+      if(person != isNotPerson) {
+        return person;
+      } else {
+        return this.getRandomPerson(isNotPerson);
+      }
+    }
+  },
+  beginRefactor: function() {
+    this.isRefactor = true;
+    this.initPhases();
+  },
+  export: function() {
+    var json = this.exportToObject(true);
+    json.people = this.exportArray('people');
+    json.phases = this.exportArray('phases');
+    return json;
   }
 };

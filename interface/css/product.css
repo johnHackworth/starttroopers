@@ -11,36 +11,43 @@
   text-shadow: 0 0 2px #555555;
 }
 
+.projectModules .title {
+  font-size: 20px;
+  color: #FFFF66;
+  text-shadow: 0 0 2px #555555;
+}
+
 .module {
-  width: 900px;
-  border: 2px solid #666666;
-  height: 30px;
-  padding-top: 10px;
-  background-color: #999999;
-  font-size: 15px;
-  color: #9F9;
+  width: 100%;
+  height: 100px;
+  border: 0px solid #666666;
+  border-radius: 5px;
+  padding: 6px 8px 4px;
+  background-color: #FFF;
+  font-size: 12px;
+  color: #393939;
+  opacity: 1;
   display: inline-block;
+  overflow: hidden;
+  text-align: left;
 }
 
 .module.released_true {
-  background-color: #66FF66;
+  /*background-color: #33AA66;*/
   color: #333333;
 }
 
 .module.available {
-  opacity: 0.7;
-  background-color: #6666FF;
-  color: #FFFFFF;
 }
 
 .module .title {
   display: inline-block;
-  width: 200px;
-  text-align: center;
-  font-weight: bold;
-  height: 40px;
   vertical-align: top;
 }
+.module.available .title {
+  width: 100%;
+}
+
 
 .module .currentPhase {
   display: inline-block;
@@ -51,8 +58,37 @@
 
 .module .description {
   display: inline-block;
-  width: 650px;
-  height: 40px;
+  width: 100%;
   overflow: hidden;
   vertical-align: top;
+}
+
+.moduleContainer {
+  background-color: #dbdbdb;
+  border-radius: 5px;
+  padding: 10px;
+  display: inline;
+  font-size: 15px;
+  line-height: 18px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.moduleContainer .description {
+  font-weight: lighter;
+  font-size: 12px;
+}
+
+.paginationButton span {
+  background-color: #FFF;
+  border-radius: 3px;
+  padding: 5px 10px;
+  width: 10px;
+  display: inline-block;
+}
+
+.paginationButton.actualPage span{
+  background-color: #999;
+  color: #FFF;
 }

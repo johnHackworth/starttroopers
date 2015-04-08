@@ -1,4 +1,8 @@
 Crafty.c('PersonSocialSheet', {
+  _PEOPLE_PER_PAGE: 16,
+  _PEOPLE_HEIGHT: 50,
+  _PAGINATION_Y: 700,
+  page: 0,
   personalDataHTML: "<div class='socialData'>"+
   "<div class='name'>%NAME%'s social circle</div>"+
   "<div class='sociability'>Sociability: %SOCIABILITY%</div>"+
@@ -7,10 +11,10 @@ Crafty.c('PersonSocialSheet', {
   "%NAME%" +
   "</div>",
   init: function() {
-    this.requires('2D, DOM, Color, Faces');
-    this.attr({w:1190, h:790, x: 5, y: 5});
-    this.color('rgb(104,154,104)');
-    this.person = tr.app.director.selectedPerson;
+    this.requires('2D, DOM, Color, Faces, PersonProfileButtoner');
+    this.attr({w:1200, h: 800, x: 0, y: 0})
+    this.color('rgba(55,85,105, 0.90)');
+    this.person = tr.app.director.selectedId;
 
     this.statusBar = Crafty.e('StatusBar');
     this.statusBar.createOfficeButton();
@@ -26,26 +30,7 @@ Crafty.c('PersonSocialSheet', {
     this.ready = true;
     Crafty.trigger("Change");
   },
-  createPersonFace: function() {
-    this.personFaceView = Crafty.e('PersonFace');
-    this.personFaceView.assignPerson({
-      person: this.person
-    });
-    this.personFaceView.setSize(200);
-    this.personFaceView.setPosition(20,70);
-  },
 
-  createButtoner: function() {
-    this.profileButton = Crafty.e('Button');
-    this.profileButton.set({
-      color: '#AAAA00',
-      text: "Profile",
-      y: 500,
-      onClick: function() {
-        Crafty.trigger('PersonSelected');
-      }
-    });
-  },
   renderPersonData: function() {
     this.personalData = Crafty.e('2D, DOM, HTML');
     this.personalData.attr({
@@ -60,30 +45,66 @@ Crafty.c('PersonSocialSheet', {
     );
   },
   renderPersonRelations: function() {
+    this.clearPersonRelations();
     var i = 0;
+    var first = this.page * this._PEOPLE_PER_PAGE;
+    var last = first + this._PEOPLE_PER_PAGE;
+    console.log(first,last);
     for(var n in this.person.socialCircle) {
-      var other = tr.app.persons[n];
-      this.createOtherFace(other, 300, 160 + 55*i);
-      var otherName = Crafty.e('2D, HTML, DOM');
-      otherName.attr({
-        x: 370,
-        y: 175 + 55*i,
-        w: 200,
-        h: 30
-      })
-      otherName.append(this.otherDataHTML.replace(/%NAME%/g, other.name));
-      var progressBar = Crafty.e('ProgressBar');
-      progressBar.setOptions({
-        w: 50,
-        h: 15,
-        y: 175 + 55*i,
-        x: 600
-      });
-      progressBar.setValue(this.person.socialCircle[n]);
+      if(i >= first && i < last) {
+        var xPosition = 300;
+        var yPosition = 175 + 55*(i%this._PEOPLE_PER_PAGE);
+        console.log(i%this._PEOPLE_PER_PAGE, this._PEOPLE_PER_PAGE/2)
+        if((i%this._PEOPLE_PER_PAGE) >= ((this._PEOPLE_PER_PAGE / 2))) {
+          xPosition = 600;
+          yPosition = 175 + 55*((i%this._PEOPLE_PER_PAGE) - this._PEOPLE_PER_PAGE / 2)
+        }
+        var other = tr.app.persons[n];
+        var face = this.createOtherFace(other, xPosition, yPosition - 15);
+        this.facesArray.push(face);
+        window.aaa = this;
+        var otherName = Crafty.e('2D, HTML, DOM');
+        console.log('mmmm', xPosition)
+        otherName.attr({
+          x: xPosition + 70,
+          y: yPosition,
+          w: 200,
+          h: 30
+        })
+        otherName.append(this.otherDataHTML.replace(/%NAME%/g, other.name));
+        this.otherNameArray.push(otherName);
+        var progressBar = Crafty.e('ProgressBar');
+
+        progressBar.setOptions({
+          progressColor: 'rgb(85,255,225)',
+          color: 'rgba(50,50,50,0.5)',
+          w: 50,
+          h: 15,
+          y: yPosition,
+          x: xPosition + 200
+        });
+        progressBar.setValue(this.person.socialCircle[n]);
+        this.progressBarArray.push(progressBar);
+      }
       i++;
     }
-  },
 
+    this.pagination();
+  },
+  clearPersonRelations: function() {
+    for(var o in this.facesArray) {
+      this.facesArray[o].destroy();
+    }
+    this.facesArray = [];
+    for(var i in this.progressBarArray) {
+      this.progressBarArray[i].destroy();
+    }
+    this.progressBarArray = [];
+    for(var j in this.otherNameArray) {
+      this.otherNameArray[j].destroy();
+    }
+    this.otherNameArray = [];
+  },
   completeText: function(param) {
     var text = param;
     for(var n in this.person) {
@@ -96,6 +117,38 @@ Crafty.c('PersonSocialSheet', {
     for(var n in this.buttons) {
       this.buttons[n].render();
     }
-  }
-
+  },
+  pagination: function() {
+    var page = this.page;
+    var pages = [];
+    var total = 0;
+    for(var n in this.person.socialCircle) {
+      if(!isNaN(this.person.socialCircle[n])) {
+        total++;
+      }
+    }
+    var nPages = Math.ceil(total / this._PEOPLE_PER_PAGE);
+    for(var i = 0; i < nPages; i++) {
+      var pageButton = Crafty.e('2D, DOM, HTML, Mouse, paginationButton');
+      if(i == page) {
+        pageButton.addComponent('actualPage')
+      }
+      pageButton.attr({
+        x: 300+ 35 *i,
+        y: this._PAGINATION_Y,
+        h: 30,
+        w: 30,
+        z: 12
+      }).replace('<span>'+i+'</span>');
+      pageButton.bind('Click', this.generatePaginationResponse(i))
+    }
+  },
+  generatePaginationResponse: function(n) {
+    var pageNumber = n;
+    var self = this;
+    return function() {
+      self.page = pageNumber;
+      self.renderPersonRelations();
+    }
+  },
 })

@@ -1,0 +1,88 @@
+.currentJobOffers {
+  color: #FFFFFF;
+  font-size: 30px;
+  font-weight: bold;
+  text-shadow: 0px 0px 2px #333333;
+}
+.jobOffer {
+  width: 90%;
+  height: 100%;
+  cursor: pointer;
+  background: #333333;
+  opacity: 0.5;
+  padding: 0 5%;
+  border-radius: 5px;
+}
+.jobOffer:hover {
+  opacity: 0.9;
+}
+.jobOffer .type {
+  display: inline-block;
+  color: #FFF;
+  width: 100px;
+  margin-top: 15px;
+}
+.jobOffer .date {
+  display: inline-block;
+  color: #3F3;
+  width: 300px;
+  margin-top: 15px;
+}
+.jobOffer .applicants {
+  display: inline-block;
+  color: #33F;
+  width: 50px;
+  margin-top: 15px;
+}
+
+.otherData {
+
+}
+
+.otherData .name {
+  width: 100%;
+  color: #FFFFFF;
+  text-shadow: 0 0 1px #000000;
+  font-size: 12px;
+}
+
+.otherData .mainInterest {
+  width: 100%;
+  float: left;
+  display: inline-block;
+  font-size: 12px;
+}
+
+.otherData .experience,
+.otherData .followers {
+  width: 45%;
+  display: inline-block;
+  font-size: 8px;
+  padding: 0;
+  margin: 0;
+}
+.otherData .perks {
+  width: 100%;
+  font-size: 8px;
+}
+
+.offerData {
+  display: inline-block;
+  width: 100%;
+  color: #FFFFFF;
+}
+
+.offerData div {
+  display: inline-block;
+  width: 24%;
+}
+
+.companyButton {
+  width: 100%;
+  height: 95%;
+  text-align: center;
+  background: #666666;
+  color: #FFFFFF;
+  border-radius: 10px;
+  padding: 5% 0 0;
+}

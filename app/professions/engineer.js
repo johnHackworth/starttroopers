@@ -7,13 +7,11 @@ window.tr.decorators.engineering = function(options) {
 window.tr.decorators.engineering.prototype = {
 
   randomizeStudies: function() {
+    this.resetStats();
     if(this.mainInterest === 'engineering') {
       if(Math.random() * 100 < 50) {
-        this.perks.push('engineering graduate');
-        this.increaseStat('architecture', 20);
-        this.increaseStat('backend', 15);
-        this.increaseStat('frontend', 10);
-        this.increaseStat('operations', 5);
+        this.followers += tr.randInt(200);
+        this.newPerk('engineer');
         this.desiredWage += 10000;
       } else {
         this.selfTaught()
@@ -21,21 +19,14 @@ window.tr.decorators.engineering.prototype = {
     }
   },
   selfTaught: function() {
-    this.perks.push('selfTaught');
-    this.increaseStat('business', tr.randInt(10));
-    this.increaseStat('architecture',  tr.randInt(40));
-    this.increaseStat('backend',  tr.randInt(40));
-    this.increaseStat('frontend',  tr.randInt(40));
-    this.increaseStat('operations',  tr.randInt(40));
-    this.increaseStat('visualDesign',  tr.randInt(5));
-    this.increaseStat('productDesign',  tr.randInt(15));
-    this.increaseStat('qa',  tr.randInt(15));
+    this.newPerk('selfTaught');
   },
 
   randomizeExperience: function() {
     this.experience = tr.randInt(10);
     var posiblePastJobs = ['enterpreur', 'business', 'front', 'back', 'designer']
     var increase = 0;
+    var followersRatio = this.sociability / 100;
     for(var i = 0; i < this.experience; i++) {
       if(this.mainInterest === 'engineering') {
         var frontAlpha = tr.randInt(10 * this.learning / 100)
@@ -51,54 +42,69 @@ window.tr.decorators.engineering.prototype = {
         increase = frontAlpha + qaAlpha + backAlpha + archAlpha + opAlpha
         this.desiredWage += increase * 200 * (this.negotiation / 100);
       }
+      this.followers += tr.randInt(followersRatio * increase * increase * tr.randInt(10));
       this.randomizePerks();
     }
   },
   randomizePerks: function() {
     if(tr.randInt() < 5) {
       if(this.mainInterest === 'engineering') {
-        var chooseInt = tr.randInt(4);
-        if(chooseInt == 0) {
-          this.perks.push('frontender');
-          this.increaseStat('frontend', 30);
+        var chooseInt = tr.randInt(11 + 1);
+        if(chooseInt == 0 && this.newPerk('frontender')) {
         }
-        if(chooseInt == 1) {
-          this.perks.push('back-man');
-          this.increaseStat('backend', 30);
+        if(chooseInt == 1 && this.newPerk('backender')) {
         }
-        if(chooseInt == 2) {
-          this.perks.push('devops');
-          this.increaseStat('operations', 30);
+        if(chooseInt == 2 && this.newPerk('devops')) {
         }
-        if(chooseInt == 3) {
-          this.perks.push('qa');
-          this.increaseStat('qa', 30);
+        if(chooseInt == 3 && this.newPerk('qa')) {
         }
+        if(chooseInt == 4 && this.newPerk('craftsman')) {
+        }
+        if(chooseInt == 5 && this.newPerk('cleancoder')) {
+        }
+        if(chooseInt == 6 && this.newPerk('cowboyCoder')) {
+        }
+        if(chooseInt == 7 && this.newPerk('debugger')) {
+        }
+        if(chooseInt == 8 && this.newPerk('designEye')) {
+        }
+        if(chooseInt == 9 && this.newPerk('brogrammer')) {
+        }
+        if(chooseInt == 10 && this.newPerk('dataScientist')) {
+        }
+        if(chooseInt == 11 && this.newPerk('appDeveloper')) {
+        }
+      }
+    }
+    if(tr.randInt() < 5 && this.newPerk('scenester')) {
+    }
+    if(tr.randInt(1000) < 15 && this.newPerk('rockstar')) {
+      if(tr.randInt() < 10 && this.newPerk('guru')) {
       }
     }
   },
   getHapinessFromWork: function() {
-    if(this.positions.indexOf('front') ||
-      this.positions.indexOf('back') ||
-      this.positions.indexOf('architecture') ||
-      this.positions.indexOf('operations')
+    if(this.positions.indexOf('front') < 0 ||
+      this.positions.indexOf('back')  < 0 ||
+      this.positions.indexOf('architecture')  < 0 ||
+      this.positions.indexOf('operations')  < 0
     ) {
-      this.happiness -= 0.03 * (100 - this.workEthics) / 100
-    }
-    if(this.perks.indexOf('frontender') >= 0 &&
+      this.happiness -= 0.09 * (100 - this.workEthics) / 100
+    } else if(this.hasPerk('frontender') &&
       this.positions.indexOf('front') >= 0
     ) {
-      this.happiness += 0.01;
-    }
-    if(this.perks.indexOf('back-man') >= 0 &&
+      this.increaseStat('happiness', 0.01);
+    } else if(this.hasPerk('back-man') &&
       this.positions.indexOf('back') >= 0
     ) {
-      this.happiness += 0.01;
-    }
-    if(this.perks.indexOf('devops') >= 0 &&
+      this.increaseStat('happiness', 0.01);
+    } else if(this.hasPerk('devops') >= 0 &&
       this.positions.indexOf('operations') >= 0
     ) {
-      this.happiness += 0.01;
+      this.increaseStat('happiness', 0.01);
+    } else {
+      this.happiness -= 0.01 * (100 - this.workEthics) / 100
+
     }
   }
 }

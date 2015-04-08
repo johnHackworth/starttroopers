@@ -6,8 +6,9 @@ window.tr.models.Investor = function(options) {
   tr.utils.extend.call(this, tr.utils.Eventable);
   tr.utils.extend.call(this, tr.utils.Loggable);
   tr.utils.extend.call(this, tr.utils.Stats);
+  tr.utils.extend.call(this, tr.utils.Exportable);
   this.initialize();
-}
+};
 
 window.tr.models.Investor.prototype = {
   cash: 10000000,
@@ -41,7 +42,6 @@ window.tr.models.Investor.prototype = {
     this.negociateOffers();
   },
   getADemo: function(person) {
-    console.log(this.currentTurn, this.lastDemo);
     if(this.currentTurn - this.lastDemo < 20) {
       return;
     }
@@ -117,5 +117,9 @@ window.tr.models.Investor.prototype = {
     this.offer = null;
     this.companyPerception -= 50;
     this.lastBought = this.currentTurn;
+  },
+  export: function() {
+    var json = this.exportToObject();
+    return json;
   }
 }
